@@ -40,7 +40,10 @@ public class ShadowDimension extends AbstractGame {
     private static final Colour RED = new Colour(1, 0, 0);
 
     // game objects
-    private static final String[] OBJECT_NAMES = {"Player", "Wall", "Sinkhole"};
+    private static final String PLAYER = "Fae";
+    private static final String WALL = "Wall";
+    private static final String SINKHOLE = "Sinkhole";
+    private static final String[] OBJECT_NAMES = {PLAYER, WALL, SINKHOLE};
 
     // initialising the game
     private int stage = START_SCREEN;
@@ -90,15 +93,15 @@ public class ShadowDimension extends AbstractGame {
                 // create the object based on the type
                 if (contains(OBJECT_NAMES, values[0])) {
                     switch (values[0]) {
-                        case "Player":
-                            Player player = new Player("res/faeLeft.png", "res/faeRight.png", pos);
+                        case PLAYER:
+                            Player player = new Player("res/fae/faeLeft.png", "res/fae/faeRight.png", pos);
                             objects[i] = player;
                             break;
-                        case "Wall":
+                        case WALL:
                             Wall wall = new Wall("res/wall.png", pos);
                             objects[i] = wall;
                             break;
-                        case "Sinkhole":
+                        case SINKHOLE:
                             Sinkhole sinkhole = new Sinkhole("res/sinkhole.png", pos);
                             objects[i] = sinkhole;
                             break;
