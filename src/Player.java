@@ -6,8 +6,8 @@ public class Player extends GameObject {
     // constants
     private static final int MAX_HEALTH = 100;
     private static final int SPEED = 2;
-    private static final double WIN_X = 950;
-    private static final double WIN_Y = 670;
+    private static final double GATE_X = 950;
+    private static final double GATE_Y = 670;
 
     // instance variables
     private final Image imageLeft;
@@ -113,7 +113,7 @@ public class Player extends GameObject {
      */
     public boolean isAtGate() {
         Point pos = getPosition();
-        return pos.x >= WIN_X && pos.y >= WIN_Y;
+        return pos.x >= GATE_X && pos.y >= GATE_Y;
     }
 
     /**
