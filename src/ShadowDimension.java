@@ -15,7 +15,8 @@ public class ShadowDimension extends AbstractGame {
     private static final int WINDOW_HEIGHT = 768;
     private static final int MAX_OBJECTS = 60;
     private static final String CSV_DELIMITER = ",";
-    private static final String CSV_PATH = "res/level0.csv";
+    private static final String LEVEL0_CSV = "res/level0.csv";
+    private static final String LEVEL1_CSV = "res/level1.csv";
 
     // fonts
     private static final String FONT_PATH = "res/frostbite.ttf";
@@ -239,6 +240,16 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
+     * Get player object from the array of objects. We assume the first object
+     * in the array is the player.
+     * @param objects
+     * @return
+     */
+    private Player getPlayer(GameObject[] objects) {
+        return (Player) objects[0];
+    }
+
+    /**
      * Get the walls from the array of all objects.
      * @param objects Array of game objects.
      * @return Array of walls.
@@ -313,8 +324,8 @@ public class ShadowDimension extends AbstractGame {
      * Prepare the game for level 0.
      */
     private void prepareLevel0() {
-        boundary = readBoundary(CSV_PATH);
-        objects = readObjects(CSV_PATH);
+        boundary = readBoundary(LEVEL0_CSV);
+        objects = readObjects(LEVEL0_CSV);
         stationaryObjects = getStationaryGameObjects();
         sinkholes = getSinkholes(stationaryObjects);
         walls = getWalls(stationaryObjects);
@@ -333,9 +344,8 @@ public class ShadowDimension extends AbstractGame {
             prepareLevel = false;
         }
 
-        // assume player is the first object in the array
-        Player player = (Player) objects[0];
-        
+        Player player = getPlayer(objects);
+
         // move the player
         player.update(input, boundary);
 
@@ -362,17 +372,28 @@ public class ShadowDimension extends AbstractGame {
             stationaryObjects = removeGameObject(stationaryObjects, sinkhole);
 
         } else if (player.collides(walls)) {
-            
+
             // bounce player off wall
             Wall wall = (Wall) player.getCollidedObject(walls);
             wall.bounce(player);
         }
 
         // move to next stage if necessary
-        if (player.isAtGate()) {
+        if (getPlayer(objects).isAtGate()) {
             stage = LEVEL1_STAGE;
             prepareLevel = true;
         }
+    }
+
+    /**
+     * Prepare the game for level 1.
+     */
+    private void prepareLevel1() {
+        boundary = readBoundary(LEVEL1_CSV);
+        objects = readObjects(LEVEL1_CSV);
+        stationaryObjects = getStationaryGameObjects();
+        sinkholes = getSinkholes(stationaryObjects);
+        walls = getWalls(stationaryObjects);
     }
 
     /**
@@ -382,6 +403,13 @@ public class ShadowDimension extends AbstractGame {
      */
     private void level1(Input input) {
 
+        // prepare the level if necessary
+        if (prepareLevel) {
+            prepareLevel1();
+            prepareLevel = false;
+        }
+
+        
     }
 
 
