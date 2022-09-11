@@ -48,7 +48,7 @@ public class ShadowDimension extends AbstractGame {
     // initialising the game
     private int stage = START_SCREEN;
     private final Boundary boundary = readBoundary(CSV_PATH);
-    private final GameObject[] objects = readObjects(CSV_PATH, boundary);
+    private final GameObject[] objects = readObjects(CSV_PATH);
     private GameObject[] stationaryObjects = getStationaryGameObjects();
     private GameObject[] sinkholes = getSinkholes(stationaryObjects);
     private final GameObject[] walls = getWalls(stationaryObjects);
@@ -71,8 +71,7 @@ public class ShadowDimension extends AbstractGame {
      * @param boundary Boundary of the game which will be added to GameObjects.
      * @return Array of GameObjects.
      */
-    private GameObject[] readObjects(String csv, Boundary boundary) {
-        GameObject.boundary = boundary;
+    private GameObject[] readObjects(String csv) {
         GameObject[] objects = new GameObject[MAX_OBJECTS];
         
         try {
@@ -300,9 +299,13 @@ public class ShadowDimension extends AbstractGame {
     private void gameStage(Input input, Player player) {
         drawBackground();
         drawHealthBar(player);
-        player.draw();
+        if (boundary.contains(player.getPosition())) {
+            player.draw();
+        } else {
+            throw new RuntimeException("Position is outside of boundary");
+        }
         drawObjects(stationaryObjects);
-        player.update(input);
+        player.update(input, boundary);
 
         if (player.isAtGate()) {
             stage = GAME_WIN_SCREEN;

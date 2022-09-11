@@ -35,15 +35,15 @@ public class Player extends GameObject {
      * Update the player's position given inputs.
      * @param input Input object to get inputs from.
      */
-    public void update(Input input) {
+    public void update(Input input, Boundary boundary) {
         if (input.isDown(Keys.LEFT)) {
-            this.moveLeft();
+            this.moveLeft(boundary);
         } else if (input.isDown(Keys.RIGHT)) {
-            this.moveRight();
+            this.moveRight(boundary);
         } else if (input.isDown(Keys.UP)) {
-            this.moveUp();
+            this.moveUp(boundary);
         } else if (input.isDown(Keys.DOWN)) {
-            this.moveDown();
+            this.moveDown(boundary);
         }
     }
     
@@ -66,7 +66,7 @@ public class Player extends GameObject {
     /** 
      * Move the player left.
      */
-    public void moveLeft() {
+    public void moveLeft(Boundary boundary) {
         Point oldPos = getPosition();
         Point newPos = new Point(oldPos.x - SPEED, oldPos.y);
         if (boundary.contains(newPos)) {
@@ -77,7 +77,7 @@ public class Player extends GameObject {
     /**
      * Move the player right.
      */
-    public void moveRight() {
+    public void moveRight(Boundary boundary) {
         Point oldPos = getPosition();
         Point newPos = new Point(oldPos.x + SPEED, oldPos.y);
         if (boundary.contains(newPos)) {
@@ -88,7 +88,7 @@ public class Player extends GameObject {
     /**
      * Move the player up.
      */
-    public void moveUp() {
+    public void moveUp(Boundary boundary) {
         Point oldPos = getPosition();
         Point newPos = new Point(oldPos.x, oldPos.y - SPEED);
         if (boundary.contains(newPos)) {
@@ -99,7 +99,7 @@ public class Player extends GameObject {
     /**
      * Move the player down.
      */
-    public void moveDown() {
+    public void moveDown(Boundary boundary) {
         Point oldPos = getPosition();
         Point newPos = new Point(oldPos.x, oldPos.y + SPEED);
         if (boundary.contains(newPos)) {

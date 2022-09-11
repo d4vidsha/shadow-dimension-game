@@ -2,9 +2,6 @@ import bagel.*;
 import bagel.util.*;
 
 public abstract class GameObject {
-    
-    // the game objects have the same boundary for the game
-    protected static Boundary boundary;
 
     // common attributes for all game objects
     private Image image;
@@ -21,27 +18,11 @@ public abstract class GameObject {
     }
 
     /**
-     * Constructor for GameObject class.
-     * @param image Image of the game object.
-     * @param position Position of the game object.
-     * @param boundary Boundary of the game object.
-     */
-    public GameObject(String image, Point position, Boundary boundary) {
-        this.image = new Image(image);
-        this.rectangle = deriveRectangle(position, this.image);
-        GameObject.boundary = boundary;
-    }
-
-    /**
      * Draw the object to the screen.
      */
     public void draw() {
         Point position = getPosition();
-        if (boundary.contains(position)) {
-            image.drawFromTopLeft(position.x, position.y);
-        } else {
-            throw new RuntimeException("Position is outside of boundary");
-        }
+        image.drawFromTopLeft(position.x, position.y);
     }
 
     /**
