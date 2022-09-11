@@ -352,16 +352,17 @@ public class ShadowDimension extends AbstractGame {
 
         // check if player hit a wall or sinkhole
         if (player.collides(sinkholes)) {
+
             // get specific sinkhole collided with and inflict damage
             Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(sinkholes);
-            int damagePoints = sinkhole.getDamagePoints();
-            player.inflictDamage(damagePoints);
+            sinkhole.inflictDamage(player);
+
             // remove sinkhole from game
             sinkholes = removeGameObject(sinkholes, sinkhole);
             stationaryObjects = removeGameObject(stationaryObjects, sinkhole);
-            System.out.println("Sinkhole inflicted " + damagePoints + " damage points on " + player.getName()
-                 + ". " + player.getName() + "'s current health: " + player.getHealth() + "/" + player.getMaxHealth());
+
         } else if (player.collides(walls)) {
+            
             // bounce player off wall
             Wall wall = (Wall) player.getCollidedObject(walls);
             wall.bounce(player);

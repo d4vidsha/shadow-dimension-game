@@ -32,4 +32,14 @@ public class Sinkhole extends GameObject {
     public int getDamagePoints() {
         return damagePoints;
     }
+
+    /**
+     * Inflict damage to the player.
+     * @param player Player to inflict damage to.
+     */
+    public void inflictDamage(Player player) {
+        player.takeDamage(damagePoints);
+        System.out.println("Sinkhole inflicted " + damagePoints + " damage points on " + player.getName()
+            + ". " + player.getName() + "'s current health: " + player.getHealth() + "/" + player.getMaxHealth());
+    }
 }

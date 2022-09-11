@@ -147,10 +147,10 @@ public class Player extends GameObject {
     }
 
     /**
-     * Inflict damage to the player.
+     * Take damage to the player.
      * @param damage Amount of damage to inflict.
      */
-    public void inflictDamage(int damage) {
+    public void takeDamage(int damage) {
         this.setHealth(this.getHealth() - damage);
     }
 
