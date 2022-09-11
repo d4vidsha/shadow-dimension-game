@@ -29,10 +29,10 @@ public class ShadowDimension extends AbstractGame {
     private static final String GAME_TITLE = "Shadow Dimension";
 
     // stages of the game
-    private static final int START_SCREEN = 0;
-    private static final int GAME_SCREEN = 1;
-    private static final int GAME_OVER_SCREEN = 2;
-    private static final int GAME_WIN_SCREEN = 3;
+    private static final int START_STAGE = 0;
+    private static final int LEVEL0_STAGE = 1;
+    private static final int GAME_OVER_STAGE = 2;
+    private static final int GAME_WON_STAGE = 3;
 
     // colours
     private static final Colour GREEN = new Colour(0, 0.8, 0.2);
@@ -46,7 +46,7 @@ public class ShadowDimension extends AbstractGame {
     private static final String[] OBJECT_NAMES = {PLAYER, WALL, SINKHOLE};
 
     // initialising the game
-    private int stage = START_SCREEN;
+    private int stage = START_STAGE;
     private final Boundary boundary = readBoundary(CSV_PATH);
     private final GameObject[] objects = readObjects(CSV_PATH);
     private GameObject[] stationaryObjects = getStationaryGameObjects();
@@ -280,7 +280,7 @@ public class ShadowDimension extends AbstractGame {
     /**
      * Start screen for the game.
      */
-    private void startStage() {
+    private void start() {
         Point gameTitlePos = new Point(GAME_TITLE_X, GAME_TITLE_Y);
         Point gameInstructionPos = new Point(GAME_TITLE_X + 90, GAME_TITLE_Y + 190);
         String gameInstructionMsg = "PRESS SPACE TO START\nUSE ARROW KEYS TO FIND GATE";
@@ -296,7 +296,7 @@ public class ShadowDimension extends AbstractGame {
      * @param input Input from the user which controls the player.
      * @param player Player object that is moved.
      */
-    private void gameStage(Input input, Player player) {
+    private void level0(Input input, Player player) {
         drawBackground();
         drawHealthBar(player);
         if (boundary.contains(player.getPosition())) {
@@ -308,14 +308,14 @@ public class ShadowDimension extends AbstractGame {
         player.update(input, boundary);
 
         if (player.isAtGate()) {
-            stage = GAME_WIN_SCREEN;
+            stage = GAME_WON_STAGE;
         }
     }
 
     /**
      * Game over screen for the game, where the player has lost.
      */
-    private void gameOverStage() {
+    private void gameOver() {
         Message lose = new Message(FONT75, "GAME OVER!");
         lose.draw();
     }
@@ -323,7 +323,7 @@ public class ShadowDimension extends AbstractGame {
     /**
      * Game win screen for the game, where the player has won.
      */
-    private void gameWinStage() {
+    private void gameWon() {
         Message win = new Message(FONT75, "CONGRATULATIONS!");
         win.draw();
     }
@@ -345,13 +345,13 @@ public class ShadowDimension extends AbstractGame {
         }
 
         // start game when space key is pressed
-        if (input.wasPressed(Keys.SPACE) && stage == START_SCREEN) {
-            stage = GAME_SCREEN;
+        if (input.wasPressed(Keys.SPACE) && stage == START_STAGE) {
+            stage = LEVEL0_STAGE;
         }
         
         // check if player is dead
         if (player.getHealthPercentage() <= 0) {
-            stage = GAME_OVER_SCREEN;
+            stage = GAME_OVER_STAGE;
         }
 
         // check if player hit a wall or sinkhole
@@ -372,14 +372,14 @@ public class ShadowDimension extends AbstractGame {
         }
 
         // the stages of the game
-        if (stage == START_SCREEN) {
-            startStage();
-        } else if (stage == GAME_SCREEN) {
-            gameStage(input, player);
-        } else if (stage == GAME_OVER_SCREEN) {
-            gameOverStage();
-        } else if (stage == GAME_WIN_SCREEN) {
-            gameWinStage();
+        if (stage == START_STAGE) {
+            start();
+        } else if (stage == LEVEL0_STAGE) {
+            level0(input, player);
+        } else if (stage == GAME_OVER_STAGE) {
+            gameOver();
+        } else if (stage == GAME_WON_STAGE) {
+            gameWon();
         }
     }
 }
