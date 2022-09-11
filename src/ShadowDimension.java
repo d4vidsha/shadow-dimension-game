@@ -13,7 +13,8 @@ public class ShadowDimension extends AbstractGame {
     // constants
     private static final int WINDOW_WIDTH = 1024;
     private static final int WINDOW_HEIGHT = 768;
-    private static final int MAX_OBJECTS = 60;
+    private static final int LEVEL0_MAX_OBJECTS = 60;
+    private static final int LEVEL1_MAX_OBJECTS = 29;
     private static final String CSV_DELIMITER = ",";
     private static final String LEVEL0_CSV = "res/level0.csv";
     private static final String LEVEL1_CSV = "res/level1.csv";
@@ -77,8 +78,8 @@ public class ShadowDimension extends AbstractGame {
      * @param boundary Boundary of the game which will be added to GameObjects.
      * @return Array of GameObjects.
      */
-    private GameObject[] readObjects(String csv) {
-        GameObject[] objects = new GameObject[MAX_OBJECTS];
+    private GameObject[] readObjects(String csv, int maxObjects) {
+        GameObject[] objects = new GameObject[maxObjects];
         
         try {
             File file = new File(csv);
@@ -361,7 +362,7 @@ public class ShadowDimension extends AbstractGame {
      */
     private void prepareLevel0() {
         boundary = readBoundary(LEVEL0_CSV);
-        objects = readObjects(LEVEL0_CSV);
+        objects = readObjects(LEVEL0_CSV, LEVEL0_MAX_OBJECTS);
         stationaryObjects = getStationaryGameObjects();
         sinkholes = getSinkholes(stationaryObjects);
         walls = getWalls(stationaryObjects);
@@ -372,7 +373,7 @@ public class ShadowDimension extends AbstractGame {
      */
     private void prepareLevel1() {
         boundary = readBoundary(LEVEL1_CSV);
-        objects = readObjects(LEVEL1_CSV);
+        objects = readObjects(LEVEL1_CSV, LEVEL1_MAX_OBJECTS);
         stationaryObjects = getStationaryGameObjects();
         sinkholes = getSinkholes(stationaryObjects);
         walls = getWalls(stationaryObjects);
