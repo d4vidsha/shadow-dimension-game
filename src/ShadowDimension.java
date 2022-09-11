@@ -29,10 +29,12 @@ public class ShadowDimension extends AbstractGame {
     private static final String GAME_TITLE = "Shadow Dimension";
 
     // stages of the game
-    private static final int START_STAGE = 0;
-    private static final int LEVEL0_STAGE = 1;
-    private static final int GAME_OVER_STAGE = 2;
-    private static final int GAME_WON_STAGE = 3;
+    private static final int GAME_OVER_STAGE = -3;
+    private static final int GAME_WON_STAGE = -2;
+    private static final int START_STAGE = -1;
+    private static final int LEVEL0_STAGE = 0;
+    private static final int LEVEL1_STAGE = 1;
+
 
     // colours
     private static final Colour GREEN = new Colour(0, 0.8, 0.2);
@@ -291,28 +293,6 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
-     * Game screen for the game, where the player can move around and either
-     * win or lose.
-     * @param input Input from the user which controls the player.
-     * @param player Player object that is moved.
-     */
-    private void level0(Input input, Player player) {
-        drawBackground();
-        drawHealthBar(player);
-        if (boundary.contains(player.getPosition())) {
-            player.draw();
-        } else {
-            throw new RuntimeException("Position is outside of boundary");
-        }
-        drawObjects(stationaryObjects);
-        player.update(input, boundary);
-
-        if (player.isAtGate()) {
-            stage = GAME_WON_STAGE;
-        }
-    }
-
-    /**
      * Game over screen for the game, where the player has lost.
      */
     private void gameOver() {
@@ -327,6 +307,32 @@ public class ShadowDimension extends AbstractGame {
         Message win = new Message(FONT75, "CONGRATULATIONS!");
         win.draw();
     }
+
+    /**
+     * The first level of the game.
+     * @param input Input from the user which controls the player.
+     * @param player Player object that is moved.
+     */
+    private void level0(Input input, Player player) {
+        drawBackground();
+        drawHealthBar(player);
+        player.draw(boundary);
+        drawObjects(stationaryObjects);
+        player.update(input, boundary);
+
+        // move to next stage
+        if (player.isAtGate()) {
+            stage = LEVEL1_STAGE;
+        }
+    }
+
+    /**
+     * The second level of the game.
+     */
+    private void level1(Input input, Player player) {
+
+    }
+
 
     /**
      * Performs a state update.
@@ -376,6 +382,8 @@ public class ShadowDimension extends AbstractGame {
             start();
         } else if (stage == LEVEL0_STAGE) {
             level0(input, player);
+        } else if (stage == LEVEL1_STAGE) {
+            level1(input, player);
         } else if (stage == GAME_OVER_STAGE) {
             gameOver();
         } else if (stage == GAME_WON_STAGE) {

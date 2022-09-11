@@ -26,6 +26,20 @@ public abstract class GameObject {
     }
 
     /**
+     * Draw the object to the screen given a boundary. If the object is outside the boundary, 
+     * an exception will be thrown.
+     * @param boundary Boundary to draw the object in.
+     */
+    public void draw(Boundary boundary) {
+        Point position = getPosition();
+        if (boundary.contains(position)) {
+            draw();
+        } else {
+            throw new RuntimeException("Position is outside of boundary");
+        }
+    }
+
+    /**
      * Get the position of the game object.
      * @return Position of the game object as a point.
      */
