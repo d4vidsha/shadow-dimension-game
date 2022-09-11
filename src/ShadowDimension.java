@@ -46,7 +46,8 @@ public class ShadowDimension extends AbstractGame {
     private static final String PLAYER = "Fae";
     private static final String WALL = "Wall";
     private static final String SINKHOLE = "Sinkhole";
-    private static final String[] OBJECT_NAMES = {PLAYER, WALL, SINKHOLE};
+    private static final String TREE = "Tree";
+    private static final String[] OBJECT_NAMES = {PLAYER, WALL, SINKHOLE, TREE};
 
     // initialising the game
     private int stage = LEVEL0_STAGE;
@@ -109,10 +110,10 @@ public class ShadowDimension extends AbstractGame {
                             Sinkhole sinkhole = new Sinkhole("res/sinkhole.png", pos);
                             objects[i] = sinkhole;
                             break;
-                        // case TREE:
-                        //     Tree tree = new Tree("res/tree.png", pos);
-                        //     objects[i] = tree;
-                        //     break;
+                        case TREE:
+                            Tree tree = new Tree("res/tree.png", pos);
+                            objects[i] = tree;
+                            break;
                         // case DEMON:
                         //     Demon demon = new Demon("res/demon/demonLeft.png", "res/demon/demonRight.png", pos);
                         //     objects[i] = demon;
