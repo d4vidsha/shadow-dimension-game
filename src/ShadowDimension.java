@@ -109,6 +109,18 @@ public class ShadowDimension extends AbstractGame {
                             Sinkhole sinkhole = new Sinkhole("res/sinkhole.png", pos);
                             objects[i] = sinkhole;
                             break;
+                        // case TREE:
+                        //     Tree tree = new Tree("res/tree.png", pos);
+                        //     objects[i] = tree;
+                        //     break;
+                        // case DEMON:
+                        //     Demon demon = new Demon("res/demon/demonLeft.png", "res/demon/demonRight.png", pos);
+                        //     objects[i] = demon;
+                        //     break;
+                        // case NAVEC:
+                        //     Navec navec = new Navec("res/navec/navecLeft.png", "res/navec/navecRight.png", pos);
+                        //     objects[i] = navec;
+                        //     break;
                     }
                     i++;
                 }
@@ -293,6 +305,22 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
+     * Game over screen for the game, where the player has lost.
+     */
+    private void gameOver() {
+        Message lose = new Message(FONT75, "GAME OVER!");
+        lose.draw();
+    }
+
+    /**
+     * Game win screen for the game, where the player has won.
+     */
+    private void gameWon() {
+        Message win = new Message(FONT75, "CONGRATULATIONS!");
+        win.draw();
+    }
+
+    /**
      * Start screen for level 0. This also prepares the level.
      */
     private void startlevel0() {
@@ -328,27 +356,22 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
-     * Game over screen for the game, where the player has lost.
-     */
-    private void gameOver() {
-        Message lose = new Message(FONT75, "GAME OVER!");
-        lose.draw();
-    }
-
-    /**
-     * Game win screen for the game, where the player has won.
-     */
-    private void gameWon() {
-        Message win = new Message(FONT75, "CONGRATULATIONS!");
-        win.draw();
-    }
-
-    /**
      * Prepare the game for level 0.
      */
     private void prepareLevel0() {
         boundary = readBoundary(LEVEL0_CSV);
         objects = readObjects(LEVEL0_CSV);
+        stationaryObjects = getStationaryGameObjects();
+        sinkholes = getSinkholes(stationaryObjects);
+        walls = getWalls(stationaryObjects);
+    }
+
+    /**
+     * Prepare the game for level 1.
+     */
+    private void prepareLevel1() {
+        boundary = readBoundary(LEVEL1_CSV);
+        objects = readObjects(LEVEL1_CSV);
         stationaryObjects = getStationaryGameObjects();
         sinkholes = getSinkholes(stationaryObjects);
         walls = getWalls(stationaryObjects);
@@ -413,17 +436,6 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
-     * Prepare the game for level 1.
-     */
-    private void prepareLevel1() {
-        boundary = readBoundary(LEVEL1_CSV);
-        objects = readObjects(LEVEL1_CSV);
-        stationaryObjects = getStationaryGameObjects();
-        sinkholes = getSinkholes(stationaryObjects);
-        walls = getWalls(stationaryObjects);
-    }
-
-    /**
      * The second level of the game.
      * @param input Input from the user which controls the player.
      * @param player Player object that is moved.
@@ -448,7 +460,7 @@ public class ShadowDimension extends AbstractGame {
         drawBackground(LEVEL1_BACKGROUND);
         drawHealthBar(player);
         player.draw(boundary);
-        // drawObjects(stationaryObjects);
+        drawObjects(stationaryObjects);
 
         // check if player is dead
         if (player.getHealthPercentage() <= 0) {
