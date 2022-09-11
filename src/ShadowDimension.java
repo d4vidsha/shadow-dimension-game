@@ -49,11 +49,12 @@ public class ShadowDimension extends AbstractGame {
 
     // initialising the game
     private int stage = START_STAGE;
-    private final Boundary boundary = readBoundary(CSV_PATH);
-    private final GameObject[] objects = readObjects(CSV_PATH);
-    private GameObject[] stationaryObjects = getStationaryGameObjects();
-    private GameObject[] sinkholes = getSinkholes(stationaryObjects);
-    private final GameObject[] walls = getWalls(stationaryObjects);
+    private boolean prepareLevel = true;
+    private Boundary boundary;
+    private GameObject[] objects;
+    private GameObject[] stationaryObjects;
+    private GameObject[] sinkholes;
+    private GameObject[] walls;
 
     public ShadowDimension() {
         super(WINDOW_WIDTH, WINDOW_HEIGHT, GAME_TITLE);
@@ -309,20 +310,42 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
+     * Prepare the game for level 0.
+     */
+    private void prepareLevel0() {
+        boundary = readBoundary(CSV_PATH);
+        objects = readObjects(CSV_PATH);
+        stationaryObjects = getStationaryGameObjects();
+        sinkholes = getSinkholes(stationaryObjects);
+        walls = getWalls(stationaryObjects);
+    }
+
+    /**
      * The first level of the game.
      * @param input Input from the user which controls the player.
      * @param player Player object that is moved.
      */
     private void level0(Input input, Player player) {
+
+        // prepare the level if necessary
+        if (prepareLevel) {
+            prepareLevel0();
+            prepareLevel = false;
+        }
+
+        // draw everything
         drawBackground();
         drawHealthBar(player);
         player.draw(boundary);
         drawObjects(stationaryObjects);
+
+        // move the player
         player.update(input, boundary);
 
-        // move to next stage
+        // move to next stage if necessary
         if (player.isAtGate()) {
             stage = LEVEL1_STAGE;
+            prepareLevel = true;
         }
     }
 
