@@ -328,6 +328,8 @@ public class ShadowDimension extends AbstractGame {
 
     /**
      * The second level of the game.
+     * @param input Input from the user which controls the player.
+     * @param player Player object that is moved.
      */
     private void level1(Input input, Player player) {
 
