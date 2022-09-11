@@ -325,7 +325,7 @@ public class ShadowDimension extends AbstractGame {
      * @param input Input from the user which controls the player.
      * @param player Player object that is moved.
      */
-    private void level0(Input input, Player player) {
+    private void level0(Input input) {
 
         // prepare the level if necessary
         if (prepareLevel) {
@@ -333,53 +333,18 @@ public class ShadowDimension extends AbstractGame {
             prepareLevel = false;
         }
 
+        // assume player is the first object in the array
+        Player player = (Player) objects[0];
+        
+        // move the player
+        player.update(input, boundary);
+
         // draw everything
         drawBackground();
         drawHealthBar(player);
         player.draw(boundary);
         drawObjects(stationaryObjects);
 
-        // move the player
-        player.update(input, boundary);
-
-        // move to next stage if necessary
-        if (player.isAtGate()) {
-            stage = LEVEL1_STAGE;
-            prepareLevel = true;
-        }
-    }
-
-    /**
-     * The second level of the game.
-     * @param input Input from the user which controls the player.
-     * @param player Player object that is moved.
-     */
-    private void level1(Input input, Player player) {
-
-    }
-
-
-    /**
-     * Performs a state update.
-     * Allows the game to exit when the escape key is pressed.
-     * This is where the game stages are updated.
-     * @param input Input from the user.
-     */
-    @Override
-    protected void update(Input input) {
-        // assume player is the first object in the array
-        Player player = (Player) objects[0];
-
-        // exit game when escape key is pressed
-        if (input.wasPressed(Keys.ESCAPE)) {
-            Window.close();
-        }
-
-        // start game when space key is pressed
-        if (input.wasPressed(Keys.SPACE) && stage == START_STAGE) {
-            stage = LEVEL0_STAGE;
-        }
-        
         // check if player is dead
         if (player.getHealthPercentage() <= 0) {
             stage = GAME_OVER_STAGE;
@@ -402,13 +367,49 @@ public class ShadowDimension extends AbstractGame {
             wall.bounce(player);
         }
 
+        // move to next stage if necessary
+        if (player.isAtGate()) {
+            stage = LEVEL1_STAGE;
+            prepareLevel = true;
+        }
+    }
+
+    /**
+     * The second level of the game.
+     * @param input Input from the user which controls the player.
+     * @param player Player object that is moved.
+     */
+    private void level1(Input input) {
+
+    }
+
+
+    /**
+     * Performs a state update.
+     * Allows the game to exit when the escape key is pressed.
+     * This is where the game stages are updated.
+     * @param input Input from the user.
+     */
+    @Override
+    protected void update(Input input) {
+
+        // exit game when escape key is pressed
+        if (input.wasPressed(Keys.ESCAPE)) {
+            Window.close();
+        }
+
+        // start game when space key is pressed
+        if (input.wasPressed(Keys.SPACE) && stage == START_STAGE) {
+            stage = LEVEL0_STAGE;
+        }
+
         // the stages of the game
         if (stage == START_STAGE) {
             start();
         } else if (stage == LEVEL0_STAGE) {
-            level0(input, player);
+            level0(input);
         } else if (stage == LEVEL1_STAGE) {
-            level1(input, player);
+            level1(input);
         } else if (stage == GAME_OVER_STAGE) {
             gameOver();
         } else if (stage == GAME_WON_STAGE) {
