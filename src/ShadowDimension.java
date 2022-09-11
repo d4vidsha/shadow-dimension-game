@@ -17,6 +17,8 @@ public class ShadowDimension extends AbstractGame {
     private static final String CSV_DELIMITER = ",";
     private static final String LEVEL0_CSV = "res/level0.csv";
     private static final String LEVEL1_CSV = "res/level1.csv";
+    private static final String LEVEL0_BACKGROUND = "res/background0.png";
+    private static final String LEVEL1_BACKGROUND = "res/background1.png";
 
     // fonts
     private static final String FONT_PATH = "res/frostbite.ttf";
@@ -35,7 +37,6 @@ public class ShadowDimension extends AbstractGame {
     private static final int START_STAGE = -1;
     private static final int LEVEL0_STAGE = 0;
     private static final int LEVEL1_STAGE = 1;
-
 
     // colours
     private static final Colour GREEN = new Colour(0, 0.8, 0.2);
@@ -234,8 +235,8 @@ public class ShadowDimension extends AbstractGame {
     /**
      * Draw the background for the game.
      */
-    private void drawBackground() {
-        Image bgImage = new Image("res/background0.png");
+    private void drawBackground(String background) {
+        Image bgImage = new Image(background);
         bgImage.draw(Window.getWidth()/2.0, Window.getHeight()/2.0);
     }
 
@@ -350,7 +351,7 @@ public class ShadowDimension extends AbstractGame {
         player.update(input, boundary);
 
         // draw everything
-        drawBackground();
+        drawBackground(LEVEL0_BACKGROUND);
         drawHealthBar(player);
         player.draw(boundary);
         drawObjects(stationaryObjects);
@@ -407,6 +408,22 @@ public class ShadowDimension extends AbstractGame {
         if (prepareLevel) {
             prepareLevel1();
             prepareLevel = false;
+        }
+
+        Player player = getPlayer(objects);
+
+        // move the player
+        player.update(input, boundary);
+
+        // draw everything
+        drawBackground(LEVEL1_BACKGROUND);
+        drawHealthBar(player);
+        player.draw(boundary);
+        // drawObjects(stationaryObjects);
+
+        // check if player is dead
+        if (player.getHealthPercentage() <= 0) {
+            stage = GAME_OVER_STAGE;
         }
 
         
