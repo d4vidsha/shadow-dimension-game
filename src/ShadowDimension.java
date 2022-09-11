@@ -32,9 +32,8 @@ public class ShadowDimension extends AbstractGame {
     private static final String GAME_TITLE = "Shadow Dimension";
 
     // stages of the game
-    private static final int GAME_OVER_STAGE = -3;
-    private static final int GAME_WON_STAGE = -2;
-    private static final int START_STAGE = -1;
+    private static final int GAME_OVER_STAGE = -2;
+    private static final int GAME_WON_STAGE = -1;
     private static final int LEVEL0_STAGE = 0;
     private static final int LEVEL1_STAGE = 1;
 
@@ -50,8 +49,9 @@ public class ShadowDimension extends AbstractGame {
     private static final String[] OBJECT_NAMES = {PLAYER, WALL, SINKHOLE};
 
     // initialising the game
-    private int stage = START_STAGE;
+    private int stage = LEVEL0_STAGE;
     private boolean prepareLevel = true;
+    private boolean startScreen = true;
     private Boundary boundary;
     private GameObject[] objects;
     private GameObject[] stationaryObjects;
@@ -293,9 +293,9 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
-     * Start screen for the game.
+     * Start screen for level 0. This also prepares the level.
      */
-    private void start() {
+    private void startlevel0() {
         Point gameTitlePos = new Point(GAME_TITLE_X, GAME_TITLE_Y);
         Point gameInstructionPos = new Point(GAME_TITLE_X + 90, GAME_TITLE_Y + 190);
         String gameInstructionMsg = "PRESS SPACE TO START\nUSE ARROW KEYS TO FIND GATE";
@@ -303,6 +303,28 @@ public class ShadowDimension extends AbstractGame {
         Message gameInstruction = new Message(FONT40, gameInstructionMsg, gameInstructionPos);
         gameTitle.draw();
         gameInstruction.draw();
+
+        // prepare the level if necessary
+        if (prepareLevel) {
+            prepareLevel0();
+            prepareLevel = false;
+        }
+    }
+
+    /**
+     * Start screen for level 1. This also prepares the level.
+     */
+    private void startlevel1() {
+        Point gameInstructionPos = new Point(350, 350);
+        String gameInstructionMsg = "PRESS SPACE TO START\nPRESS A TO ATTACK\nDEFEAT NAVEC TO WIN";
+        Message gameInstruction = new Message(FONT40, gameInstructionMsg, gameInstructionPos);
+        gameInstruction.draw();
+
+        // prepare the level if necessary
+        if (prepareLevel) {
+            prepareLevel1();
+            prepareLevel = false;
+        }
     }
 
     /**
@@ -339,10 +361,13 @@ public class ShadowDimension extends AbstractGame {
      */
     private void level0(Input input) {
 
-        // prepare the level if necessary
-        if (prepareLevel) {
-            prepareLevel0();
-            prepareLevel = false;
+        // start screen
+        if (startScreen) {
+            startlevel0();
+            if (input.wasPressed(Keys.SPACE)) {
+                startScreen = false;
+            }
+            return;
         }
 
         Player player = getPlayer(objects);
@@ -383,6 +408,7 @@ public class ShadowDimension extends AbstractGame {
         if (getPlayer(objects).isAtGate()) {
             stage = LEVEL1_STAGE;
             prepareLevel = true;
+            startScreen = true;
         }
     }
 
@@ -404,10 +430,13 @@ public class ShadowDimension extends AbstractGame {
      */
     private void level1(Input input) {
 
-        // prepare the level if necessary
-        if (prepareLevel) {
-            prepareLevel1();
-            prepareLevel = false;
+        // start screen
+        if (startScreen) {
+            startlevel1();
+            if (input.wasPressed(Keys.SPACE)) {
+                startScreen = false;
+            }
+            return;
         }
 
         Player player = getPlayer(objects);
@@ -424,11 +453,12 @@ public class ShadowDimension extends AbstractGame {
         // check if player is dead
         if (player.getHealthPercentage() <= 0) {
             stage = GAME_OVER_STAGE;
+            prepareLevel = true;
+            startScreen = true;
         }
 
         
     }
-
 
     /**
      * Performs a state update.
@@ -439,20 +469,20 @@ public class ShadowDimension extends AbstractGame {
     @Override
     protected void update(Input input) {
 
+        // fastforward to level 1 when W key is pressed
+        if (input.wasPressed(Keys.W)) {
+            stage = LEVEL1_STAGE;
+            prepareLevel = true;
+            startScreen = true;
+        }
+
         // exit game when escape key is pressed
         if (input.wasPressed(Keys.ESCAPE)) {
             Window.close();
         }
 
-        // start game when space key is pressed
-        if (input.wasPressed(Keys.SPACE) && stage == START_STAGE) {
-            stage = LEVEL0_STAGE;
-        }
-
         // the stages of the game
-        if (stage == START_STAGE) {
-            start();
-        } else if (stage == LEVEL0_STAGE) {
+        if (stage == LEVEL0_STAGE) {
             level0(input);
         } else if (stage == LEVEL1_STAGE) {
             level1(input);
