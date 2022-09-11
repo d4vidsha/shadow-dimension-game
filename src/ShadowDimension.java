@@ -11,6 +11,7 @@ import java.util.*;
 public class ShadowDimension extends AbstractGame {
 
     // constants
+    private static final int REFRESH_RATE = 60;
     private static final int WINDOW_WIDTH = 1024;
     private static final int WINDOW_HEIGHT = 768;
     private static final int LEVEL0_MAX_OBJECTS = 60;
@@ -20,6 +21,7 @@ public class ShadowDimension extends AbstractGame {
     private static final String LEVEL1_CSV = "res/level1.csv";
     private static final String LEVEL0_BACKGROUND = "res/background0.png";
     private static final String LEVEL1_BACKGROUND = "res/background1.png";
+    private static final int LEVEL0_END_SCREEN_WAIT_SECONDS = 3;
 
     // fonts
     private static final String FONT_PATH = "res/frostbite.ttf";
@@ -54,11 +56,13 @@ public class ShadowDimension extends AbstractGame {
     private int stage = LEVEL0_STAGE;
     private boolean prepareLevel = true;
     private boolean startScreen = true;
+    private boolean endScreen = false;
     private Boundary boundary;
     private GameObject[] objects;
     private GameObject[] stationaryObjects;
     private GameObject[] sinkholes;
     private GameObject[] walls;
+    private int frames = 0;
 
     public ShadowDimension() {
         super(WINDOW_WIDTH, WINDOW_HEIGHT, GAME_TITLE);
@@ -307,19 +311,12 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
-     * Game over screen for the game, where the player has lost.
+     * Game message screen for the game.
+     * @param message Message to display.
      */
-    private void gameOver() {
-        Message lose = new Message(FONT75, "GAME OVER!");
-        lose.draw();
-    }
-
-    /**
-     * Game win screen for the game, where the player has won.
-     */
-    private void gameWon() {
-        Message win = new Message(FONT75, "CONGRATULATIONS!");
-        win.draw();
+    private void gameEndMessage(String message) {
+        Message msg = new Message(FONT75, message);
+        msg.draw();
     }
 
     /**
@@ -395,6 +392,23 @@ public class ShadowDimension extends AbstractGame {
             return;
         }
 
+        // end screen
+        if (endScreen) {
+            gameEndMessage("LEVEL COMPLETE!");
+            
+            // wait 3 seconds
+            if (frames >= REFRESH_RATE * LEVEL0_END_SCREEN_WAIT_SECONDS) {
+                // begin next stage
+                stage = LEVEL1_STAGE;
+                prepareLevel = true;
+                startScreen = true;
+                endScreen = false;
+                frames = 0;
+            }
+            frames++;
+            return;
+        }
+
         Player player = getPlayer(objects);
 
         // move the player
@@ -429,11 +443,9 @@ public class ShadowDimension extends AbstractGame {
             wall.bounce(player);
         }
 
-        // move to next stage if necessary
+        // if necessary, display winning message and move to next stage after 3 seconds
         if (getPlayer(objects).isAtGate()) {
-            stage = LEVEL1_STAGE;
-            prepareLevel = true;
-            startScreen = true;
+            endScreen = true;
         }
     }
 
@@ -467,8 +479,6 @@ public class ShadowDimension extends AbstractGame {
         // check if player is dead
         if (player.getHealthPercentage() <= 0) {
             stage = GAME_OVER_STAGE;
-            prepareLevel = true;
-            startScreen = true;
         }
 
         
@@ -501,9 +511,9 @@ public class ShadowDimension extends AbstractGame {
         } else if (stage == LEVEL1_STAGE) {
             level1(input);
         } else if (stage == GAME_OVER_STAGE) {
-            gameOver();
+            gameEndMessage("GAME OVER!");
         } else if (stage == GAME_WON_STAGE) {
-            gameWon();
+            gameEndMessage("CONGRATULATIONS!");
         }
     }
 }
