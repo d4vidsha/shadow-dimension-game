@@ -12,9 +12,11 @@ public class Player extends GameObject {
     // instance variables
     private final Image imageLeft;
     private final Image imageRight;
+    private String name;
     private int health;
     private Point prevPos;
-    private String name;
+    private final int damagePoints;
+    private int state;
 
     /**
      * Constructor for Player class.
@@ -29,6 +31,8 @@ public class Player extends GameObject {
         this.health = MAX_HEALTH;
         this.prevPos = position;
         this.name = "Fae";
+        this.damagePoints = 20;
+        this.state = IDLE;
     }
 
     /**
