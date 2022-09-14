@@ -14,11 +14,21 @@ public abstract class GameObject {
 
     /**
      * Constructor for GameObject class.
-     * @param image Image of the game object.
+     * @param image Image of the game object as String.
      * @param position Position of the game object.
      */
     public GameObject(String image, Point position) {
         this.image = new Image(image);
+        this.rectangle = deriveRectangle(position, this.image);
+    }
+
+    /**
+     * Constructor for GameObject class.
+     * @param image Image of the game object.
+     * @param position Position of the game object.
+     */
+    public GameObject(Image image, Point position) {
+        this.image = image;
         this.rectangle = deriveRectangle(position, this.image);
     }
 

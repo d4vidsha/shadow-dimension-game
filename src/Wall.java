@@ -1,6 +1,6 @@
 import bagel.util.*;
 
-public class Wall extends GameObject {
+public class Wall extends StationaryObject implements Barrier {
     
     /**
      * Constructor for Wall class.
@@ -9,14 +9,5 @@ public class Wall extends GameObject {
      */
     public Wall(String image, Point position) {
         super(image, position);
-    }
-
-    /**
-     * Bounce the player back to the previous position.
-     * @param player Player to bounce back.
-     */
-    public void bounce(Player player) {
-        Point prevPos = player.getPrevPos();
-        player.setPosition(prevPos);
     }
 }

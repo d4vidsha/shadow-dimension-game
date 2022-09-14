@@ -1,7 +1,7 @@
 import bagel.*;
 import bagel.util.*;
 
-public class Player extends GameObject {
+public class Player extends MovableEntity {
 
     // constants
     private static final int MAX_HEALTH = 100;
@@ -25,7 +25,7 @@ public class Player extends GameObject {
      * @param position Position of the player.
      */
     public Player(String imageLeft, String imageRight, Point position) {
-        super(imageRight, position);
+        super(imageLeft, imageRight, position, SPEED);
         this.imageLeft = new Image(imageLeft);
         this.imageRight = new Image(imageRight);
         this.health = MAX_HEALTH;
