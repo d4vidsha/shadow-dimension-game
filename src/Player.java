@@ -10,9 +10,6 @@ public class Player extends Entity implements Attacker, Targetable {
         new Image("res/fae/faeAttackRight.png")
     };
 
-    private static final int IMG_LEFT = 0;
-    private static final int IMG_RIGHT = 1;
-
     // constants
     private static final int MAX_PLAYER_HEALTH = 100;
     private static final int DAMAGE_POINTS = 20;
@@ -21,10 +18,7 @@ public class Player extends Entity implements Attacker, Targetable {
     private static final double GATE_Y = 670;
 
     // instance variables
-    private final Image imageLeft;
-    private final Image imageRight;
     private String name;
-    private Point prevPos;
 
     /**
      * Constructor for Player class.
@@ -33,10 +27,7 @@ public class Player extends Entity implements Attacker, Targetable {
      * @param position Position of the player.
      */
     public Player(Point position) {
-        super(IMAGES[IMG_LEFT], IMAGES[IMG_RIGHT], position, SPEED, MAX_PLAYER_HEALTH, DAMAGE_POINTS);
-        this.imageLeft = IMAGES[IMG_LEFT];
-        this.imageRight = IMAGES[IMG_RIGHT];
-        this.prevPos = position;
+        super(IMAGES, position, SPEED, MAX_PLAYER_HEALTH, DAMAGE_POINTS);
         this.name = "Fae";
     }
 
@@ -57,84 +48,12 @@ public class Player extends Entity implements Attacker, Targetable {
     }
 
     /**
-     * Move the player to the specified position.
-     * @param position Position to move the player to.
-     */
-    public void move(Point position) {
-        prevPos = getPosition();
-
-        if (position.x > prevPos.x) {
-            setImage(imageRight);
-        } else if (position.x < prevPos.x) {
-            setImage(imageLeft);
-        }
-
-        setPosition(position);
-    }
-
-    /**
-     * Move the player to a given direction.
-     */
-    @Override
-    public void move(Vector2 direction) {
-        move(getPosition().asVector().add(direction.mul(SPEED)).asPoint());
-    }
-
-    /** 
-     * Move the player left.
-     */
-    public void moveLeft(Boundary boundary) {
-        move(Vector2.left);
-        if (!boundary.contains(getPosition())) {
-            this.setPosition(new Point(boundary.getTopLeft().x, getPosition().y));
-        }
-    }
-
-    /**
-     * Move the player right.
-     */
-    public void moveRight(Boundary boundary) {
-        move(Vector2.right);
-        if (!boundary.contains(getPosition())) {
-            this.setPosition(new Point(boundary.getBottomRight().x, getPosition().y));
-        }
-    }
-
-    /**
-     * Move the player up.
-     */
-    public void moveUp(Boundary boundary) {
-        move(Vector2.up);
-        if (!boundary.contains(getPosition())) {
-            this.setPosition(new Point(getPosition().x, boundary.getTopLeft().y));
-        }
-    }
-
-    /**
-     * Move the player down.
-     */
-    public void moveDown(Boundary boundary) {
-        move(Vector2.down);
-        if (!boundary.contains(getPosition())) {
-            this.setPosition(new Point(getPosition().x, boundary.getBottomRight().y));
-        }
-    }
-
-    /**
      * Check if the player has won by being at the gate.
      * @return True if the player has won, false otherwise.
      */
     public boolean isAtGate() {
         Point pos = getPosition();
         return pos.x >= GATE_X && pos.y >= GATE_Y;
-    }
-
-    /**
-     * Get the player's previous position.
-     * @return Player's previous position.
-     */
-    public Point getPrevPos() {
-        return prevPos;
     }
 
     /** 
@@ -163,7 +82,7 @@ public class Player extends Entity implements Attacker, Targetable {
 
     /**
      * Inflict damage to the target.
-     * @param target
+     * @param target Target to inflict damage to.
      */
     @Override
     public void inflictDamage(Targetable target) {
@@ -171,7 +90,7 @@ public class Player extends Entity implements Attacker, Targetable {
     }
 
     /**
-     * Attack the target by showing an attack animation.
+     * Attack the target by showing the attack images.
      */
     @Override
     public void attack() {

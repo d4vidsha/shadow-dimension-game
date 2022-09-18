@@ -1,8 +1,9 @@
+import bagel.*;
 import bagel.util.*;
 
 public class Sinkhole extends GameObject {
 
-    private static final String IMAGE = "res/sinkhole.png";
+    private static final Image IMAGE = new Image("res/sinkhole.png");
     private final int damagePoints;
     
     /**

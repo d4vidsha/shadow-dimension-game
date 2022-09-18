@@ -7,13 +7,8 @@ public class Demon extends Entity implements Attacker, Targetable {
         new Image("res/demon/demonLeft.png"),
         new Image("res/demon/demonRight.png"),
         new Image("res/demon/demonInvincibleLeft.png"),
-        new Image("res/demon/demonInvincibleRight.png"),
+        new Image("res/demon/demonInvincibleRight.png")
     };
-
-    private static final int IMG_LEFT = 0;
-    private static final int IMG_RIGHT = 1;
-    private static final int IMG_INVINCIBLE_LEFT = 2;
-    private static final int IMG_INVINCIBLE_RIGHT = 3;
     
     /**
      * Constructor for Demon class.
@@ -23,7 +18,7 @@ public class Demon extends Entity implements Attacker, Targetable {
      * @param damagePoints Damage points of the demon.
      */
     public Demon(Point position, int speed, int health, int damagePoints) {
-        super(IMAGES[IMG_LEFT], IMAGES[IMG_RIGHT], position, speed, health, damagePoints);
+        super(IMAGES, position, speed, health, damagePoints);
     }
 
     /**

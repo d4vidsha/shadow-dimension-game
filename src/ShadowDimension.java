@@ -64,6 +64,7 @@ public class ShadowDimension extends AbstractGame {
     private GameObject[] stationaryObjects;
     private GameObject[] sinkholes;
     private GameObject[] walls;
+    private GameObject[] trees;
     private int frames = 0;
 
     public ShadowDimension() {
@@ -301,6 +302,21 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
+     * Get the trees from the array of all objects.
+     * @param objects Array of game objects.
+     * @return Array of trees.
+     */
+    public GameObject[] getTrees(GameObject[] objects) {
+        ArrayList<GameObject> trees = new ArrayList<>();
+        for (GameObject gameObject : objects) {
+            if (gameObject instanceof Tree) {
+                trees.add(gameObject);
+            }
+        }
+        return trees.toArray(new GameObject[trees.size()]);
+    }
+
+    /**
      * Remove the object from the array of game objects.
      * @param objects Array of game objects.
      * @param gameObject Object to remove.
@@ -376,6 +392,7 @@ public class ShadowDimension extends AbstractGame {
         stationaryObjects = getStationaryGameObjects();
         sinkholes = getSinkholes(stationaryObjects);
         walls = getWalls(stationaryObjects);
+        trees = getTrees(stationaryObjects);
     }
 
     /**
@@ -471,6 +488,7 @@ public class ShadowDimension extends AbstractGame {
 
         // move the player
         player.update(input, boundary);
+        player.checkState();
 
         // draw everything
         drawBackground(LEVEL1_BACKGROUND);
@@ -483,7 +501,28 @@ public class ShadowDimension extends AbstractGame {
             stage = GAME_OVER_STAGE;
         }
 
+        // check if player hit a wall, sinkhole or tree
+        if (player.collides(sinkholes)) {
+
+            // get specific sinkhole collided with and inflict damage
+            Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(sinkholes);
+            sinkhole.inflictDamage(player);
+
+            // remove sinkhole from game
+            sinkholes = removeGameObject(sinkholes, sinkhole);
+            stationaryObjects = removeGameObject(stationaryObjects, sinkhole);
+
+        } else if (player.collides(trees)) {
+
+            // block player from moving
+            Tree tree = (Tree) player.getCollidedObject(trees);
+            tree.block(player);
+        }
         
+        // attack if player presses A
+        if (input.wasPressed(Keys.A)) {
+            player.attack();
+        }
     }
 
     /**

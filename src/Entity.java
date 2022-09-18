@@ -7,6 +7,12 @@ public abstract class Entity extends MovingObject {
     protected static final int ATTACK = 1;
     protected static final int INVINCIBLE = 2;
 
+    private static final int IMG_LEFT = 0;
+    private static final int IMG_RIGHT = 1;
+    private static final int IMG_ABILITY_LEFT = 2;
+    private static final int IMG_ABILITY_RIGHT = 3;
+
+    private Image[] images;
     private int health;
     private int maxHealth;
     private int damagePoints;
@@ -15,19 +21,9 @@ public abstract class Entity extends MovingObject {
     /**
      * Constructor for Entity class.
      */
-    public Entity(String imageLeft, String imageRight, Point position, int speed, int health, int damagePoints) {
-        super(imageLeft, imageRight, position, speed);
-        this.health = health;
-        this.maxHealth = health;
-        this.damagePoints = damagePoints;
-        this.state = IDLE;
-    }
-
-    /**
-     * Constructor for Entity class.
-     */
-    public Entity(Image imageLeft, Image imageRight, Point position, int speed, int health, int damagePoints) {
-        super(imageLeft, imageRight, position, speed);
+    public Entity(Image[] images, Point position, int speed, int health, int damagePoints) {
+        super(images[IMG_LEFT], images[IMG_RIGHT], position, speed);
+        this.images = images;
         this.health = health;
         this.maxHealth = health;
         this.damagePoints = damagePoints;
@@ -102,5 +98,18 @@ public abstract class Entity extends MovingObject {
      */
     public boolean isDead() {
         return health <= 0;
+    }
+
+    /**
+     * Check state and update image accordingly.
+     */
+    public void checkState() {
+        if (state == IDLE) {
+            setImages(images[IMG_LEFT], images[IMG_RIGHT]);
+            // setImage(images[IMG_LEFT]);
+        } else if (state == ATTACK || state == INVINCIBLE) {
+            setImages(images[IMG_ABILITY_LEFT], images[IMG_ABILITY_RIGHT]);
+            // setImage(images[IMG_ABILITY_LEFT]);
+        }
     }
 }

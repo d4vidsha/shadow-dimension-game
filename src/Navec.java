@@ -10,11 +10,6 @@ public class Navec extends Entity implements Attacker, Targetable  {
         new Image("res/navec/navecInvincibleRight.png")
     };
 
-    private static final int IMG_LEFT = 0;
-    private static final int IMG_RIGHT = 1;
-    private static final int IMG_INVINCIBLE_LEFT = 2;
-    private static final int IMG_INVINCIBLE_RIGHT = 3;
-
     /**
      * Constructor for Navec class.
      * @param position Position of Navec.
@@ -23,7 +18,7 @@ public class Navec extends Entity implements Attacker, Targetable  {
      * @param damagePoints Damage points of Navec.
      */
     public Navec(Point position, int speed, int health, int damagePoints) {
-        super(IMAGES[IMG_LEFT], IMAGES[IMG_RIGHT], position, speed, health, damagePoints);
+        super(IMAGES, position, speed, health, damagePoints);
     }
 
     /**
