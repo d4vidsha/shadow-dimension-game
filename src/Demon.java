@@ -10,6 +10,8 @@ public class Demon extends Entity implements Attacker, Targetable {
         new Image("res/demon/demonInvincibleRight.png")
     };
     
+    private Vector2 direction;
+
     /**
      * Constructor for Demon class.
      * @param position Position of the demon.
@@ -17,16 +19,23 @@ public class Demon extends Entity implements Attacker, Targetable {
      * @param health Health of the demon.
      * @param damagePoints Damage points of the demon.
      */
-    public Demon(Point position, int speed, int health, int damagePoints) {
+    public Demon(Point position, int speed, int health, int damagePoints, Vector2 direction) {
         super(IMAGES, position, speed, health, damagePoints);
+        this.direction = direction;
     }
 
     /**
-     * Move the demon.
+     * Get the direction of the demon.
      */
-    @Override
-    public void move(Vector2 direction) {
-        // implement this method
+    public Vector2 getDirection() {
+        return direction;
+    }
+
+    /**
+     * Set the direction of the demon.
+     */
+    public void setDirection(Vector2 direction) {
+        this.direction = direction;
     }
 
     /**

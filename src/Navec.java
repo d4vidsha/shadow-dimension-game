@@ -10,6 +10,8 @@ public class Navec extends Entity implements Attacker, Targetable  {
         new Image("res/navec/navecInvincibleRight.png")
     };
 
+    private Vector2 direction;
+
     /**
      * Constructor for Navec class.
      * @param position Position of Navec.
@@ -17,16 +19,16 @@ public class Navec extends Entity implements Attacker, Targetable  {
      * @param health Health of Navec.
      * @param damagePoints Damage points of Navec.
      */
-    public Navec(Point position, int speed, int health, int damagePoints) {
+    public Navec(Point position, int speed, int health, int damagePoints, Vector2 direction) {
         super(IMAGES, position, speed, health, damagePoints);
+        this.direction = direction;
     }
 
     /**
-     * Move the demon.
+     * Get direction of Navec.
      */
-    @Override
-    public void move(Vector2 direction) {
-        // implement this method
+    public Vector2 getDirection() {
+        return direction;
     }
 
     /**

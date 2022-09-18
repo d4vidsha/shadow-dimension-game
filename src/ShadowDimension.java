@@ -123,11 +123,11 @@ public class ShadowDimension extends AbstractGame {
                             objects[i] = tree;
                             break;
                         case DEMON:
-                            Demon demon = new Demon(pos, 2, 100, 10);
+                            Demon demon = new Demon(pos, 2, 100, 10, Vector2.left);
                             objects[i] = demon;
                             break;
                         case NAVEC:
-                            Navec navec = new Navec(pos, 2, 100, 10);
+                            Navec navec = new Navec(pos, 2, 100, 10, Vector2.left);
                             objects[i] = navec;
                             break;
                     }
@@ -317,6 +317,21 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
+     * Get the demons from the array of all objects.
+     * @param objects
+     * @return
+     */
+    public GameObject[] getDemons(GameObject[] objects) {
+        ArrayList<GameObject> demons = new ArrayList<>();
+        for (GameObject object : objects) {
+            if (object instanceof Demon) {
+                demons.add(object);
+            }
+        }
+        return demons.toArray(new GameObject[demons.size()]);
+    }
+
+    /**
      * Remove the object from the array of game objects.
      * @param objects Array of game objects.
      * @param gameObject Object to remove.
@@ -432,6 +447,7 @@ public class ShadowDimension extends AbstractGame {
 
         // move the player
         player.update(input, boundary);
+        player.checkState();
 
         // draw everything
         drawBackground(LEVEL0_BACKGROUND);
@@ -466,6 +482,11 @@ public class ShadowDimension extends AbstractGame {
         if (getPlayer(objects).isAtGate()) {
             endScreen = true;
         }
+
+        // attack if player presses A
+        if (input.wasPressed(Keys.A)) {
+            player.attack();
+        }
     }
 
     /**
@@ -486,9 +507,27 @@ public class ShadowDimension extends AbstractGame {
 
         Player player = getPlayer(objects);
 
-        // move the player
+        // move the player, demons and Navec
         player.update(input, boundary);
         player.checkState();
+
+        // get all demons
+        GameObject[] demons = getDemons(objects);
+        // move demons
+        for (GameObject object : demons) {
+            Demon demon = (Demon) object;
+            demon.move(demon.getDirection());
+
+            // If the demon hits a barrier, reverse the direction
+            if (demon.collides(trees)) {
+
+                // Reverse the direction
+                demon.setDirection(demon.getDirection().mul(-1));
+
+                // Move the demon in the opposite direction
+                demon.move(demon.getDirection());
+            }
+        }
 
         // draw everything
         drawBackground(LEVEL1_BACKGROUND);
