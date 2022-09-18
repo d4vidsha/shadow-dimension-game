@@ -438,9 +438,9 @@ public class ShadowDimension extends AbstractGame {
 
         } else if (player.collides(walls)) {
 
-            // bounce player off wall
+            // block player from moving
             Wall wall = (Wall) player.getCollidedObject(walls);
-            wall.bounce(player);
+            wall.block(player);
         }
 
         // if necessary, display winning message and move to next stage after 3 seconds

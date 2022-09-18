@@ -1,6 +1,6 @@
 import bagel.util.*;
 
-public class Fire extends StationaryObject {
+public class Fire extends GameObject {
     
     /**
      * Constructor for Fire class.

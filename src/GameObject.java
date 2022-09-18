@@ -3,11 +3,6 @@ import bagel.util.*;
 
 public abstract class GameObject {
 
-    // constants
-    public static final int IDLE = 0;
-    public static final int ATTACK = 1;
-    public static final int INVINCIBLE = 2;
-
     // common attributes for all game objects
     private Image image;
     private Rectangle rectangle;

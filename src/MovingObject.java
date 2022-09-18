@@ -1,7 +1,7 @@
 import bagel.*;
 import bagel.util.*;
 
-public abstract class MovableEntity extends GameObject implements Movable {
+public abstract class MovingObject extends GameObject implements Movable {
     
     private final int speed;
     private Image imageLeft;
@@ -9,13 +9,13 @@ public abstract class MovableEntity extends GameObject implements Movable {
     private Point prevPos;
 
     /**
-     * Constructor for MovableEntity class.
+     * Constructor for MovingObject class.
      * @param imageLeft Image of the entity facing left.
      * @param imageRight Image of the entity facing right.
      * @param position Position of the entity.
      * @param speed Speed of the entity.
      */
-    public MovableEntity(Image imageLeft, Image imageRight, Point position, int speed) {
+    public MovingObject(Image imageLeft, Image imageRight, Point position, int speed) {
         super(imageRight, position);
         this.imageLeft = imageLeft;
         this.imageRight = imageRight;
@@ -24,13 +24,13 @@ public abstract class MovableEntity extends GameObject implements Movable {
     }
 
     /**
-     * Constructor for MovableEntity class.
+     * Constructor for MovingObject class.
      * @param imageLeft Image of the entity facing left as String.
      * @param imageRight Image of the entity facing right as String.
      * @param position Position of the entity.
      * @param speed Speed of the entity.
      */
-    public MovableEntity(String imageLeft, String imageRight, Point position, int speed) {
+    public MovingObject(String imageLeft, String imageRight, Point position, int speed) {
         super(imageRight, position);
         this.imageLeft = new Image(imageLeft);
         this.imageRight = new Image(imageRight);

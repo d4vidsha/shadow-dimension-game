@@ -1,6 +1,6 @@
 import bagel.util.*;
 
-public class Tree extends StationaryObject implements Barrier {
+public class Tree extends GameObject implements Barrier {
     
     /**
      * Constructor for Tree class.

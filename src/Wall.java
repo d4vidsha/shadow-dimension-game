@@ -1,6 +1,6 @@
 import bagel.util.*;
 
-public class Wall extends StationaryObject implements Barrier {
+public class Wall extends GameObject implements Barrier {
     
     /**
      * Constructor for Wall class.

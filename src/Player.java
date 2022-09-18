@@ -1,10 +1,11 @@
 import bagel.*;
 import bagel.util.*;
 
-public class Player extends MovableEntity {
+public class Player extends Entity implements Attacker, Targetable {
 
     // constants
-    private static final int MAX_HEALTH = 100;
+    private static final int MAX_PLAYER_HEALTH = 100;
+    private static final int DAMAGE_POINTS = 20;
     private static final int SPEED = 2;
     private static final double GATE_X = 950;
     private static final double GATE_Y = 670;
@@ -13,10 +14,7 @@ public class Player extends MovableEntity {
     private final Image imageLeft;
     private final Image imageRight;
     private String name;
-    private int health;
     private Point prevPos;
-    private final int damagePoints;
-    private int state;
 
     /**
      * Constructor for Player class.
@@ -25,14 +23,11 @@ public class Player extends MovableEntity {
      * @param position Position of the player.
      */
     public Player(String imageLeft, String imageRight, Point position) {
-        super(imageLeft, imageRight, position, SPEED);
+        super(imageLeft, imageRight, position, SPEED, MAX_PLAYER_HEALTH, DAMAGE_POINTS);
         this.imageLeft = new Image(imageLeft);
         this.imageRight = new Image(imageRight);
-        this.health = MAX_HEALTH;
         this.prevPos = position;
         this.name = "Fae";
-        this.damagePoints = 20;
-        this.state = IDLE;
     }
 
     /**
@@ -121,36 +116,6 @@ public class Player extends MovableEntity {
     }
 
     /**
-     * Get the player's health.
-     * @return Player's health.
-     */
-    public int getHealth() {
-        return health;
-    }
-
-    /**
-     * Set the player's health.
-     * @param health Player's health.
-     */
-    public void setHealth(int health) {
-        if (health > MAX_HEALTH) {
-            this.health = MAX_HEALTH;
-        } else if (health < 0) {
-            this.health = 0;
-        } else {
-            this.health = health;
-        }
-    }
-
-    /**
-     * Get health percentage of the player.
-     * @return Health percentage of the player.
-     */
-    public int getHealthPercentage() {
-        return (int) Math.round((double) health / MAX_HEALTH * 100);
-    }
-
-    /**
      * Take damage to the player.
      * @param damage Amount of damage to inflict.
      */
@@ -171,7 +136,7 @@ public class Player extends MovableEntity {
      * @return Maximum health of the player.
      */
     public int getMaxHealth() {
-        return MAX_HEALTH;
+        return MAX_PLAYER_HEALTH;
     }
 
     /**
