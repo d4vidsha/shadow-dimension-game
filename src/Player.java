@@ -3,6 +3,16 @@ import bagel.util.*;
 
 public class Player extends Entity implements Attacker, Targetable {
 
+    private static final Image[] IMAGES = {
+        new Image("res/fae/faeLeft.png"),
+        new Image("res/fae/faeRight.png"),
+        new Image("res/fae/faeAttackLeft.png"),
+        new Image("res/fae/faeAttackRight.png")
+    };
+
+    private static final int IMG_LEFT = 0;
+    private static final int IMG_RIGHT = 1;
+
     // constants
     private static final int MAX_PLAYER_HEALTH = 100;
     private static final int DAMAGE_POINTS = 20;
@@ -22,10 +32,10 @@ public class Player extends Entity implements Attacker, Targetable {
      * @param imageRight Image of the player facing right.
      * @param position Position of the player.
      */
-    public Player(String imageLeft, String imageRight, Point position) {
-        super(imageLeft, imageRight, position, SPEED, MAX_PLAYER_HEALTH, DAMAGE_POINTS);
-        this.imageLeft = new Image(imageLeft);
-        this.imageRight = new Image(imageRight);
+    public Player(Point position) {
+        super(IMAGES[IMG_LEFT], IMAGES[IMG_RIGHT], position, SPEED, MAX_PLAYER_HEALTH, DAMAGE_POINTS);
+        this.imageLeft = IMAGES[IMG_LEFT];
+        this.imageRight = IMAGES[IMG_RIGHT];
         this.prevPos = position;
         this.name = "Fae";
     }

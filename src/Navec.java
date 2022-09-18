@@ -1,28 +1,28 @@
 import bagel.*;
 import bagel.util.*;
 
-public class Demon extends Entity implements Attacker, Targetable {
+public class Navec extends Entity implements Attacker, Targetable  {
     
     private static final Image[] IMAGES = {
-        new Image("res/demon/demonLeft.png"),
-        new Image("res/demon/demonRight.png"),
-        new Image("res/demon/demonInvincibleLeft.png"),
-        new Image("res/demon/demonInvincibleRight.png"),
+        new Image("res/navec/navecLeft.png"),
+        new Image("res/navec/navecRight.png"),
+        new Image("res/navec/navecInvincibleLeft.png"),
+        new Image("res/navec/navecInvincibleRight.png")
     };
 
     private static final int IMG_LEFT = 0;
     private static final int IMG_RIGHT = 1;
     private static final int IMG_INVINCIBLE_LEFT = 2;
     private static final int IMG_INVINCIBLE_RIGHT = 3;
-    
+
     /**
-     * Constructor for Demon class.
-     * @param position Position of the demon.
-     * @param speed Speed of the demon.
-     * @param health Health of the demon.
-     * @param damagePoints Damage points of the demon.
+     * Constructor for Navec class.
+     * @param position Position of Navec.
+     * @param speed Speed of Navec.
+     * @param health Health of Navec.
+     * @param damagePoints Damage points of Navec.
      */
-    public Demon(Point position, int speed, int health, int damagePoints) {
+    public Navec(Point position, int speed, int health, int damagePoints) {
         super(IMAGES[IMG_LEFT], IMAGES[IMG_RIGHT], position, speed, health, damagePoints);
     }
 

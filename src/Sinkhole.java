@@ -2,6 +2,7 @@ import bagel.util.*;
 
 public class Sinkhole extends GameObject {
 
+    private static final String IMAGE = "res/sinkhole.png";
     private final int damagePoints;
     
     /**
@@ -9,8 +10,8 @@ public class Sinkhole extends GameObject {
      * @param image Image of the sinkhole.
      * @param position Position of the sinkhole.
      */
-    public Sinkhole(String image, Point position) {
-        super(image, position);
+    public Sinkhole(Point position) {
+        super(IMAGE, position);
         this.damagePoints = 30;
     }
 
@@ -20,8 +21,8 @@ public class Sinkhole extends GameObject {
      * @param position Position of the sinkhole.
      * @param damagePoints Damage points the sinkhole can inflict.
      */
-    public Sinkhole(String image, Point position, int damagePoints) {
-        super(image, position);
+    public Sinkhole(Point position, int damagePoints) {
+        super(IMAGE, position);
         this.damagePoints = damagePoints;
     }
 

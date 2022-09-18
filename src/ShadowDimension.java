@@ -50,7 +50,9 @@ public class ShadowDimension extends AbstractGame {
     private static final String WALL = "Wall";
     private static final String SINKHOLE = "Sinkhole";
     private static final String TREE = "Tree";
-    private static final String[] OBJECT_NAMES = {PLAYER, WALL, SINKHOLE, TREE};
+    private static final String DEMON = "Demon";
+    private static final String NAVEC = "Navec";
+    private static final String[] OBJECT_NAMES = {PLAYER, WALL, SINKHOLE, TREE, DEMON, NAVEC};
 
     // initialising the game
     private int stage = LEVEL0_STAGE;
@@ -104,29 +106,29 @@ public class ShadowDimension extends AbstractGame {
                 if (contains(OBJECT_NAMES, values[0])) {
                     switch (values[0]) {
                         case PLAYER:
-                            Player player = new Player("res/fae/faeLeft.png", "res/fae/faeRight.png", pos);
+                            Player player = new Player(pos);
                             objects[i] = player;
                             break;
                         case WALL:
-                            Wall wall = new Wall("res/wall.png", pos);
+                            Wall wall = new Wall(pos);
                             objects[i] = wall;
                             break;
                         case SINKHOLE:
-                            Sinkhole sinkhole = new Sinkhole("res/sinkhole.png", pos);
+                            Sinkhole sinkhole = new Sinkhole(pos);
                             objects[i] = sinkhole;
                             break;
                         case TREE:
-                            Tree tree = new Tree("res/tree.png", pos);
+                            Tree tree = new Tree(pos);
                             objects[i] = tree;
                             break;
-                        // case DEMON:
-                        //     Demon demon = new Demon("res/demon/demonLeft.png", "res/demon/demonRight.png", pos);
-                        //     objects[i] = demon;
-                        //     break;
-                        // case NAVEC:
-                        //     Navec navec = new Navec("res/navec/navecLeft.png", "res/navec/navecRight.png", pos);
-                        //     objects[i] = navec;
-                        //     break;
+                        case DEMON:
+                            Demon demon = new Demon(pos, 2, 100, 10);
+                            objects[i] = demon;
+                            break;
+                        case NAVEC:
+                            Navec navec = new Navec(pos, 2, 100, 10);
+                            objects[i] = navec;
+                            break;
                     }
                     i++;
                 }
