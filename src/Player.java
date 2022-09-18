@@ -45,7 +45,7 @@ public class Player extends Entity implements Attacker, Targetable {
             this.moveDown(boundary);
         }
     }
-    
+
     /**
      * Move the player to the specified position.
      * @param position Position to move the player to.
@@ -60,6 +60,14 @@ public class Player extends Entity implements Attacker, Targetable {
         }
 
         setPosition(position);
+    }
+
+    /**
+     * Move the player to a given direction.
+     */
+    @Override
+    public void move(Vector2 direction) {
+        move(getPosition().asVector().add(direction.mul(SPEED)).asPoint());
     }
 
     /** 
@@ -116,14 +124,6 @@ public class Player extends Entity implements Attacker, Targetable {
     }
 
     /**
-     * Take damage to the player.
-     * @param damage Amount of damage to inflict.
-     */
-    public void takeDamage(int damage) {
-        this.setHealth(this.getHealth() - damage);
-    }
-
-    /**
      * Get the player's previous position.
      * @return Player's previous position.
      */
@@ -153,5 +153,31 @@ public class Player extends Entity implements Attacker, Targetable {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Inflict damage to the target.
+     * @param target
+     */
+    @Override
+    public void inflictDamage(Targetable target) {
+        target.takeDamage(DAMAGE_POINTS);
+    }
+
+    /**
+     * Attack the target by showing an attack animation.
+     */
+    @Override
+    public void attack() {
+        super.setState(ATTACK);
+    }
+
+    /**
+     * Take damage to the player.
+     * @param damage Amount of damage to inflict.
+     */
+    @Override
+    public void takeDamage(int damage) {
+        this.setHealth(this.getHealth() - damage);
     }
 }

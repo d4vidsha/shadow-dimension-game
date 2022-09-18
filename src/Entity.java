@@ -3,9 +3,9 @@ import bagel.util.*;
 
 public abstract class Entity extends MovingObject {
     
-    private static final int IDLE = 0;
-    private static final int ATTACK = 1;
-    private static final int INVINCIBLE = 2;
+    protected static final int IDLE = 0;
+    protected static final int ATTACK = 1;
+    protected static final int INVINCIBLE = 2;
 
     private int health;
     private int maxHealth;
@@ -59,6 +59,22 @@ public abstract class Entity extends MovingObject {
     }
 
     /**
+     * Get the entity's state.
+     * @return Entity's state as an integer.
+     */
+    public int getState() {
+        return state;
+    }   
+
+    /**
+     * Set the entity's state.
+     * @param state Entity's state as an integer.
+     */
+    public void setState(int state) {
+        this.state = state;
+    }
+
+    /**
      * Set the entity's health.
      * @param health Entity's health.
      */
@@ -78,5 +94,13 @@ public abstract class Entity extends MovingObject {
      */
     public int getHealthPercentage() {
         return (int) Math.round((double) health / maxHealth * 100);
+    }
+
+    /**
+     * Check if the entity is dead.
+     * @return True if the entity is dead, false otherwise.
+     */
+    public boolean isDead() {
+        return health <= 0;
     }
 }

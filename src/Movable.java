@@ -5,5 +5,5 @@ public interface Movable {
     /**
      * Move the game object.
      */
-    void move(Point position);
+    void move(Vector2 direction);
 }
