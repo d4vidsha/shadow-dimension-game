@@ -74,10 +74,9 @@ public class Player extends Entity implements Attacker, Targetable {
      * Move the player left.
      */
     public void moveLeft(Boundary boundary) {
-        Point oldPos = getPosition();
-        Point newPos = new Point(oldPos.x - SPEED, oldPos.y);
-        if (boundary.contains(newPos)) {
-            this.move(newPos);
+        move(Vector2.left);
+        if (!boundary.contains(getPosition())) {
+            this.setPosition(new Point(boundary.getTopLeft().x, getPosition().y));
         }
     }
 
@@ -85,10 +84,9 @@ public class Player extends Entity implements Attacker, Targetable {
      * Move the player right.
      */
     public void moveRight(Boundary boundary) {
-        Point oldPos = getPosition();
-        Point newPos = new Point(oldPos.x + SPEED, oldPos.y);
-        if (boundary.contains(newPos)) {
-            this.move(newPos);
+        move(Vector2.right);
+        if (!boundary.contains(getPosition())) {
+            this.setPosition(new Point(boundary.getBottomRight().x, getPosition().y));
         }
     }
 
@@ -96,10 +94,9 @@ public class Player extends Entity implements Attacker, Targetable {
      * Move the player up.
      */
     public void moveUp(Boundary boundary) {
-        Point oldPos = getPosition();
-        Point newPos = new Point(oldPos.x, oldPos.y - SPEED);
-        if (boundary.contains(newPos)) {
-            this.move(newPos);
+        move(Vector2.up);
+        if (!boundary.contains(getPosition())) {
+            this.setPosition(new Point(getPosition().x, boundary.getTopLeft().y));
         }
     }
 
@@ -107,10 +104,9 @@ public class Player extends Entity implements Attacker, Targetable {
      * Move the player down.
      */
     public void moveDown(Boundary boundary) {
-        Point oldPos = getPosition();
-        Point newPos = new Point(oldPos.x, oldPos.y + SPEED);
-        if (boundary.contains(newPos)) {
-            this.move(newPos);
+        move(Vector2.down);
+        if (!boundary.contains(getPosition())) {
+            this.setPosition(new Point(getPosition().x, boundary.getBottomRight().y));
         }
     }
 
