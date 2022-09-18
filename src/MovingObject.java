@@ -7,6 +7,7 @@ public abstract class MovingObject extends GameObject implements Movable {
     private Image imageLeft;
     private Image imageRight;
     private Point prevPos;
+    private boolean isLeft;
 
     /**
      * Constructor for MovingObject class.
@@ -21,6 +22,7 @@ public abstract class MovingObject extends GameObject implements Movable {
         this.imageRight = imageRight;
         this.prevPos = position;
         this.speed = speed;
+        this.isLeft = false;
     }
 
     /**
@@ -50,19 +52,29 @@ public abstract class MovingObject extends GameObject implements Movable {
     }
 
     /**
+     * Update the images of the object.
+     */
+    public void updateImages() {
+        if (isLeft) {
+            setImage(imageLeft);
+        } else {
+            setImage(imageRight);
+        }
+    }
+
+    /**
      * Move the player to the specified position.
      * @param position Position to move the player to.
      */
     public void move(Point position) {
         prevPos = getPosition();
-
-        if (position.x > prevPos.x) {
-            setImage(imageRight);
-        } else if (position.x < prevPos.x) {
-            setImage(imageLeft);
-        }
-
         setPosition(position);
+        if (position.x < prevPos.x) {
+            isLeft = true;
+        } else if (position.x > prevPos.x) {
+            isLeft = false;
+        }
+        updateImages();
     }
 
     /**

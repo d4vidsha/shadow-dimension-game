@@ -2,7 +2,12 @@ import bagel.*;
 import bagel.util.*;
 
 public abstract class Entity extends MovingObject {
-    
+
+    private static final int REFRESH_RATE = 60;
+    private static final int ABILITY_ACTIVE_MS = 1000;
+    private static final int ABILITY_COOLDOWN_MS = 2000;
+    private static final int MS_TO_SEC = 1000;
+
     protected static final int IDLE = 0;
     protected static final int ATTACK = 1;
     protected static final int INVINCIBLE = 2;
@@ -11,6 +16,9 @@ public abstract class Entity extends MovingObject {
     private static final int IMG_RIGHT = 1;
     private static final int IMG_ABILITY_LEFT = 2;
     private static final int IMG_ABILITY_RIGHT = 3;
+
+    private int frames = 0;
+    private boolean onCooldown = false;
 
     private Image[] images;
     private int health;
@@ -101,15 +109,32 @@ public abstract class Entity extends MovingObject {
     }
 
     /**
-     * Check state and update image accordingly.
+     * Check state and update image accordingly. Keeps track of time to determine when to switch back to idle state.
      */
     public void checkState() {
         if (state == IDLE) {
             setImages(images[IMG_LEFT], images[IMG_RIGHT]);
-            // setImage(images[IMG_LEFT]);
-        } else if (state == ATTACK || state == INVINCIBLE) {
-            setImages(images[IMG_ABILITY_LEFT], images[IMG_ABILITY_RIGHT]);
-            // setImage(images[IMG_ABILITY_LEFT]);
         }
+
+        if ((state == ATTACK || state == INVINCIBLE) && !onCooldown) {
+            setImages(images[IMG_ABILITY_LEFT], images[IMG_ABILITY_RIGHT]);
+            if (frames == REFRESH_RATE * ABILITY_ACTIVE_MS / MS_TO_SEC) {
+                state = IDLE;
+                frames = 0;
+                onCooldown = true;
+            }
+            frames++;
+        }
+
+        if (onCooldown) {
+            setState(IDLE);
+            if (frames == REFRESH_RATE * ABILITY_COOLDOWN_MS / MS_TO_SEC) {
+                onCooldown = false;
+                frames = 0;
+            }
+            frames++;
+        }
+        
+        updateImages();
     }
 }
