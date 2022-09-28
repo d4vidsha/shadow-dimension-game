@@ -124,44 +124,4 @@ public abstract class GameObject {
         }
         return null;
     }
-
-    /**
-     * Get the objects that are of a given type from a given array of game objects. Return in the type
-     * of the `type` parameter.
-     */
-    public static <T extends GameObject> T[] getObjectsOfType(Class<T> type, GameObject[] gameObjects) {
-        int count = 0;
-        for (GameObject gameObject : gameObjects) {
-            if (gameObject.getClass() == type) {
-                count++;
-            }
-        }
-        T[] objects = (T[]) new GameObject[count];
-        int index = 0;
-        for (GameObject gameObject : gameObjects) {
-            if (gameObject.getClass() == type) {
-                objects[index] = (T) gameObject;
-                index++;
-            }
-        }
-        return objects;
-    }
-
-    // public static Class<?>[] getObjectsOfType(GameObject[] gameObjects, Class<?> type) {
-    //     int count = 0;
-    //     for (GameObject gameObject : gameObjects) {
-    //         if (gameObject.getClass() == type) {
-    //             count++;
-    //         }
-    //     }
-    //     Class<?>[] objects = new Class<?>[count];
-    //     int index = 0;
-    //     for (GameObject gameObject : gameObjects) {
-    //         if (gameObject.getClass() == type) {
-    //             objects[index] = gameObject.getClass();
-    //             index++;
-    //         }
-    //     }
-    //     return objects;
-    // }
 }

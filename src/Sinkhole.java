@@ -44,4 +44,12 @@ public class Sinkhole extends GameObject {
         System.out.println("Sinkhole inflicted " + damagePoints + " damage points on " + player.getName()
             + ". " + player.getName() + "'s current health: " + player.getHealth() + "/" + player.getMaxHealth());
     }
+
+    /**
+     * To string method for sinkhole.
+     */
+    @Override
+    public String toString() {
+        return "Sinkhole at " + getPosition() + " with " + damagePoints + " damage points";
+    }
 }
