@@ -10,8 +10,10 @@ import java.util.*;
 
 public class ShadowDimension extends AbstractGame {
 
+    // the total number of frames rendered so far
+    public static int frames = 0;
+
     // constants
-    private static final int REFRESH_RATE = 60;
     private static final int WINDOW_WIDTH = 1024;
     private static final int WINDOW_HEIGHT = 768;
     private static final int LEVEL0_MAX_OBJECTS = 60;
@@ -65,7 +67,7 @@ public class ShadowDimension extends AbstractGame {
     private GameObject[] sinkholes;
     private GameObject[] walls;
     private GameObject[] trees;
-    private int frames = 0;
+    private Timer level0EndScreen;
 
     public ShadowDimension() {
         super(WINDOW_WIDTH, WINDOW_HEIGHT, GAME_TITLE);
@@ -429,17 +431,16 @@ public class ShadowDimension extends AbstractGame {
         // end screen
         if (endScreen) {
             gameEndMessage("LEVEL COMPLETE!");
-            
+
             // wait 3 seconds
-            if (frames >= REFRESH_RATE * LEVEL0_END_SCREEN_WAIT_SECONDS) {
+            if (level0EndScreen.isFinished(frames)) {
                 // begin next stage
                 stage = LEVEL1_STAGE;
                 prepareLevel = true;
                 startScreen = true;
                 endScreen = false;
-                frames = 0;
             }
-            frames++;
+            
             return;
         }
 
@@ -481,6 +482,7 @@ public class ShadowDimension extends AbstractGame {
         // if necessary, display winning message and move to next stage after 3 seconds
         if (getPlayer(objects).isAtGate()) {
             endScreen = true;
+            level0EndScreen = new Timer(frames, LEVEL0_END_SCREEN_WAIT_SECONDS);
         }
 
         // attack if player presses A
@@ -572,6 +574,12 @@ public class ShadowDimension extends AbstractGame {
      */
     @Override
     protected void update(Input input) {
+        
+        // increment frames
+        frames++;
+        if (frames >= Integer.MAX_VALUE) {
+            throw new RuntimeException("Frames exceeded maximum value. Game has been running for too long.");
+        }
 
         // fastforward to level 1 when W key is pressed
         if (input.wasPressed(Keys.W)) {

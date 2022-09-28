@@ -3,7 +3,6 @@ import bagel.util.*;
 
 public abstract class Entity extends MovingObject {
 
-    private static final int REFRESH_RATE = 60;
     private static final int ABILITY_ACTIVE_MS = 1000;
     private static final int ABILITY_COOLDOWN_MS = 2000;
     private static final int MS_TO_SEC = 1000;
@@ -17,7 +16,6 @@ public abstract class Entity extends MovingObject {
     private static final int IMG_ABILITY_LEFT = 2;
     private static final int IMG_ABILITY_RIGHT = 3;
 
-    private int frames = 0;
     private boolean onCooldown = false;
 
     private Image[] images;
@@ -25,6 +23,7 @@ public abstract class Entity extends MovingObject {
     private int maxHealth;
     private int damagePoints;
     private int state;
+    private Timer timer;
 
     /**
      * Constructor for Entity class.
@@ -76,6 +75,15 @@ public abstract class Entity extends MovingObject {
      */
     public void setState(int state) {
         this.state = state;
+        if (state == ATTACK) {
+            timer = new Timer(ShadowDimension.frames, ABILITY_ACTIVE_MS / MS_TO_SEC);
+        } else if (state == INVINCIBLE) {
+            timer = new Timer(ShadowDimension.frames, ABILITY_ACTIVE_MS / MS_TO_SEC);
+        } else if (state == IDLE) {
+            timer = new Timer(ShadowDimension.frames, ABILITY_COOLDOWN_MS / MS_TO_SEC);
+        } else {
+            throw new IllegalArgumentException("Invalid state");
+        }
     }
 
     /**
@@ -118,21 +126,19 @@ public abstract class Entity extends MovingObject {
 
         if ((state == ATTACK || state == INVINCIBLE) && !onCooldown) {
             setImages(images[IMG_ABILITY_LEFT], images[IMG_ABILITY_RIGHT]);
-            if (frames == REFRESH_RATE * ABILITY_ACTIVE_MS / MS_TO_SEC) {
+            if (timer.isFinished(ShadowDimension.frames)) {
                 state = IDLE;
-                frames = 0;
                 onCooldown = true;
             }
-            frames++;
         }
 
         if (onCooldown) {
-            setState(IDLE);
-            if (frames == REFRESH_RATE * ABILITY_COOLDOWN_MS / MS_TO_SEC) {
-                onCooldown = false;
-                frames = 0;
+            if (state != IDLE) {
+                setState(IDLE);
             }
-            frames++;
+            if (timer.isFinished(ShadowDimension.frames)) {
+                onCooldown = false;
+            }
         }
         
         updateImages();
