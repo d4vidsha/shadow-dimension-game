@@ -3,28 +3,29 @@ import bagel.util.*;
 
 public abstract class Entity extends MovingObject {
 
-    private static final int ABILITY_ACTIVE_MS = 1000;
-    private static final int ABILITY_COOLDOWN_MS = 2000;
-    private static final int MS_TO_SEC = 1000;
+    protected static final int ABILITY_ACTIVE_MS = 1000;
+    protected static final int ABILITY_COOLDOWN_MS = 2000;
+    protected static final int INVINCIBLE_MS = 3000;
+    protected static final int MS_TO_SEC = 1000;
 
     protected static final int IDLE = 0;
     protected static final int ATTACK = 1;
-    protected static final int INVINCIBLE = 2;
 
-    private static final int IMG_LEFT = 0;
-    private static final int IMG_RIGHT = 1;
-    private static final int IMG_ABILITY_LEFT = 2;
-    private static final int IMG_ABILITY_RIGHT = 3;
+    protected static final int IMG_LEFT = 0;
+    protected static final int IMG_RIGHT = 1;
+    protected static final int IMG_ABILITY_LEFT = 2;
+    protected static final int IMG_ABILITY_RIGHT = 3;
 
-    private boolean onCooldown = false;
+    protected boolean onCooldown = false;
 
-    private Image[] images;
+    protected Image[] images;
     private int health;
     private int maxHealth;
     private int damagePoints;
-    private int state;
-    private Timer timer;
-    private boolean isTimerSet;
+    protected int state;
+    protected Timer timer;
+    protected boolean isTimerSet;
+    protected Timer invincibleTimer;
 
     /**
      * Constructor for Entity class.
@@ -38,6 +39,9 @@ public abstract class Entity extends MovingObject {
         this.state = IDLE;
         this.isTimerSet = false;
     }
+
+    public abstract void setState(int state);
+    public abstract void checkStates();
 
     /**
      * Get the entity's health.
@@ -69,31 +73,6 @@ public abstract class Entity extends MovingObject {
      */
     public int getState() {
         return state;
-    }   
-
-    /**
-     * Set the entity's state.
-     * @param state Entity's state as an integer.
-     */
-    public void setState(int state) {
-        this.state = state;
-
-        // set a timer and the images for the respective state
-        if (!isTimerSet) {
-            if (state == ATTACK) {
-                timer = new Timer(ShadowDimension.frames, ABILITY_ACTIVE_MS / MS_TO_SEC);
-                setImages(images[IMG_ABILITY_LEFT], images[IMG_ABILITY_RIGHT]);
-            } else if (state == INVINCIBLE) {
-                timer = new Timer(ShadowDimension.frames, ABILITY_ACTIVE_MS / MS_TO_SEC);
-                setImages(images[IMG_ABILITY_LEFT], images[IMG_ABILITY_RIGHT]); 
-        } else if (state == IDLE) {
-                timer = new Timer(ShadowDimension.frames, ABILITY_COOLDOWN_MS / MS_TO_SEC);
-                setImages(images[IMG_LEFT], images[IMG_RIGHT]);
-            } else {
-                throw new IllegalArgumentException("Invalid state");
-            }
-            isTimerSet = true;
-        }
     }
 
     /**
@@ -124,33 +103,5 @@ public abstract class Entity extends MovingObject {
      */
     public boolean isDead() {
         return health <= 0;
-    }
-
-    /**
-     * Check state and update image accordingly. Keeps track of time to determine when to switch back to idle state.
-     */
-    public void checkState() {
-        if (state == IDLE) {
-        }
-
-        if ((state == ATTACK || state == INVINCIBLE) && !onCooldown) {
-            if (timer.isFinished(ShadowDimension.frames)) {
-                isTimerSet = false;
-                setState(IDLE);
-                onCooldown = true;
-            }
-        }
-
-        if (onCooldown) {
-            if (state != IDLE) {
-                setState(IDLE);
-            }
-            if (timer.isFinished(ShadowDimension.frames)) {
-                isTimerSet = false;
-                onCooldown = false;
-            }
-        }
-        
-        updateImages();
     }
 }

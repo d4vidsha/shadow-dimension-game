@@ -69,7 +69,7 @@ public class ShadowDimension extends AbstractGame {
     private boolean endScreen = false;
     private Boundary boundary;
     private GameObject[] objects;
-    private GameObject[] stationaryObjects;
+    private GameObject[] gameObjects;
     private GameObject[] sinkholes;
     private GameObject[] walls;
     private GameObject[] trees;
@@ -242,15 +242,11 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
-     * Get the stationary objects from the array of all objects.
-     * Stationary objects are objects that do not move. For example
-     * walls and sinkholes are stationary objects. A player is NOT
-     * a stationary object.
-     * In this function we assume that the first object in the array
-     * is a player.
+     * Get the objects from the array of all objects.
+     * In this function we assume that the first object in the array is a player.
      * @return Array of stationary objects.
      */
-    public GameObject[] getStationaryGameObjects() {
+    public GameObject[] getGameObjects() {
         return Arrays.copyOfRange(objects, 1, objects.length);
     }
 
@@ -426,9 +422,9 @@ public class ShadowDimension extends AbstractGame {
     private void prepareLevel0() {
         boundary = readBoundary(LEVEL0_CSV);
         objects = readObjects(LEVEL0_CSV, LEVEL0_MAX_OBJECTS);
-        stationaryObjects = getStationaryGameObjects();
-        sinkholes = getSinkholes(stationaryObjects);
-        walls = getWalls(stationaryObjects);
+        gameObjects = getGameObjects();
+        sinkholes = getSinkholes(gameObjects);
+        walls = getWalls(gameObjects);
     }
 
     /**
@@ -437,10 +433,10 @@ public class ShadowDimension extends AbstractGame {
     private void prepareLevel1() {
         boundary = readBoundary(LEVEL1_CSV);
         objects = readObjects(LEVEL1_CSV, LEVEL1_MAX_OBJECTS);
-        stationaryObjects = getStationaryGameObjects();
-        sinkholes = getSinkholes(stationaryObjects);
-        walls = getWalls(stationaryObjects);
-        trees = getTrees(stationaryObjects);
+        gameObjects = getGameObjects();
+        sinkholes = getSinkholes(gameObjects);
+        walls = getWalls(gameObjects);
+        trees = getTrees(gameObjects);
     }
 
     /**
@@ -479,13 +475,13 @@ public class ShadowDimension extends AbstractGame {
 
         // move the player
         player.update(input, boundary);
-        player.checkState();
+        player.checkStates();
 
         // draw everything
         drawBackground(LEVEL0_BACKGROUND);
         drawHealthBar(player);
         player.draw(boundary);
-        drawObjects(stationaryObjects);
+        drawObjects(gameObjects);
 
         // check if player is dead
         if (player.getHealthPercentage() <= 0) {
@@ -501,7 +497,7 @@ public class ShadowDimension extends AbstractGame {
 
             // remove sinkhole from game
             sinkholes = removeGameObject(sinkholes, sinkhole);
-            stationaryObjects = removeGameObject(stationaryObjects, sinkhole);
+            gameObjects = removeGameObject(gameObjects, sinkhole);
 
         } else if (player.collides(walls)) {
 
@@ -542,7 +538,7 @@ public class ShadowDimension extends AbstractGame {
 
         // move the player, demons and Navec
         player.update(input, boundary);
-        player.checkState();
+        player.checkStates();
 
         // get all demons
         GameObject[] demons = getDemons(objects);
@@ -566,7 +562,7 @@ public class ShadowDimension extends AbstractGame {
         drawBackground(LEVEL1_BACKGROUND);
         drawHealthBar(player);
         player.draw(boundary);
-        drawObjects(stationaryObjects);
+        drawObjects(gameObjects);
 
         // check if player is dead
         if (player.getHealthPercentage() <= 0) {
@@ -582,7 +578,7 @@ public class ShadowDimension extends AbstractGame {
 
             // remove sinkhole from game
             sinkholes = removeGameObject(sinkholes, sinkhole);
-            stationaryObjects = removeGameObject(stationaryObjects, sinkhole);
+            gameObjects = removeGameObject(gameObjects, sinkhole);
 
         } else if (player.collides(trees)) {
 
@@ -594,6 +590,19 @@ public class ShadowDimension extends AbstractGame {
         // attack if player presses A
         if (input.wasPressed(Keys.A)) {
             player.attack();
+            if (player.collides(demons)) {
+                Demon demon = (Demon) player.getCollidedObject(demons);
+                player.inflictDamage(demon);
+            }
+        }
+
+        // check if any demons are dead
+        for (GameObject object : demons) {
+            Demon demon = (Demon) object;
+            if (demon.getHealthPercentage() <= 0) {
+                gameObjects = removeGameObject(gameObjects, demon);
+                demons = removeGameObject(demons, demon);
+            }
         }
     }
 

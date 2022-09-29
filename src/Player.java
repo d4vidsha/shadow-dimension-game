@@ -94,7 +94,7 @@ public class Player extends Entity implements Attacker, Targetable {
      */
     @Override
     public void attack() {
-        super.setState(ATTACK);
+        setState(ATTACK);
     }
 
     /**
@@ -103,6 +103,63 @@ public class Player extends Entity implements Attacker, Targetable {
      */
     @Override
     public void takeDamage(int damage) {
-        this.setHealth(this.getHealth() - damage);
+        // if the player is invincible, do not take damage, otherwise take damage and become invincible
+        if (invincibleTimer == null || invincibleTimer.isFinished(ShadowDimension.frames)) {
+            this.setHealth(this.getHealth() - damage);
+            this.invincibleTimer = new Timer(ShadowDimension.frames, INVINCIBLE_MS / MS_TO_SEC);
+        }
     }
+
+    /**
+     * Check state and update image accordingly. Keeps track of time to determine when to switch back to idle state.
+     */
+    @Override
+    public void checkStates() {
+        if (state == IDLE) {
+        }
+
+        if ((state == ATTACK) && !onCooldown) {
+            if (timer.isFinished(ShadowDimension.frames)) {
+                isTimerSet = false;
+                setState(IDLE);
+                onCooldown = true;
+            }
+        }
+
+        if (onCooldown) {
+            if (state != IDLE) {
+                setState(IDLE);
+            }
+            if (timer.isFinished(ShadowDimension.frames)) {
+                isTimerSet = false;
+                onCooldown = false;
+            }
+        }
+
+        updateImages();
+    }
+
+    /**
+     * Set the entity's state.
+     * @param state Entity's state as an integer.
+     */
+    @Override
+    public void setState(int state) {
+        this.state = state;
+
+        if (!isTimerSet) {
+            if (state == ATTACK) {
+                timer = new Timer(ShadowDimension.frames, ABILITY_ACTIVE_MS / MS_TO_SEC);
+                setImages(images[IMG_ABILITY_LEFT], images[IMG_ABILITY_RIGHT]);
+            } else if (state == IDLE) {
+                timer = new Timer(ShadowDimension.frames, ABILITY_COOLDOWN_MS / MS_TO_SEC);
+                setImages(images[IMG_LEFT], images[IMG_RIGHT]);
+            } else {
+                throw new IllegalArgumentException("Invalid state");
+            }
+            isTimerSet = true;
+        }
+    }
+
+
 }

@@ -44,7 +44,7 @@ public class Navec extends Entity implements Attacker, Targetable  {
      */
     @Override
     public void attack() {
-        super.setState(ATTACK);
+        setState(ATTACK);
     }
 
     /**
@@ -53,5 +53,15 @@ public class Navec extends Entity implements Attacker, Targetable  {
     @Override
     public void takeDamage(int damage) {
         this.setHealth(this.getHealth() - damage);
+    }
+
+    @Override
+    public void setState(int state) {
+
+    }
+
+    @Override
+    public void checkStates() {
+
     }
 }
