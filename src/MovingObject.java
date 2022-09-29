@@ -3,7 +3,7 @@ import bagel.util.*;
 
 public abstract class MovingObject extends GameObject implements Movable {
     
-    private final int speed;
+    private final double speed;
     private Image imageLeft;
     private Image imageRight;
     private Point prevPos;
@@ -16,7 +16,7 @@ public abstract class MovingObject extends GameObject implements Movable {
      * @param position Position of the entity.
      * @param speed Speed of the entity.
      */
-    public MovingObject(Image imageLeft, Image imageRight, Point position, int speed) {
+    public MovingObject(Image imageLeft, Image imageRight, Point position, double speed) {
         super(imageRight, position);
         this.imageLeft = imageLeft;
         this.imageRight = imageRight;
@@ -37,7 +37,7 @@ public abstract class MovingObject extends GameObject implements Movable {
      * Get the object's speed.
      * @return Object's speed as an integer.
      */
-    public int getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 

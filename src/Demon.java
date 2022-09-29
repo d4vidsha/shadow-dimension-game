@@ -3,6 +3,8 @@ import bagel.util.*;
 
 public class Demon extends Entity implements Attacker, Targetable {
     
+    public static final double PASSIVE_SPEED = 0;
+
     private static final Image[] IMAGES = {
         new Image("res/demon/demonLeft.png"),
         new Image("res/demon/demonRight.png"),
@@ -19,7 +21,7 @@ public class Demon extends Entity implements Attacker, Targetable {
      * @param health Health of the demon.
      * @param damagePoints Damage points of the demon.
      */
-    public Demon(Point position, int speed, int health, int damagePoints, Vector2 direction) {
+    public Demon(Point position, double speed, int health, int damagePoints, Vector2 direction) {
         super(IMAGES, position, speed, health, damagePoints);
         this.direction = direction;
     }

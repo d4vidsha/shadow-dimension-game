@@ -24,6 +24,12 @@ public class ShadowDimension extends AbstractGame {
     private static final String LEVEL0_BACKGROUND = "res/background0.png";
     private static final String LEVEL1_BACKGROUND = "res/background1.png";
     private static final int LEVEL0_END_SCREEN_WAIT_SECONDS = 3;
+    private static final Vector2[] DIRECTIONS = {
+        Vector2.left,
+        Vector2.right,
+        Vector2.up,
+        Vector2.down
+    };
 
     // fonts
     private static final String FONT_PATH = "res/frostbite.ttf";
@@ -125,7 +131,22 @@ public class ShadowDimension extends AbstractGame {
                             objects[i] = tree;
                             break;
                         case DEMON:
-                            Demon demon = new Demon(pos, 2, 100, 10, Vector2.left);
+                            // determine equally randomly if the demon is passive or aggressive
+                            // where 0 is passive and 1 is aggressive
+                            int aggressive = (int) (Math.random() * 2);
+
+                            double speed;
+                            if (aggressive == 0) {
+                                speed = Demon.PASSIVE_SPEED;
+                            } else { 
+                                // determine a random speed between 0.2 and 0.7
+                                speed = 0.2 + Math.random() * 0.5;
+                            }
+
+                            // determine a random direction of left, right, up or down between 0 and 3
+                            int direction = (int) (Math.random() * 4);
+
+                            Demon demon = new Demon(pos, speed, 100, 10, DIRECTIONS[direction]);
                             objects[i] = demon;
                             break;
                         case NAVEC:
@@ -521,7 +542,7 @@ public class ShadowDimension extends AbstractGame {
             demon.move(demon.getDirection());
 
             // If the demon hits a barrier, reverse the direction
-            if (demon.collides(trees)) {
+            if (demon.collides(trees) || demon.collides(sinkholes) || !boundary.contains(demon.getPosition())) {
 
                 // Reverse the direction
                 demon.setDirection(demon.getDirection().mul(-1));

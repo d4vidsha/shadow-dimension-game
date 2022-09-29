@@ -29,7 +29,7 @@ public abstract class Entity extends MovingObject {
     /**
      * Constructor for Entity class.
      */
-    public Entity(Image[] images, Point position, int speed, int health, int damagePoints) {
+    public Entity(Image[] images, Point position, double speed, int health, int damagePoints) {
         super(images[IMG_LEFT], images[IMG_RIGHT], position, speed);
         this.images = images;
         this.health = health;
