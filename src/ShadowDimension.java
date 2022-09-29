@@ -147,6 +147,10 @@ public class ShadowDimension extends AbstractGame {
                             int direction = (int) (Math.random() * 4);
 
                             Demon demon = new Demon(pos, speed, 100, 10, DIRECTIONS[direction]);
+
+                            // randomly choose which direction the demon faces in the beginning
+                            int face = (int) (Math.random() * 2);
+                            demon.setImage(face);
                             objects[i] = demon;
                             break;
                         case NAVEC:

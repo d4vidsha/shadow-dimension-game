@@ -129,4 +129,18 @@ public abstract class MovingObject extends GameObject implements Movable {
             this.setPosition(new Point(getPosition().x, boundary.getBottomRight().y));
         }
     }
+
+    /**
+     * Set the image of the game object.
+     * @param image Image of the game object as a integer.
+     */
+    public void setImage(int image) {
+        if (image == 0) {
+            isLeft = true;
+        } else if (image == 1) {
+            isLeft = false;
+        } else {
+            throw new IllegalArgumentException("Invalid image index/integer");
+        }
+    }
 }
