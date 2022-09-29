@@ -78,14 +78,17 @@ public abstract class Entity extends MovingObject {
     public void setState(int state) {
         this.state = state;
 
-        // set a timer for the respective state
+        // set a timer and the images for the respective state
         if (!isTimerSet) {
             if (state == ATTACK) {
                 timer = new Timer(ShadowDimension.frames, ABILITY_ACTIVE_MS / MS_TO_SEC);
+                setImages(images[IMG_ABILITY_LEFT], images[IMG_ABILITY_RIGHT]);
             } else if (state == INVINCIBLE) {
                 timer = new Timer(ShadowDimension.frames, ABILITY_ACTIVE_MS / MS_TO_SEC);
-            } else if (state == IDLE) {
+                setImages(images[IMG_ABILITY_LEFT], images[IMG_ABILITY_RIGHT]); 
+        } else if (state == IDLE) {
                 timer = new Timer(ShadowDimension.frames, ABILITY_COOLDOWN_MS / MS_TO_SEC);
+                setImages(images[IMG_LEFT], images[IMG_RIGHT]);
             } else {
                 throw new IllegalArgumentException("Invalid state");
             }
@@ -128,11 +131,9 @@ public abstract class Entity extends MovingObject {
      */
     public void checkState() {
         if (state == IDLE) {
-            setImages(images[IMG_LEFT], images[IMG_RIGHT]);
         }
 
         if ((state == ATTACK || state == INVINCIBLE) && !onCooldown) {
-            setImages(images[IMG_ABILITY_LEFT], images[IMG_ABILITY_RIGHT]);
             if (timer.isFinished(ShadowDimension.frames)) {
                 isTimerSet = false;
                 setState(IDLE);
