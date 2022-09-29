@@ -70,9 +70,9 @@ public class ShadowDimension extends AbstractGame {
     private Boundary boundary;
     private GameObject[] objects;
     private GameObject[] gameObjects;
-    private GameObject[] sinkholes;
-    private GameObject[] walls;
-    private GameObject[] trees;
+    // private GameObject[] sinkholes;
+    // private GameObject[] walls;
+    // private GameObject[] trees;
     private Timer level0EndScreen;
 
     public ShadowDimension() {
@@ -300,65 +300,65 @@ public class ShadowDimension extends AbstractGame {
         return (Player) objects[0];
     }
 
-    /**
-     * Get the walls from the array of all objects.
-     * @param objects Array of game objects.
-     * @return Array of walls.
-     */
-    public GameObject[] getWalls(GameObject[] objects) {
-        ArrayList<GameObject> walls = new ArrayList<>();
-        for (GameObject gameObject : objects) {
-            if (gameObject instanceof Wall) {
-                walls.add(gameObject);
-            }
-        }
-        return walls.toArray(new GameObject[walls.size()]);
-    }
+    // /**
+    //  * Get the walls from the array of all objects.
+    //  * @param objects Array of game objects.
+    //  * @return Array of walls.
+    //  */
+    // public GameObject[] getWalls(GameObject[] objects) {
+    //     ArrayList<GameObject> walls = new ArrayList<>();
+    //     for (GameObject gameObject : objects) {
+    //         if (gameObject instanceof Wall) {
+    //             walls.add(gameObject);
+    //         }
+    //     }
+    //     return walls.toArray(new GameObject[walls.size()]);
+    // }
 
-    /**
-     * Get the sinkholes from the array of all objects.
-     * @param objects Array of game objects.
-     * @return Array of sinkholes.
-     */
-    public GameObject[] getSinkholes(GameObject[] objects) {
-        ArrayList<GameObject> sinkholes = new ArrayList<>();
-        for (GameObject gameObject : objects) {
-            if (gameObject instanceof Sinkhole) {
-                sinkholes.add(gameObject);
-            }
-        }
-        return sinkholes.toArray(new GameObject[sinkholes.size()]);
-    }
+    // /**
+    //  * Get the sinkholes from the array of all objects.
+    //  * @param objects Array of game objects.
+    //  * @return Array of sinkholes.
+    //  */
+    // public GameObject[] getSinkholes(GameObject[] objects) {
+    //     ArrayList<GameObject> sinkholes = new ArrayList<>();
+    //     for (GameObject gameObject : objects) {
+    //         if (gameObject instanceof Sinkhole) {
+    //             sinkholes.add(gameObject);
+    //         }
+    //     }
+    //     return sinkholes.toArray(new GameObject[sinkholes.size()]);
+    // }
 
-    /**
-     * Get the trees from the array of all objects.
-     * @param objects Array of game objects.
-     * @return Array of trees.
-     */
-    public GameObject[] getTrees(GameObject[] objects) {
-        ArrayList<GameObject> trees = new ArrayList<>();
-        for (GameObject gameObject : objects) {
-            if (gameObject instanceof Tree) {
-                trees.add(gameObject);
-            }
-        }
-        return trees.toArray(new GameObject[trees.size()]);
-    }
+    // /**
+    //  * Get the trees from the array of all objects.
+    //  * @param objects Array of game objects.
+    //  * @return Array of trees.
+    //  */
+    // public GameObject[] getTrees(GameObject[] objects) {
+    //     ArrayList<GameObject> trees = new ArrayList<>();
+    //     for (GameObject gameObject : objects) {
+    //         if (gameObject instanceof Tree) {
+    //             trees.add(gameObject);
+    //         }
+    //     }
+    //     return trees.toArray(new GameObject[trees.size()]);
+    // }
 
-    /**
-     * Get the demons from the array of all objects.
-     * @param objects
-     * @return
-     */
-    public GameObject[] getDemons(GameObject[] objects) {
-        ArrayList<GameObject> demons = new ArrayList<>();
-        for (GameObject object : objects) {
-            if (object instanceof Demon) {
-                demons.add(object);
-            }
-        }
-        return demons.toArray(new GameObject[demons.size()]);
-    }
+    // /**
+    //  * Get the demons from the array of all objects.
+    //  * @param objects
+    //  * @return
+    //  */
+    // public GameObject[] getDemons(GameObject[] objects) {
+    //     ArrayList<GameObject> demons = new ArrayList<>();
+    //     for (GameObject object : objects) {
+    //         if (object instanceof Demon) {
+    //             demons.add(object);
+    //         }
+    //     }
+    //     return demons.toArray(new GameObject[demons.size()]);
+    // }
 
     /**
      * Remove the object from the array of game objects.
@@ -423,8 +423,8 @@ public class ShadowDimension extends AbstractGame {
         boundary = readBoundary(LEVEL0_CSV);
         objects = readObjects(LEVEL0_CSV, LEVEL0_MAX_OBJECTS);
         gameObjects = getGameObjects();
-        sinkholes = getSinkholes(gameObjects);
-        walls = getWalls(gameObjects);
+        // sinkholes = getSinkholes(gameObjects);
+        // walls = getWalls(gameObjects);
     }
 
     /**
@@ -434,9 +434,9 @@ public class ShadowDimension extends AbstractGame {
         boundary = readBoundary(LEVEL1_CSV);
         objects = readObjects(LEVEL1_CSV, LEVEL1_MAX_OBJECTS);
         gameObjects = getGameObjects();
-        sinkholes = getSinkholes(gameObjects);
-        walls = getWalls(gameObjects);
-        trees = getTrees(gameObjects);
+        // sinkholes = getSinkholes(gameObjects);
+        // walls = getWalls(gameObjects);
+        // trees = getTrees(gameObjects);
     }
 
     /**
@@ -489,20 +489,19 @@ public class ShadowDimension extends AbstractGame {
         }
 
         // check if player hit a wall or sinkhole
-        if (player.collides(sinkholes)) {
+        if (player.collides(gameObjects, Sinkhole.class)) {
 
             // get specific sinkhole collided with and inflict damage
-            Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(sinkholes);
+            Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(gameObjects);
             sinkhole.inflictDamage(player);
 
             // remove sinkhole from game
-            sinkholes = removeGameObject(sinkholes, sinkhole);
             gameObjects = removeGameObject(gameObjects, sinkhole);
 
-        } else if (player.collides(walls)) {
+        } else if (player.collides(gameObjects, Wall.class)) {
 
             // block player from moving
-            Wall wall = (Wall) player.getCollidedObject(walls);
+            Wall wall = (Wall) player.getCollidedObject(gameObjects);
             wall.block(player);
         }
 
@@ -540,15 +539,16 @@ public class ShadowDimension extends AbstractGame {
         player.update(input, boundary);
         player.checkStates();
 
-        // get all demons
-        GameObject[] demons = getDemons(objects);
         // move demons
-        for (GameObject object : demons) {
+        for (GameObject object : gameObjects) {
+            if (!(object instanceof Demon)) {
+                continue;
+            }
             Demon demon = (Demon) object;
             demon.move(demon.getDirection());
 
             // If the demon hits a barrier, reverse the direction
-            if (demon.collides(trees) || demon.collides(sinkholes) || !boundary.contains(demon.getPosition())) {
+            if (demon.collides(gameObjects, Tree.class) || demon.collides(gameObjects, Sinkhole.class) || !boundary.contains(demon.getPosition())) {
 
                 // Reverse the direction
                 demon.setDirection(demon.getDirection().mul(-1));
@@ -570,38 +570,39 @@ public class ShadowDimension extends AbstractGame {
         }
 
         // check if player hit a wall, sinkhole or tree
-        if (player.collides(sinkholes)) {
+        if (player.collides(gameObjects, Sinkhole.class)) {
 
             // get specific sinkhole collided with and inflict damage
-            Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(sinkholes);
+            Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(gameObjects);
             sinkhole.inflictDamage(player);
 
             // remove sinkhole from game
-            sinkholes = removeGameObject(sinkholes, sinkhole);
             gameObjects = removeGameObject(gameObjects, sinkhole);
 
-        } else if (player.collides(trees)) {
+        } else if (player.collides(gameObjects, Tree.class)) {
 
             // block player from moving
-            Tree tree = (Tree) player.getCollidedObject(trees);
+            Tree tree = (Tree) player.getCollidedObject(gameObjects);
             tree.block(player);
         }
         
         // attack if player presses A
         if (input.wasPressed(Keys.A)) {
             player.attack();
-            if (player.collides(demons)) {
-                Demon demon = (Demon) player.getCollidedObject(demons);
+            if (player.collides(gameObjects, Demon.class) && player.isAttacking()) {
+                Demon demon = (Demon) player.getCollidedObject(gameObjects);
                 player.inflictDamage(demon);
             }
         }
 
         // check if any demons are dead
-        for (GameObject object : demons) {
-            Demon demon = (Demon) object;
+        for (GameObject gameObject : gameObjects) {
+            if (!(gameObject instanceof Demon)) {
+                continue;
+            }
+            Demon demon = (Demon) gameObject;
             if (demon.getHealthPercentage() <= 0) {
                 gameObjects = removeGameObject(gameObjects, demon);
-                demons = removeGameObject(demons, demon);
             }
         }
     }

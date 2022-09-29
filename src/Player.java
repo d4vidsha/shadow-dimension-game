@@ -87,6 +87,7 @@ public class Player extends Entity implements Attacker, Targetable {
     @Override
     public void inflictDamage(Targetable target) {
         target.takeDamage(DAMAGE_POINTS);
+        System.out.println("Player inflicted " + DAMAGE_POINTS + " damage points");
     }
 
     /**
@@ -161,5 +162,14 @@ public class Player extends Entity implements Attacker, Targetable {
         }
     }
 
-
+    /**
+     * Check if the player is attacking.
+     * @return True if the player is attacking, false otherwise.
+     */
+    public boolean isAttacking() {
+        if (state == ATTACK) {
+            return true;
+        }
+        return false;
+    }
 }

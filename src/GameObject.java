@@ -103,9 +103,9 @@ public abstract class GameObject {
      * @param gameObjects Game objects to check collision with.
      * @return True if the game object collides with another game object, false otherwise.
      */
-    public boolean collides(GameObject[] gameObjects) {
+    public boolean collides(GameObject[] gameObjects, Class<?> type) {
         for (GameObject gameObject : gameObjects) {
-            if (gameObject.getRectangle().intersects(this.getRectangle())) {
+            if (gameObject.getClass() == type && gameObject.getRectangle().intersects(getRectangle())) {
                 return true;
             }
         }
