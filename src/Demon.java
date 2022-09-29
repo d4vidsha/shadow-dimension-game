@@ -4,9 +4,12 @@ import bagel.util.*;
 public class Demon extends Entity implements Attacker, Targetable {
     
     public static final double PASSIVE_SPEED = 0;
-    public static final int ATTACK_RADIUS = 150;    // pixels
-    public static final int MAX_HEALTH = 40;
-    public static final int DAMAGE_POINTS = 0;      // demon has no damage points as fire is its attack
+    public static final int DEFAULT_ATTACK_RADIUS = 150;        // in pixels
+    public static final int DEFAULT_MAX_HEALTH = 40;            // default max health of a demon
+    public static final int DEFAULT_DAMAGE_POINTS = 0;          // demon has no damage points as fire is its attack
+    private int attackRadius;
+    private int maxHealth;
+    private int damagePoints;
 
     private static final Image[] IMAGES = {
         new Image("res/demon/demonLeft.png"),
@@ -25,8 +28,15 @@ public class Demon extends Entity implements Attacker, Targetable {
      * @param damagePoints Damage points of the demon.
      */
     public Demon(Point position, double speed, Vector2 direction) {
-        super(IMAGES, position, speed, MAX_HEALTH, DAMAGE_POINTS);
+        super(IMAGES, position, speed, DEFAULT_MAX_HEALTH, DEFAULT_DAMAGE_POINTS);
         this.direction = direction;
+        this.attackRadius = DEFAULT_ATTACK_RADIUS;
+    }
+
+    public Demon(Image[] images, int attackRadius, int maxHealth, int damagePoints, Point position, double speed, Vector2 direction) {
+        super(images, position, speed, maxHealth, damagePoints);
+        this.direction = direction;
+        this.attackRadius = attackRadius;
     }
 
     /**
@@ -41,6 +51,48 @@ public class Demon extends Entity implements Attacker, Targetable {
      */
     public void setDirection(Vector2 direction) {
         this.direction = direction;
+    }
+
+    /**
+     * Get the attack radius of the demon.
+     */
+    public int getAttackRadius() {
+        return attackRadius;
+    }
+
+    /**
+     * Set the attack radius of the demon.
+     */
+    public void setAttackRadius(int attackRadius) {
+        this.attackRadius = attackRadius;
+    }
+
+    /**
+     * Get the maximum health of the demon.
+     */
+    public int getMaxHealth() {
+        return maxHealth;
+    }
+
+    /**
+     * Set the maximum health of the demon.
+     */
+    public void setMaxHealth(int maxHealth) {
+        this.maxHealth = maxHealth;
+    }
+
+    /**
+     * Get the damage points of the demon.
+     */
+    public int getDamagePoints() {
+        return damagePoints;
+    }
+
+    /**
+     * Set the damage points of the demon.
+     */
+    public void setDamagePoints(int damagePoints) {
+        this.damagePoints = damagePoints;
     }
 
     /**
@@ -95,7 +147,7 @@ public class Demon extends Entity implements Attacker, Targetable {
      * @return True if the target is in attack range of the demon, false otherwise.
      */
     public boolean isInAttackRadius(Point position) {
-        return this.getRectangle().centre().distanceTo(position) <= ATTACK_RADIUS;
+        return this.getRectangle().centre().distanceTo(position) <= attackRadius;
     }
 
     /**

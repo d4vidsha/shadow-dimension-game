@@ -104,6 +104,10 @@ public class ShadowDimension extends AbstractGame {
                 double y = Double.parseDouble(values[2]);
                 Point pos = new Point(x, y);
 
+                // instantiate randoms
+                double speed;
+                int direction;
+
                 // create the object based on the type
                 if (contains(OBJECT_NAMES, values[0])) {
                     switch (values[0]) {
@@ -128,7 +132,6 @@ public class ShadowDimension extends AbstractGame {
                             // where 0 is passive and 1 is aggressive
                             int aggressive = (int) (Math.random() * 2);
 
-                            double speed;
                             if (aggressive == 0) {
                                 speed = Demon.PASSIVE_SPEED;
                             } else { 
@@ -137,7 +140,7 @@ public class ShadowDimension extends AbstractGame {
                             }
 
                             // determine a random direction of left, right, up or down between 0 and 3
-                            int direction = (int) (Math.random() * 4);
+                            direction = (int) (Math.random() * 4);
 
                             Demon demon = new Demon(pos, speed, DIRECTIONS[direction]);
 
@@ -153,7 +156,13 @@ public class ShadowDimension extends AbstractGame {
                             objects[i] = demon;
                             break;
                         case NAVEC:
-                            Navec navec = new Navec(pos, 2, 100, 10, Vector2.left);
+                            // determine a random speed between 0.2 and 0.7
+                            speed = 0.2 + Math.random() * 0.5;
+
+                            // determine a random direction of left, right, up or down between 0 and 3
+                            direction = (int) (Math.random() * 4);
+
+                            Navec navec = new Navec(pos, speed, DIRECTIONS[direction]);
                             objects[i] = navec;
                             break;
                     }
@@ -560,21 +569,33 @@ public class ShadowDimension extends AbstractGame {
         // attack if player presses A
         if (input.wasPressed(Keys.A)) {
             player.attack();
-            if (player.collides(gameObjects, Demon.class) && player.isAttacking()) {
-                Demon demon = (Demon) player.getCollidedObject(gameObjects, Demon.class);
-                if (!demon.isInvincible()) {
-                    player.inflictDamageTo(demon);
+            if (player.isAttacking()) {
+                if (player.collides(gameObjects, Demon.class)) {
+                    Demon demon = (Demon) player.getCollidedObject(gameObjects, Demon.class);
+                    if (!demon.isInvincible()) {
+                        player.inflictDamageTo(demon);
+                    }
+                }
+
+                if (player.collides(gameObjects, Navec.class)) {
+                    Navec navec = (Navec) player.getCollidedObject(gameObjects, Navec.class);
+                    if (!navec.isInvincible()) {
+                        player.inflictDamageTo(navec);
+                    }
                 }
             }
         }
 
         // check if any demons are dead or if they're not invincible anymore
         for (GameObject gameObject : gameObjects) {
-            if (!(gameObject instanceof Demon)) {
+            if (!(gameObject instanceof Demon) && !(gameObject instanceof Navec)) {
                 continue;
             }
             Demon demon = (Demon) gameObject;
             if (demon.getHealthPercentage() <= 0) {
+                if (demon instanceof Navec) {
+                    stage = GAME_WON_STAGE;
+                }
                 gameObjects = removeGameObject(gameObjects, demon);
             }
             demon.checkStates();
@@ -582,7 +603,7 @@ public class ShadowDimension extends AbstractGame {
 
         // check if demons should attack
         for (GameObject gameObject : gameObjects) {
-            if (!(gameObject instanceof Demon)) {
+            if (!(gameObject instanceof Demon) && !(gameObject instanceof Navec)) {
                 continue;
             }
             Demon demon = (Demon) gameObject;
