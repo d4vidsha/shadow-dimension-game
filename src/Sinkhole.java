@@ -3,6 +3,8 @@ import bagel.util.*;
 
 public class Sinkhole extends GameObject implements Attacker {
 
+    public static final int DAMAGE_POINTS = 30;
+
     private static final Image IMAGE = new Image("res/sinkhole.png");
     private final int damagePoints;
     
@@ -13,7 +15,7 @@ public class Sinkhole extends GameObject implements Attacker {
      */
     public Sinkhole(Point position) {
         super(IMAGE, position);
-        this.damagePoints = 30;
+        this.damagePoints = DAMAGE_POINTS;
     }
 
     /**
