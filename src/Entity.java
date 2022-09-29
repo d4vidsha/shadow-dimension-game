@@ -24,6 +24,7 @@ public abstract class Entity extends MovingObject {
     private int damagePoints;
     private int state;
     private Timer timer;
+    private boolean isTimerSet;
 
     /**
      * Constructor for Entity class.
@@ -35,6 +36,7 @@ public abstract class Entity extends MovingObject {
         this.maxHealth = health;
         this.damagePoints = damagePoints;
         this.state = IDLE;
+        this.isTimerSet = false;
     }
 
     /**
@@ -75,14 +77,19 @@ public abstract class Entity extends MovingObject {
      */
     public void setState(int state) {
         this.state = state;
-        if (state == ATTACK) {
-            timer = new Timer(ShadowDimension.frames, ABILITY_ACTIVE_MS / MS_TO_SEC);
-        } else if (state == INVINCIBLE) {
-            timer = new Timer(ShadowDimension.frames, ABILITY_ACTIVE_MS / MS_TO_SEC);
-        } else if (state == IDLE) {
-            timer = new Timer(ShadowDimension.frames, ABILITY_COOLDOWN_MS / MS_TO_SEC);
-        } else {
-            throw new IllegalArgumentException("Invalid state");
+
+        // set a timer for the respective state
+        if (!isTimerSet) {
+            if (state == ATTACK) {
+                timer = new Timer(ShadowDimension.frames, ABILITY_ACTIVE_MS / MS_TO_SEC);
+            } else if (state == INVINCIBLE) {
+                timer = new Timer(ShadowDimension.frames, ABILITY_ACTIVE_MS / MS_TO_SEC);
+            } else if (state == IDLE) {
+                timer = new Timer(ShadowDimension.frames, ABILITY_COOLDOWN_MS / MS_TO_SEC);
+            } else {
+                throw new IllegalArgumentException("Invalid state");
+            }
+            isTimerSet = true;
         }
     }
 
@@ -127,7 +134,8 @@ public abstract class Entity extends MovingObject {
         if ((state == ATTACK || state == INVINCIBLE) && !onCooldown) {
             setImages(images[IMG_ABILITY_LEFT], images[IMG_ABILITY_RIGHT]);
             if (timer.isFinished(ShadowDimension.frames)) {
-                state = IDLE;
+                isTimerSet = false;
+                setState(IDLE);
                 onCooldown = true;
             }
         }
@@ -137,6 +145,7 @@ public abstract class Entity extends MovingObject {
                 setState(IDLE);
             }
             if (timer.isFinished(ShadowDimension.frames)) {
+                isTimerSet = false;
                 onCooldown = false;
             }
         }
