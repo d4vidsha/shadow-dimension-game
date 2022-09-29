@@ -11,7 +11,6 @@ public class Demon extends Entity implements Attacker, Targetable {
 
     private int attackRadius;
     private int maxHealth;
-    private int damagePoints;
     private Image fireImage;
 
     private static final Image[] IMAGES = {
@@ -84,20 +83,6 @@ public class Demon extends Entity implements Attacker, Targetable {
      */
     public void setMaxHealth(int maxHealth) {
         this.maxHealth = maxHealth;
-    }
-
-    /**
-     * Get the damage points of the demon.
-     */
-    public int getDamagePoints() {
-        return damagePoints;
-    }
-
-    /**
-     * Set the damage points of the demon.
-     */
-    public void setDamagePoints(int damagePoints) {
-        this.damagePoints = damagePoints;
     }
 
     /**
@@ -190,7 +175,7 @@ public class Demon extends Entity implements Attacker, Targetable {
         } else {
             return null;
         }
-        return new Fire(fireImage, position, options, damagePoints);
+        return new Fire(fireImage, position, options, getDamagePoints());
     }
 
     @Override
