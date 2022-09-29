@@ -131,16 +131,16 @@ public abstract class MovingObject extends GameObject implements Movable {
     }
 
     /**
-     * Set the image of the game object.
-     * @param image Image of the game object as a integer.
+     * Make the object face left.
      */
-    public void setImage(int image) {
-        if (image == 0) {
-            isLeft = true;
-        } else if (image == 1) {
-            isLeft = false;
-        } else {
-            throw new IllegalArgumentException("Invalid image index/integer");
-        }
+    public void faceLeft() {
+        isLeft = true;
+    }
+
+    /**
+     * Make the object face right.
+     */
+    public void faceRight() {
+        isLeft = false;
     }
 }

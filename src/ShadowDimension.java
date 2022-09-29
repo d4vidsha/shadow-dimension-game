@@ -150,7 +150,13 @@ public class ShadowDimension extends AbstractGame {
 
                             // randomly choose which direction the demon faces in the beginning
                             int face = (int) (Math.random() * 2);
-                            demon.setImage(face);
+                            if (face == 0) {
+                                demon.faceLeft();
+                            } else if (face == 1) {
+                                demon.faceRight();
+                            } else {
+                                throw new RuntimeException("Invalid face value");
+                            }
                             objects[i] = demon;
                             break;
                         case NAVEC:
