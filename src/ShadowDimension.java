@@ -10,7 +10,7 @@ import java.util.*;
 
 public class ShadowDimension extends AbstractGame {
 
-    // the total number of frames rendered so far
+    // the total number of frames rendered since the game started
     public static int frames = 0;
 
     private static final String FONT_PATH = "res/frostbite.ttf";
@@ -411,8 +411,8 @@ public class ShadowDimension extends AbstractGame {
             stage = GAME_OVER_STAGE;
         }
 
-        // check if player hit a wall or sinkhole
-        if (player.collides(gameObjects, Sinkhole.class)) {
+        // check if player hit a sinkhole (while not being invincible), or if player hit a wall
+        if (player.collides(gameObjects, Sinkhole.class) && !player.isInvincible()) {
 
             // get specific sinkhole collided with and inflict damage
             Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(gameObjects, Sinkhole.class);
@@ -492,8 +492,8 @@ public class ShadowDimension extends AbstractGame {
             stage = GAME_OVER_STAGE;
         }
 
-        // check if player hit a wall, sinkhole or tree
-        if (player.collides(gameObjects, Sinkhole.class)) {
+        // check if player hit a sinkhole (while not being invincible) or tree
+        if (player.collides(gameObjects, Sinkhole.class) && !player.isInvincible()) {
 
             // get specific sinkhole collided with and inflict damage
             Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(gameObjects, Sinkhole.class);
