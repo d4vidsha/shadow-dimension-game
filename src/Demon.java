@@ -145,7 +145,7 @@ public class Demon extends Entity implements Attacker, Targetable {
      * @return True if the target is in attack range of the demon, false otherwise.
      */
     public boolean isInAttackRadius(GameObject target) {
-        return isInAttackRadius(target.getPosition());
+        return isInAttackRadius(target.getRectangle().centre());
     }
 
     /**
