@@ -3,9 +3,10 @@ import bagel.util.*;
 
 public class Navec extends Demon {
     
-    public static final int ATTACK_RADIUS = 200;                // in pixels
+    public static final int ATTACK_RADIUS = 200;
     public static final int MAX_HEALTH = 2 * Demon.DEFAULT_MAX_HEALTH;
-    public static final int DAMAGE_POINTS = 0;                  // demon has no damage points as fire is its attack
+    public static final int DAMAGE_POINTS = 2 * Demon.DEFAULT_DAMAGE_POINTS;
+    public static final Image NAVEC_FIRE = new Image("res/navec/navecFire.png");
 
     private static final Image[] IMAGES = {
         new Image("res/navec/navecLeft.png"),
@@ -22,6 +23,6 @@ public class Navec extends Demon {
      * @param damagePoints Damage points of Navec.
      */
     public Navec(Point position, double speed, Vector2 direction) {
-        super(IMAGES, ATTACK_RADIUS, MAX_HEALTH, DAMAGE_POINTS, position, speed, direction);
+        super(NAVEC_FIRE, IMAGES, ATTACK_RADIUS, MAX_HEALTH, DAMAGE_POINTS, position, speed, direction);
     }
 }

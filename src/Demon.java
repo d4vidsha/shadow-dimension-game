@@ -6,10 +6,13 @@ public class Demon extends Entity implements Attacker, Targetable {
     public static final double PASSIVE_SPEED = 0;
     public static final int DEFAULT_ATTACK_RADIUS = 150;        // in pixels
     public static final int DEFAULT_MAX_HEALTH = 40;            // default max health of a demon
-    public static final int DEFAULT_DAMAGE_POINTS = 0;          // demon has no damage points as fire is its attack
+    public static final int DEFAULT_DAMAGE_POINTS = 10;
+    public static final Image DEFAULT_DEMON_FIRE = new Image("res/demon/demonFire.png");
+
     private int attackRadius;
     private int maxHealth;
     private int damagePoints;
+    private Image fireImage;
 
     private static final Image[] IMAGES = {
         new Image("res/demon/demonLeft.png"),
@@ -31,12 +34,14 @@ public class Demon extends Entity implements Attacker, Targetable {
         super(IMAGES, position, speed, DEFAULT_MAX_HEALTH, DEFAULT_DAMAGE_POINTS);
         this.direction = direction;
         this.attackRadius = DEFAULT_ATTACK_RADIUS;
+        this.fireImage = DEFAULT_DEMON_FIRE;
     }
 
-    public Demon(Image[] images, int attackRadius, int maxHealth, int damagePoints, Point position, double speed, Vector2 direction) {
+    public Demon(Image fireImage, Image[] images, int attackRadius, int maxHealth, int damagePoints, Point position, double speed, Vector2 direction) {
         super(images, position, speed, maxHealth, damagePoints);
         this.direction = direction;
         this.attackRadius = attackRadius;
+        this.fireImage = fireImage;
     }
 
     /**
@@ -119,7 +124,6 @@ public class Demon extends Entity implements Attacker, Targetable {
         // if the demon is invincible, do not take damage, otherwise take damage and become invincible
         if (!isInvincible()) {
             this.setHealth(this.getHealth() - damage);
-            System.out.println("Demon health: " + this.getHealth());
             this.invincibleTimer = new Timer(ShadowDimension.frames, INVINCIBLE_MS / MS_TO_SEC);
             setImages(images[IMG_ABILITY_LEFT], images[IMG_ABILITY_RIGHT]);
         }
@@ -162,8 +166,31 @@ public class Demon extends Entity implements Attacker, Targetable {
     /**
      * Shoot fire at the target.
      */
-    public void shootFireAt(GameObject target) {
-        // TO DO
+    public Fire shootFireAt(GameObject target) {
+        // if the demon is not in attack range of the target, do not shoot fire
+        if (!isInAttackRadius(target)) {
+            return null;
+        }
+
+        // if the demon is in attack range of the target, shoot fire
+        DrawOptions options = new DrawOptions();
+        Point position;
+        if (target.getPosition().x <= this.getPosition().x && target.getPosition().y <= this.getPosition().y) {
+            options.setRotation(2 * Math.PI / 4 * 0);
+            position = new Point(getRectangle().topLeft().x - fireImage.getWidth(), getRectangle().topLeft().y - fireImage.getHeight());
+        } else if (target.getPosition().x <= this.getPosition().x && target.getPosition().y > this.getPosition().y) {
+            options.setRotation(2 * Math.PI / 4 * 3);
+            position = new Point(getRectangle().bottomLeft().x - fireImage.getWidth(), getRectangle().bottomLeft().y);
+        } else if (target.getPosition().x > this.getPosition().x && target.getPosition().y <= this.getPosition().y) {
+            options.setRotation(2 * Math.PI / 4 * 1);
+            position = new Point(getRectangle().topRight().x, getRectangle().topRight().y - fireImage.getHeight());
+        } else if (target.getPosition().x > this.getPosition().x && target.getPosition().y > this.getPosition().y) {
+            options.setRotation(2 * Math.PI / 4 * 2);
+            position = new Point(getRectangle().bottomRight().x, getRectangle().bottomRight().y);
+        } else {
+            return null;
+        }
+        return new Fire(fireImage, position, options, damagePoints);
     }
 
     @Override

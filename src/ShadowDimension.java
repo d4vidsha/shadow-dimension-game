@@ -353,6 +353,17 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
+     * Add an object to the array of game objects.
+     * @param objects Array of game objects.
+     * @param gameObject Object to add.
+     */
+    public GameObject[] addGameObject(GameObject[] objects, GameObject gameObject) {
+        ArrayList<GameObject> objectsList = new ArrayList<>(Arrays.asList(objects));
+        objectsList.add(gameObject);
+        return objectsList.toArray(new GameObject[objectsList.size()]);
+    }
+
+    /**
      * Game message screen for the game.
      * @param message Message to display.
      */
@@ -609,7 +620,11 @@ public class ShadowDimension extends AbstractGame {
             Demon demon = (Demon) gameObject;
             if (demon.isInAttackRadius(player)) {
                 demon.attack();
-                demon.shootFireAt(player);
+                Fire fire = demon.shootFireAt(player);
+                fire.draw();
+                if (player.collides(fire)) {
+                    fire.inflictDamageTo(player);
+                }
             }
         }
     }

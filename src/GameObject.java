@@ -40,6 +40,21 @@ public abstract class GameObject {
     }
 
     /**
+     * Draw the object to the screen given a boundary and draw options. If the object is outside the boundary,
+     * an exception will be thrown.
+     * @param boundary Boundary to draw the object in.
+     * @param options Draw options to draw the object with.
+     */
+    public void draw(Boundary boundary, DrawOptions options) {
+        Point position = getPosition();
+        if (boundary.contains(position)) {
+            image.drawFromTopLeft(position.x, position.y, options);
+        } else {
+            throw new RuntimeException("Position is outside of boundary");
+        }
+    }
+
+    /**
      * Get the position of the game object.
      * @return Position of the game object as a point.
      */
@@ -105,11 +120,20 @@ public abstract class GameObject {
      */
     public boolean collides(GameObject[] gameObjects, Class<?> type) {
         for (GameObject gameObject : gameObjects) {
-            if (gameObject.getClass() == type && gameObject.getRectangle().intersects(getRectangle())) {
+            if (gameObject.getClass() == type && collides(gameObject)) {
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * Check if the game object collides with another game object.
+     * @param gameObject Game object to check collision with.
+     * @return True if the game object collides with another game object, false otherwise.
+     */
+    public boolean collides(GameObject gameObject) {
+        return gameObject.getRectangle().intersects(getRectangle());
     }
 
     /**

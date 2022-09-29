@@ -10,9 +10,9 @@ public class Message {
     public static final Font FONT15 = new Font(FONT_PATH, 15);
 
     // colours
-    protected static final Colour GREEN = new Colour(0, 0.8, 0.2);
-    protected static final Colour ORANGE = new Colour(0.9, 0.6, 0);
-    protected static final Colour RED = new Colour(1, 0, 0);
+    public static final Colour GREEN = new Colour(0, 0.8, 0.2);
+    public static final Colour ORANGE = new Colour(0.9, 0.6, 0);
+    public static final Colour RED = new Colour(1, 0, 0);
 
     private final Point position;
     private final String text;

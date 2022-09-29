@@ -1,7 +1,7 @@
 import bagel.*;
 import bagel.util.*;
 
-public class Sinkhole extends GameObject {
+public class Sinkhole extends GameObject implements Attacker {
 
     private static final Image IMAGE = new Image("res/sinkhole.png");
     private final int damagePoints;
@@ -39,10 +39,19 @@ public class Sinkhole extends GameObject {
      * Inflict damage to the player.
      * @param player Player to inflict damage to.
      */
-    public void inflictDamageTo(Player player) {
-        player.takeDamage(damagePoints);
+    public void inflictDamageTo(Targetable target) {
+        target.takeDamage(damagePoints);
+        Player player = (Player) target;
         System.out.println("Sinkhole inflicted " + damagePoints + " damage points on " + player.getName()
             + ". " + player.getName() + "'s current health: " + player.getHealth() + "/" + player.getMaxHealth());
+    }
+
+    /**
+     * Attack.
+     */
+    @Override
+    public void attack() {
+        System.out.println("Sinkhole is dealing damage");
     }
 
     /**
