@@ -447,18 +447,25 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
+     * Update timescale speeds for all the moving game objects.
+     */
+    public void updateTimescale() {
+        for (GameObject gameObject : gameObjects) {
+            if (!(gameObject instanceof MovingObject)) {
+                continue;
+            }
+            MovingObject movingObject = (MovingObject) gameObject;
+            movingObject.timescaleSpeed(timescale);
+        }
+    }
+
+    /**
      * Increase timescale for the game.
      */
     public void increaseTimescale() {
         if (timescale < MAX_TIMESCALE) {
             timescale++;
-            for (GameObject gameObject : gameObjects) {
-                if (!(gameObject instanceof MovingObject)) {
-                    continue;
-                }
-                MovingObject movingObject = (MovingObject) gameObject;
-                movingObject.timescaleSpeed(timescale);
-            }
+            updateTimescale();
         }
     }
 
@@ -468,13 +475,7 @@ public class ShadowDimension extends AbstractGame {
     public void decreaseTimescale() {
         if (timescale > MIN_TIMESCALE) {
             timescale--;
-            for (GameObject gameObject : gameObjects) {
-                if (!(gameObject instanceof MovingObject)) {
-                    continue;
-                }
-                MovingObject movingObject = (MovingObject) gameObject;
-                movingObject.timescaleSpeed(timescale);
-            }
+            updateTimescale();
         }
     }
 
