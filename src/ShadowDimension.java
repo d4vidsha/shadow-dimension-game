@@ -63,9 +63,6 @@ public class ShadowDimension extends AbstractGame {
     private Boundary boundary;
     private GameObject[] objects;
     private GameObject[] gameObjects;
-    // private GameObject[] sinkholes;
-    // private GameObject[] walls;
-    // private GameObject[] trees;
     private Timer level0EndScreen;
 
     public ShadowDimension() {
@@ -280,66 +277,6 @@ public class ShadowDimension extends AbstractGame {
         return (Player) objects[0];
     }
 
-    // /**
-    //  * Get the walls from the array of all objects.
-    //  * @param objects Array of game objects.
-    //  * @return Array of walls.
-    //  */
-    // public GameObject[] getWalls(GameObject[] objects) {
-    //     ArrayList<GameObject> walls = new ArrayList<>();
-    //     for (GameObject gameObject : objects) {
-    //         if (gameObject instanceof Wall) {
-    //             walls.add(gameObject);
-    //         }
-    //     }
-    //     return walls.toArray(new GameObject[walls.size()]);
-    // }
-
-    // /**
-    //  * Get the sinkholes from the array of all objects.
-    //  * @param objects Array of game objects.
-    //  * @return Array of sinkholes.
-    //  */
-    // public GameObject[] getSinkholes(GameObject[] objects) {
-    //     ArrayList<GameObject> sinkholes = new ArrayList<>();
-    //     for (GameObject gameObject : objects) {
-    //         if (gameObject instanceof Sinkhole) {
-    //             sinkholes.add(gameObject);
-    //         }
-    //     }
-    //     return sinkholes.toArray(new GameObject[sinkholes.size()]);
-    // }
-
-    // /**
-    //  * Get the trees from the array of all objects.
-    //  * @param objects Array of game objects.
-    //  * @return Array of trees.
-    //  */
-    // public GameObject[] getTrees(GameObject[] objects) {
-    //     ArrayList<GameObject> trees = new ArrayList<>();
-    //     for (GameObject gameObject : objects) {
-    //         if (gameObject instanceof Tree) {
-    //             trees.add(gameObject);
-    //         }
-    //     }
-    //     return trees.toArray(new GameObject[trees.size()]);
-    // }
-
-    // /**
-    //  * Get the demons from the array of all objects.
-    //  * @param objects
-    //  * @return
-    //  */
-    // public GameObject[] getDemons(GameObject[] objects) {
-    //     ArrayList<GameObject> demons = new ArrayList<>();
-    //     for (GameObject object : objects) {
-    //         if (object instanceof Demon) {
-    //             demons.add(object);
-    //         }
-    //     }
-    //     return demons.toArray(new GameObject[demons.size()]);
-    // }
-
     /**
      * Remove the object from the array of game objects.
      * @param objects Array of game objects.
@@ -414,8 +351,6 @@ public class ShadowDimension extends AbstractGame {
         boundary = readBoundary(LEVEL0_CSV);
         objects = readObjects(LEVEL0_CSV, LEVEL0_MAX_OBJECTS);
         gameObjects = getGameObjects();
-        // sinkholes = getSinkholes(gameObjects);
-        // walls = getWalls(gameObjects);
     }
 
     /**
@@ -425,9 +360,6 @@ public class ShadowDimension extends AbstractGame {
         boundary = readBoundary(LEVEL1_CSV);
         objects = readObjects(LEVEL1_CSV, LEVEL1_MAX_OBJECTS);
         gameObjects = getGameObjects();
-        // sinkholes = getSinkholes(gameObjects);
-        // walls = getWalls(gameObjects);
-        // trees = getTrees(gameObjects);
     }
 
     /**
