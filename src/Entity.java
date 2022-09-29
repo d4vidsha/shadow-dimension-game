@@ -105,6 +105,10 @@ public abstract class Entity extends MovingObject {
         return health <= 0;
     }
 
+    /**
+     * Check if the entity is invincible.
+     * @return True if the entity is invincible, false otherwise.
+     */
     public boolean isInvincible() {
         return invincibleTimer != null && !invincibleTimer.isFinished(ShadowDimension.frames);
     }

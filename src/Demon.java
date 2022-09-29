@@ -117,10 +117,6 @@ public class Demon extends Entity implements Attacker, Targetable {
     @Override
     public void setState(int state) {
         this.state = state;
-        
-        // if (state == ATTACK) {
-            
-        // }
     }
 
     @Override

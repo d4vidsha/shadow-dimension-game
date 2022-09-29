@@ -18,6 +18,14 @@ public class Fire extends GameObject implements Attacker {
     }
 
     /**
+     * Get the damage points of the fire.
+     * @return Damage points of the fire as an integer.
+     */
+    public int getDamagePoints() {
+        return damagePoints;
+    }
+
+    /**
      * Draw the fire to the screen.
      */
     public void draw() {
