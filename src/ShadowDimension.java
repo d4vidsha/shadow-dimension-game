@@ -13,6 +13,12 @@ public class ShadowDimension extends AbstractGame {
     // the total number of frames rendered since the game started
     public static int frames = 0;
 
+    // timescale
+    public static final int DEFAULT_TIMESCALE = 0;
+    public static final int MAX_TIMESCALE = 3;
+    public static final int MIN_TIMESCALE = -3;
+    public static int timescale = DEFAULT_TIMESCALE;
+
     private static final String FONT_PATH = "res/frostbite.ttf";
     public final Font FONT75 = new Font(FONT_PATH, 75);
     public final Font FONT40 = new Font(FONT_PATH, 40);
@@ -441,6 +447,38 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
+     * Increase timescale for the game.
+     */
+    public void increaseTimescale() {
+        if (timescale < MAX_TIMESCALE) {
+            timescale++;
+            for (GameObject gameObject : gameObjects) {
+                if (!(gameObject instanceof MovingObject)) {
+                    continue;
+                }
+                MovingObject movingObject = (MovingObject) gameObject;
+                movingObject.timescaleSpeed(timescale);
+            }
+        }
+    }
+
+    /**
+     * Decrease timescale for the game.
+     */
+    public void decreaseTimescale() {
+        if (timescale > MIN_TIMESCALE) {
+            timescale--;
+            for (GameObject gameObject : gameObjects) {
+                if (!(gameObject instanceof MovingObject)) {
+                    continue;
+                }
+                MovingObject movingObject = (MovingObject) gameObject;
+                movingObject.timescaleSpeed(timescale);
+            }
+        }
+    }
+
+    /**
      * The second level of the game.
      * @param input Input from the user which controls the player.
      * @param player Player object that is moved.
@@ -461,6 +499,13 @@ public class ShadowDimension extends AbstractGame {
         // move the player, demons and Navec
         player.update(input, boundary);
         player.checkStates();
+
+        // timescale controls
+        if (input.wasPressed(Keys.L)) {
+            increaseTimescale();
+        } else if (input.wasPressed(Keys.K)) {
+            decreaseTimescale();
+        }
 
         // move demons
         for (GameObject object : gameObjects) {
@@ -531,7 +576,7 @@ public class ShadowDimension extends AbstractGame {
 
         // check if any demons are dead or if they're not invincible anymore
         for (GameObject gameObject : gameObjects) {
-            if (!(gameObject instanceof Demon) && !(gameObject instanceof Navec)) {
+            if (!(gameObject instanceof Demon)) {
                 continue;
             }
             Demon demon = (Demon) gameObject;
@@ -546,7 +591,7 @@ public class ShadowDimension extends AbstractGame {
 
         // check if demons should attack
         for (GameObject gameObject : gameObjects) {
-            if (!(gameObject instanceof Demon) && !(gameObject instanceof Navec)) {
+            if (!(gameObject instanceof Demon)) {
                 continue;
             }
             Demon demon = (Demon) gameObject;

@@ -3,7 +3,8 @@ import bagel.util.*;
 
 public abstract class MovingObject extends GameObject implements Movable {
     
-    private final double speed;
+    private final double originalSpeed;
+    private double speed;
     private Image imageLeft;
     private Image imageRight;
     private Point prevPos;
@@ -21,6 +22,7 @@ public abstract class MovingObject extends GameObject implements Movable {
         this.imageLeft = imageLeft;
         this.imageRight = imageRight;
         this.prevPos = position;
+        this.originalSpeed = speed;
         this.speed = speed;
         this.isLeft = false;
     }
@@ -39,6 +41,14 @@ public abstract class MovingObject extends GameObject implements Movable {
      */
     public double getSpeed() {
         return speed;
+    }
+
+    /**
+     * Set the object's speed.
+     * @param speed Object's speed as an integer.
+     */
+    public void setSpeed(double speed) {
+        this.speed = speed;
     }
 
     /**
@@ -142,5 +152,13 @@ public abstract class MovingObject extends GameObject implements Movable {
      */
     public void faceRight() {
         isLeft = false;
+    }
+
+    public void timescaleSpeed(int timescale) {
+        if (timescale >= 0) {
+            setSpeed(originalSpeed * Math.pow(1.5, Math.abs(timescale)));
+        } else {
+            setSpeed(originalSpeed * Math.pow(0.5, Math.abs(timescale)));
+        }
     }
 }
