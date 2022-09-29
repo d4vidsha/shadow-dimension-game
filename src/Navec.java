@@ -35,7 +35,7 @@ public class Navec extends Entity implements Attacker, Targetable  {
      * Inflict damage to the target.
      */
     @Override
-    public void inflictDamage(Targetable target) {
+    public void inflictDamageTo(Targetable target) {
         target.takeDamage(getDamagePoints());
     }
 

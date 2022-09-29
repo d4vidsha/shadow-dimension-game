@@ -3,6 +3,17 @@ import bagel.util.*;
 
 public class Message {
 
+    private static final String FONT_PATH = "res/frostbite.ttf";
+    public static final Font FONT75 = new Font(FONT_PATH, 75);
+    public static final Font FONT40 = new Font(FONT_PATH, 40);
+    public static final Font FONT30 = new Font(FONT_PATH, 30);
+    public static final Font FONT15 = new Font(FONT_PATH, 15);
+
+    // colours
+    protected static final Colour GREEN = new Colour(0, 0.8, 0.2);
+    protected static final Colour ORANGE = new Colour(0.9, 0.6, 0);
+    protected static final Colour RED = new Colour(1, 0, 0);
+
     private final Point position;
     private final String text;
     private final Font font;
@@ -13,7 +24,7 @@ public class Message {
      * @param text The contents of the message.
      */
     public Message(Font font, String text) {
-        this.position = new Point((Window.getWidth() - font.getWidth(text))/2.0, Window.getHeight()/2.0);
+        this.position = new Point((Window.getWidth() - font.getWidth(text)) / 2.0, Window.getHeight() / 2.0);
         this.text = text;
         this.font = font;
     }

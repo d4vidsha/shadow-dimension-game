@@ -4,7 +4,7 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Skeleton Code for SWEN20003 Project 1, Semester 2, 2022
+ * Skeleton Code for SWEN20003 Project 2, Semester 2, 2022
  * @author David Sha
  */
 
@@ -12,6 +12,10 @@ public class ShadowDimension extends AbstractGame {
 
     // the total number of frames rendered so far
     public static int frames = 0;
+
+    private static final String FONT_PATH = "res/frostbite.ttf";
+    public final Font FONT75 = new Font(FONT_PATH, 75);
+    public final Font FONT40 = new Font(FONT_PATH, 40);
 
     // constants
     private static final int WINDOW_WIDTH = 1024;
@@ -31,12 +35,6 @@ public class ShadowDimension extends AbstractGame {
         Vector2.down
     };
 
-    // fonts
-    private static final String FONT_PATH = "res/frostbite.ttf";
-    private final Font FONT75 = new Font(FONT_PATH, 75);
-    private final Font FONT40 = new Font(FONT_PATH, 40);
-    private final Font FONT30 = new Font(FONT_PATH, 30);
-
     // game title
     private static final double GAME_TITLE_X = 260;
     private static final double GAME_TITLE_Y = 250;
@@ -47,11 +45,6 @@ public class ShadowDimension extends AbstractGame {
     private static final int GAME_WON_STAGE = -1;
     private static final int LEVEL0_STAGE = 0;
     private static final int LEVEL1_STAGE = 1;
-
-    // colours
-    private static final Colour GREEN = new Colour(0, 0.8, 0.2);
-    private static final Colour ORANGE = new Colour(0.9, 0.6, 0);
-    private static final Colour RED = new Colour(1, 0, 0);
 
     // game objects
     private static final String PLAYER = "Fae";
@@ -146,7 +139,7 @@ public class ShadowDimension extends AbstractGame {
                             // determine a random direction of left, right, up or down between 0 and 3
                             int direction = (int) (Math.random() * 4);
 
-                            Demon demon = new Demon(pos, speed, 100, 10, DIRECTIONS[direction]);
+                            Demon demon = new Demon(pos, speed, DIRECTIONS[direction]);
 
                             // randomly choose which direction the demon faces in the beginning
                             int face = (int) (Math.random() * 2);
@@ -248,28 +241,6 @@ public class ShadowDimension extends AbstractGame {
      */
     public GameObject[] getGameObjects() {
         return Arrays.copyOfRange(objects, 1, objects.length);
-    }
-
-    /**
-     * Draw the health bar for the player.
-     * @param player Player object to draw the health bar for.
-     */
-    private void drawHealthBar(Player player) {
-        int health = player.getHealthPercentage();
-        Message healthBar = new Message(FONT30, player.getHealthPercentage() + "%", new Point(20, 25));
-        DrawOptions drawOptions = new DrawOptions();
-
-        if (65 <= health && health <= 100) {
-            drawOptions.setBlendColour(GREEN);
-        } else if (35 <= health && health < 65) {
-            drawOptions.setBlendColour(ORANGE);
-        } else if (0 <= health && health < 35) {
-            drawOptions.setBlendColour(RED);
-        } else {
-            System.out.println("Health percentage out of range");
-            System.exit(1);
-        }
-        healthBar.draw(drawOptions);
     }
 
     /**
@@ -479,7 +450,7 @@ public class ShadowDimension extends AbstractGame {
 
         // draw everything
         drawBackground(LEVEL0_BACKGROUND);
-        drawHealthBar(player);
+        HealthBar.drawHealthBar(player);
         player.draw(boundary);
         drawObjects(gameObjects);
 
@@ -492,8 +463,8 @@ public class ShadowDimension extends AbstractGame {
         if (player.collides(gameObjects, Sinkhole.class)) {
 
             // get specific sinkhole collided with and inflict damage
-            Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(gameObjects);
-            sinkhole.inflictDamage(player);
+            Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(gameObjects, Sinkhole.class);
+            sinkhole.inflictDamageTo(player);
 
             // remove sinkhole from game
             gameObjects = removeGameObject(gameObjects, sinkhole);
@@ -501,7 +472,7 @@ public class ShadowDimension extends AbstractGame {
         } else if (player.collides(gameObjects, Wall.class)) {
 
             // block player from moving
-            Wall wall = (Wall) player.getCollidedObject(gameObjects);
+            Wall wall = (Wall) player.getCollidedObject(gameObjects, Wall.class);
             wall.block(player);
         }
 
@@ -560,7 +531,7 @@ public class ShadowDimension extends AbstractGame {
 
         // draw everything
         drawBackground(LEVEL1_BACKGROUND);
-        drawHealthBar(player);
+        HealthBar.drawHealthBar(player);
         player.draw(boundary);
         drawObjects(gameObjects);
 
@@ -573,8 +544,8 @@ public class ShadowDimension extends AbstractGame {
         if (player.collides(gameObjects, Sinkhole.class)) {
 
             // get specific sinkhole collided with and inflict damage
-            Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(gameObjects);
-            sinkhole.inflictDamage(player);
+            Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(gameObjects, Sinkhole.class);
+            sinkhole.inflictDamageTo(player);
 
             // remove sinkhole from game
             gameObjects = removeGameObject(gameObjects, sinkhole);
@@ -582,7 +553,7 @@ public class ShadowDimension extends AbstractGame {
         } else if (player.collides(gameObjects, Tree.class)) {
 
             // block player from moving
-            Tree tree = (Tree) player.getCollidedObject(gameObjects);
+            Tree tree = (Tree) player.getCollidedObject(gameObjects, Tree.class);
             tree.block(player);
         }
         
@@ -590,12 +561,14 @@ public class ShadowDimension extends AbstractGame {
         if (input.wasPressed(Keys.A)) {
             player.attack();
             if (player.collides(gameObjects, Demon.class) && player.isAttacking()) {
-                Demon demon = (Demon) player.getCollidedObject(gameObjects);
-                player.inflictDamage(demon);
+                Demon demon = (Demon) player.getCollidedObject(gameObjects, Demon.class);
+                if (!demon.isInvincible()) {
+                    player.inflictDamageTo(demon);
+                }
             }
         }
 
-        // check if any demons are dead
+        // check if any demons are dead or if they're not invincible anymore
         for (GameObject gameObject : gameObjects) {
             if (!(gameObject instanceof Demon)) {
                 continue;
@@ -603,6 +576,19 @@ public class ShadowDimension extends AbstractGame {
             Demon demon = (Demon) gameObject;
             if (demon.getHealthPercentage() <= 0) {
                 gameObjects = removeGameObject(gameObjects, demon);
+            }
+            demon.checkStates();
+        }
+
+        // check if demons should attack
+        for (GameObject gameObject : gameObjects) {
+            if (!(gameObject instanceof Demon)) {
+                continue;
+            }
+            Demon demon = (Demon) gameObject;
+            if (demon.isInAttackRadius(player)) {
+                demon.attack();
+                demon.shootFireAt(player);
             }
         }
     }

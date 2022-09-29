@@ -2,7 +2,7 @@ import bagel.*;
 import bagel.util.*;
 
 public class HealthBar extends Message {
-    
+
     /**
      * Constructor for HealthBar class.
      * @param font Font of the health bar.
@@ -11,5 +11,51 @@ public class HealthBar extends Message {
      */
     public HealthBar(Font font, String text, Point position) {
         super(font, text, position);
+    }
+
+    /**
+     * Draw the health bar for the player.
+     * @param player Player object to draw the health bar for.
+     */
+    public static void drawHealthBar(Player player) {
+        int health = player.getHealthPercentage();
+        Message healthBar = new Message(FONT30, player.getHealthPercentage() + "%", new Point(20, 25));
+        DrawOptions drawOptions = new DrawOptions();
+
+        if (65 <= health && health <= 100) {
+            drawOptions.setBlendColour(GREEN);
+        } else if (35 <= health && health < 65) {
+            drawOptions.setBlendColour(ORANGE);
+        } else if (0 <= health && health < 35) {
+            drawOptions.setBlendColour(RED);
+        } else {
+            System.out.println("Health percentage out of range");
+            System.exit(1);
+        }
+        healthBar.draw(drawOptions);
+    }
+
+    /**
+     * Draw the health bar for an entity.
+     * @param entity Entity object to draw the health bar for.
+     */
+    public static void drawHealthBar(Entity entity) {
+        int health = entity.getHealthPercentage();
+        Message healthBar = new Message(FONT15, 
+                                        entity.getHealthPercentage() + "%", 
+                                        new Point(entity.getPosition().x, entity.getPosition().y - 6));
+        DrawOptions drawOptions = new DrawOptions();
+
+        if (65 <= health && health <= 100) {
+            drawOptions.setBlendColour(GREEN);
+        } else if (35 <= health && health < 65) {
+            drawOptions.setBlendColour(ORANGE);
+        } else if (0 <= health && health < 35) {
+            drawOptions.setBlendColour(RED);
+        } else {
+            System.out.println("Health percentage out of range");
+            System.exit(1);
+        }
+        healthBar.draw(drawOptions);
     }
 }

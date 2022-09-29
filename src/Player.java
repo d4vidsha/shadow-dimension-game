@@ -85,7 +85,7 @@ public class Player extends Entity implements Attacker, Targetable {
      * @param target Target to inflict damage to.
      */
     @Override
-    public void inflictDamage(Targetable target) {
+    public void inflictDamageTo(Targetable target) {
         target.takeDamage(DAMAGE_POINTS);
         System.out.println("Player inflicted " + DAMAGE_POINTS + " damage points");
     }

@@ -104,4 +104,8 @@ public abstract class Entity extends MovingObject {
     public boolean isDead() {
         return health <= 0;
     }
+
+    public boolean isInvincible() {
+        return invincibleTimer != null && !invincibleTimer.isFinished(ShadowDimension.frames);
+    }
 }
