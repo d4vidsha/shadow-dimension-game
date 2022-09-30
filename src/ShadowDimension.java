@@ -594,7 +594,7 @@ public class ShadowDimension extends AbstractGame {
         }
 
         // ensure player does not get stuck on a barrier
-        makeAttackPositionValid(player, gameObjects);
+        // makeAttackPositionValid(player, gameObjects);
     }
     
     /**
