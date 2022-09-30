@@ -1,5 +1,6 @@
 import bagel.*;
 import bagel.util.*;
+import java.util.*;
 
 public abstract class GameObject {
 
@@ -148,5 +149,20 @@ public abstract class GameObject {
             }
         }
         return null;
+    }
+
+    /**
+     * Get the collided objects from a given array of game objects.
+     * @param gameObjects Array of game objects to check collision with.
+     * @return Array of collided game objects, if any. Otherwise, null.
+     */
+    public ArrayList<GameObject> getCollidedObjects(GameObject[] gameObjects, Class<?> type) {
+        ArrayList<GameObject> collidedObjects = new ArrayList<>();
+        for (GameObject gameObject : gameObjects) {
+            if (gameObject.getClass() == type && gameObject.getRectangle().intersects(this.getRectangle())) {
+                collidedObjects.add(gameObject);
+            }
+        }
+        return collidedObjects;
     }
 }
