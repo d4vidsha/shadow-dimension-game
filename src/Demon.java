@@ -36,7 +36,8 @@ public class Demon extends Entity implements Attacker, Targetable {
         this.fireImage = DEFAULT_DEMON_FIRE;
     }
 
-    public Demon(Image fireImage, Image[] images, int attackRadius, int maxHealth, int damagePoints, Point position, double speed, Vector2 direction, String name) {
+    public Demon(Image fireImage, Image[] images, int attackRadius, int maxHealth, int damagePoints, 
+                    Point position, double speed, Vector2 direction, String name) {
         super(images, position, speed, maxHealth, damagePoints, name);
         this.direction = direction;
         this.attackRadius = attackRadius;
@@ -142,23 +143,27 @@ public class Demon extends Entity implements Attacker, Targetable {
 
         // if the demon is in attack range of the target, shoot fire
         DrawOptions options = new DrawOptions();
-        Point position;
+        double x, y;
         if (target.getPosition().x <= this.getPosition().x && target.getPosition().y <= this.getPosition().y) {
             options.setRotation(2 * Math.PI / 4 * 0);
-            position = new Point(getRectangle().topLeft().x - fireImage.getWidth(), getRectangle().topLeft().y - fireImage.getHeight());
+            x = getRectangle().topLeft().x - fireImage.getWidth();
+            y = getRectangle().topLeft().y - fireImage.getHeight();
         } else if (target.getPosition().x <= this.getPosition().x && target.getPosition().y > this.getPosition().y) {
             options.setRotation(2 * Math.PI / 4 * 3);
-            position = new Point(getRectangle().bottomLeft().x - fireImage.getWidth(), getRectangle().bottomLeft().y);
+            x = getRectangle().bottomLeft().x - fireImage.getWidth();
+            y = getRectangle().bottomLeft().y;
         } else if (target.getPosition().x > this.getPosition().x && target.getPosition().y <= this.getPosition().y) {
             options.setRotation(2 * Math.PI / 4 * 1);
-            position = new Point(getRectangle().topRight().x, getRectangle().topRight().y - fireImage.getHeight());
+            x = getRectangle().topRight().x;
+            y = getRectangle().topRight().y - fireImage.getHeight();
         } else if (target.getPosition().x > this.getPosition().x && target.getPosition().y > this.getPosition().y) {
             options.setRotation(2 * Math.PI / 4 * 2);
-            position = new Point(getRectangle().bottomRight().x, getRectangle().bottomRight().y);
+            x = getRectangle().bottomRight().x;
+            y = getRectangle().bottomRight().y;
         } else {
             return null;
         }
-        return new Fire(this, fireImage, position, options, getDamagePoints());
+        return new Fire(this, fireImage, new Point(x, y), options, getDamagePoints());
     }
 
     @Override
