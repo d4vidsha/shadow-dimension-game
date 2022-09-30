@@ -402,34 +402,117 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
+     * Check if player collides with any game objects. If so, handle the collision.
+     * @param player Player object.
+     */
+    private void checkCollisions(Player player) {
+        
+        // check if player hit a sinkhole (while not being invincible)
+        if (player.collides(gameObjects, Sinkhole.class) && !player.isInvincible()) {
+
+            // get specific sinkhole collided with and inflict damage
+            Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(gameObjects, Sinkhole.class);
+            sinkhole.inflictDamageTo(player);
+
+            // remove sinkhole from game
+            gameObjects = removeGameObject(gameObjects, sinkhole);
+        }
+
+        // check if player hit a wall
+        if (player.collides(gameObjects, Wall.class)) {
+
+            // block player from moving
+            Wall wall = (Wall) player.getCollidedObject(gameObjects, Wall.class);
+            wall.block(player);
+        }
+
+        // check if player hit a tree
+        if (player.collides(gameObjects, Tree.class)) {
+
+            // block player from moving
+            Tree tree = (Tree) player.getCollidedObject(gameObjects, Tree.class);
+            tree.block(player);
+        }
+    }
+
+    /**
+     * Check if the player has died. If so, end the game.
+     * @param player Player object.
+     */
+    private void checkPlayerDeath(Player player) {
+        if (player.isDead()) {
+            stage = GAME_OVER_STAGE;
+        }
+    }
+
+    /**
+     * Check if the player has beaten level 0. If so, move to the level 0 end screen.
+     * @param input
+     */
+    private void checkLevel0Completion(Player player) {
+        // if necessary, display winning message and move to next stage after 3 seconds
+        if (player.isAtGate()) {
+            endScreen = true;
+            level0EndScreen = new Timer(frames, LEVEL0_END_SCREEN_WAIT_SECONDS);
+        }
+    }
+
+    /**
+     * Display start screen for level 0 until the player presses space.
+     * @param input Input object.
+     */
+    private void displayLevel0StartScreen(Input input) {
+        startlevel0();
+        if (input.wasPressed(Keys.SPACE)) {
+            startScreen = false;
+        }
+        return;
+    }
+
+    /**
+     * Display end screen for level 0 until time is up.
+     */
+    private void displayLevel0EndScreen() {
+        gameEndMessage("LEVEL COMPLETE!");
+
+        // wait 3 seconds
+        if (level0EndScreen.isFinished(frames)) {
+            // begin next stage
+            stage = LEVEL1_STAGE;
+            prepareLevel = true;
+            startScreen = true;
+            endScreen = false;
+        }
+        
+        return;
+    }
+
+    /**
+     * Display start screen for level 1 until the player presses space.
+     * @param input Input object.
+     */
+    private void displayLevel1StartScreen(Input input) {
+        startlevel1();
+        if (input.wasPressed(Keys.SPACE)) {
+            startScreen = false;
+        }
+        return;
+    }
+
+    /**
      * The first level of the game.
      * @param input Input from the user which controls the player.
      * @param player Player object that is moved.
      */
     private void level0(Input input) {
 
-        // start screen
         if (startScreen) {
-            startlevel0();
-            if (input.wasPressed(Keys.SPACE)) {
-                startScreen = false;
-            }
+            displayLevel0StartScreen(input);
             return;
         }
 
-        // end screen
         if (endScreen) {
-            gameEndMessage("LEVEL COMPLETE!");
-
-            // wait 3 seconds
-            if (level0EndScreen.isFinished(frames)) {
-                // begin next stage
-                stage = LEVEL1_STAGE;
-                prepareLevel = true;
-                startScreen = true;
-                endScreen = false;
-            }
-            
+            displayLevel0EndScreen();
             return;
         }
 
@@ -445,38 +528,12 @@ public class ShadowDimension extends AbstractGame {
         player.draw(boundary);
         drawObjects(gameObjects);
 
-        // check if player is dead
-        if (player.getHealthPercentage() <= 0) {
-            stage = GAME_OVER_STAGE;
-        }
+        // check everything
+        checkPlayerDeath(player);
+        checkCollisions(player);
+        checkLevel0Completion(player);
 
-        // check if player hit a sinkhole (while not being invincible), or if player hit a wall
-        if (player.collides(gameObjects, Sinkhole.class) && !player.isInvincible()) {
-
-            // get specific sinkhole collided with and inflict damage
-            Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(gameObjects, Sinkhole.class);
-            sinkhole.inflictDamageTo(player);
-
-            // remove sinkhole from game
-            gameObjects = removeGameObject(gameObjects, sinkhole);
-
-        } else if (player.collides(gameObjects, Wall.class)) {
-
-            // block player from moving
-            Wall wall = (Wall) player.getCollidedObject(gameObjects, Wall.class);
-            wall.block(player);
-        }
-
-        // if necessary, display winning message and move to next stage after 3 seconds
-        if (getPlayer(objects).isAtGate()) {
-            endScreen = true;
-            level0EndScreen = new Timer(frames, LEVEL0_END_SCREEN_WAIT_SECONDS);
-        }
-
-        // attack if player presses A
-        if (input.wasPressed(Keys.A)) {
-            player.attack();
-        }
+        playerAttack(input, player);
 
         makeAttackPositionValid(player, gameObjects);
     }
@@ -517,35 +574,22 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
-     * The second level of the game.
-     * @param input Input from the user which controls the player.
-     * @param player Player object that is moved.
+     * Given the input, if the "L" key is pressed, increase timescale. If the "K" key is pressed, decrease timescale.
+     * @param input Input from the user.
      */
-    private void level1(Input input) {
-
-        // start screen
-        if (startScreen) {
-            startlevel1();
-            if (input.wasPressed(Keys.SPACE)) {
-                startScreen = false;
-            }
-            return;
-        }
-
-        Player player = getPlayer(objects);
-
-        // move the player, demons and Navec
-        player.update(input, boundary);
-        player.checkStates();
-
-        // timescale controls
+    private void timescaleControls(Input input) {
         if (input.wasPressed(Keys.L)) {
             increaseTimescale();
         } else if (input.wasPressed(Keys.K)) {
             decreaseTimescale();
         }
+    }
 
-        // move demons
+    /**
+     * Move the demons in the game. If demon collides with a barrier, boundary or a sinkhole, it will move in the 
+     * opposite direction.
+     */
+    private void moveDemons() {
         for (GameObject object : gameObjects) {
             if (!(object instanceof Demon)) {
                 continue;
@@ -553,46 +597,68 @@ public class ShadowDimension extends AbstractGame {
             Demon demon = (Demon) object;
             demon.move(demon.getDirection());
 
-            // If the demon hits a barrier, reverse the direction
-            if (demon.collides(gameObjects, Tree.class) || demon.collides(gameObjects, Sinkhole.class) || !boundary.contains(demon.getPosition())) {
+            // if the demon hits a barrier, sinkhole or boundary, reverse the direction
+            if (demon.collides(gameObjects, Tree.class) 
+                || demon.collides(gameObjects, Wall.class)
+                || demon.collides(gameObjects, Sinkhole.class)
+                || !boundary.contains(demon.getPosition())) {
 
-                // Reverse the direction
+                // reverse the direction
                 demon.setDirection(demon.getDirection().mul(-1));
 
-                // Move the demon in the opposite direction
+                // move the demon in the opposite direction
                 demon.move(demon.getDirection());
             }
         }
+    }
 
-        // draw everything
-        drawBackground(LEVEL1_BACKGROUND);
-        HealthBar.drawHealthBar(player);
-        player.draw(boundary);
-        drawObjects(gameObjects);
+    /**
+     * Check if any demons are dead or if they are not invincible anymore. If so, remove them from the game.
+     */
+    private void checkDemons() {
+        for (GameObject gameObject : gameObjects) {
+            if (!(gameObject instanceof Demon)) {
+                continue;
+            }
 
-        // check if player is dead
-        if (player.getHealthPercentage() <= 0) {
-            stage = GAME_OVER_STAGE;
+            Demon demon = (Demon) gameObject;
+            if (demon.isDead()) {
+                if (demon instanceof Navec) {
+                    stage = GAME_WON_STAGE;
+                }
+                gameObjects = removeGameObject(gameObjects, demon);
+            }
+            demon.checkStates();
         }
+    }
 
-        // check if player hit a sinkhole (while not being invincible) or tree
-        if (player.collides(gameObjects, Sinkhole.class) && !player.isInvincible()) {
-
-            // get specific sinkhole collided with and inflict damage
-            Sinkhole sinkhole = (Sinkhole) player.getCollidedObject(gameObjects, Sinkhole.class);
-            sinkhole.inflictDamageTo(player);
-
-            // remove sinkhole from game
-            gameObjects = removeGameObject(gameObjects, sinkhole);
-
-        } else if (player.collides(gameObjects, Tree.class)) {
-
-            // block player from moving
-            Tree tree = (Tree) player.getCollidedObject(gameObjects, Tree.class);
-            tree.block(player);
+    /**
+     * Check if demons should attack if the player is within it's attack radius. If player touches a demon's fire,
+     * inflict damage to the player.
+     * @param player Player object.
+     */
+    public void checkDemonsAttack(Player player) {
+        for (GameObject gameObject : gameObjects) {
+            if (!(gameObject instanceof Demon)) {
+                continue;
+            }
+            Demon demon = (Demon) gameObject;
+            if (demon.isInAttackRadius(player)) {
+                demon.attack();
+                Fire fire = demon.shootFireAt(player);
+                fire.draw();
+                if (player.collides(fire) && !player.isInvincible()) {
+                    fire.inflictDamageTo(player);
+                }
+            }
         }
-        
-        // attack if player presses A
+    }
+
+    /**
+     * Attack if player presses A.
+     * @param input
+     */
+    private void playerAttack(Input input, Player player) {
         if (input.wasPressed(Keys.A)) {
             player.attack();
             if (player.isAttacking()) {
@@ -611,38 +677,42 @@ public class ShadowDimension extends AbstractGame {
                 }
             }
         }
+    }
 
-        // check if any demons are dead or if they're not invincible anymore
-        for (GameObject gameObject : gameObjects) {
-            if (!(gameObject instanceof Demon)) {
-                continue;
-            }
-            Demon demon = (Demon) gameObject;
-            if (demon.getHealthPercentage() <= 0) {
-                if (demon instanceof Navec) {
-                    stage = GAME_WON_STAGE;
-                }
-                gameObjects = removeGameObject(gameObjects, demon);
-            }
-            demon.checkStates();
+    /**
+     * The second level of the game.
+     * @param input Input from the user which controls the player.
+     * @param player Player object that is moved.
+     */
+    private void level1(Input input) {
+
+        if (startScreen) {
+            displayLevel1StartScreen(input);
+            return;
         }
 
-        // check if demons should attack
-        for (GameObject gameObject : gameObjects) {
-            if (!(gameObject instanceof Demon)) {
-                continue;
-            }
-            Demon demon = (Demon) gameObject;
-            if (demon.isInAttackRadius(player)) {
-                demon.attack();
-                Fire fire = demon.shootFireAt(player);
-                fire.draw();
-                if (player.collides(fire) && !player.isInvincible()) {
-                    fire.inflictDamageTo(player);
-                }
-            }
-        }
+        Player player = getPlayer(objects);
+        timescaleControls(input);
+
+        // move the player and demons (including Navec)
+        player.update(input, boundary);
+        player.checkStates();
+        moveDemons();
+
+        // draw everything
+        drawBackground(LEVEL1_BACKGROUND);
+        HealthBar.drawHealthBar(player);
+        player.draw(boundary);
+        drawObjects(gameObjects);
+
+        // check everything
+        checkPlayerDeath(player);
+        checkCollisions(player);
         
+        playerAttack(input, player);
+
+        checkDemons();
+        checkDemonsAttack(player);
         makeAttackPositionValid(player, gameObjects);
     }
 
