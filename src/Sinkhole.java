@@ -44,15 +44,7 @@ public class Sinkhole extends GameObject implements Attacker {
     public void inflictDamageTo(Targetable target) {
         target.takeDamage(damagePoints);
         Player player = (Player) target;
-        System.out.println(String.format(
-            "%s inflicts %d damage points on %s. %s's current health: %d/%d",
-            this.getClass().getSimpleName(), 
-            getDamagePoints(), 
-            player.getName(), 
-            player.getName(), 
-            player.getHealth(), 
-            player.getMaxHealth())
-        );
+        Entity.printDamage(this, player);
     }
 
     /**

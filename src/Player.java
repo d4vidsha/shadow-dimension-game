@@ -16,9 +16,7 @@ public class Player extends Entity implements Attacker, Targetable {
     private static final int SPEED = 2;
     private static final double GATE_X = 950;
     private static final double GATE_Y = 670;
-
-    // instance variables
-    private String name;
+    private static final String PLAYER_NAME = "Fae";
 
     /**
      * Constructor for Player class.
@@ -27,8 +25,7 @@ public class Player extends Entity implements Attacker, Targetable {
      * @param position Position of the player.
      */
     public Player(Point position) {
-        super(IMAGES, position, SPEED, MAX_PLAYER_HEALTH, DAMAGE_POINTS);
-        this.name = "Fae";
+        super(IMAGES, position, SPEED, MAX_PLAYER_HEALTH, DAMAGE_POINTS, PLAYER_NAME);
     }
 
     /**
@@ -65,28 +62,13 @@ public class Player extends Entity implements Attacker, Targetable {
     }
 
     /**
-     * Get the player's name.
-     * @return Player's name.
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * Set the player's name.
-     * @param name Player's name.
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    /**
      * Inflict damage to the target.
      * @param target Target to inflict damage to.
      */
     @Override
     public void inflictDamageTo(Targetable target) {
         target.takeDamage(DAMAGE_POINTS);
+        printDamage(this, target);
     }
 
     /**
@@ -104,7 +86,7 @@ public class Player extends Entity implements Attacker, Targetable {
     @Override
     public void takeDamage(int damage) {
         // if the player is invincible, do not take damage, otherwise take damage and become invincible
-        if (invincibleTimer == null || invincibleTimer.isFinished(ShadowDimension.frames)) {
+        if (!isInvincible()) {
             this.setHealth(this.getHealth() - damage);
             this.invincibleTimer = new Timer(ShadowDimension.frames, INVINCIBLE_MS / MS_TO_SEC);
         }

@@ -5,16 +5,18 @@ public class Fire extends GameObject implements Attacker {
 
     private DrawOptions options;
     private int damagePoints;
+    private final Demon fromDemon;
 
     /**
      * Constructor for Fire class.
      * @param image Image of the fire.
      * @param position Position of the fire.
      */
-    public Fire(Image image, Point position, DrawOptions options, int damagePoints) {
+    public Fire(Demon demon, Image image, Point position, DrawOptions options, int damagePoints) {
         super(image, position);
         this.options = options;
         this.damagePoints = damagePoints;
+        this.fromDemon = demon;
     }
 
     /**
@@ -47,5 +49,6 @@ public class Fire extends GameObject implements Attacker {
     @Override
     public void inflictDamageTo(Targetable target) {
         target.takeDamage(damagePoints);
+        Entity.printDamage(fromDemon, target);
     }
 }

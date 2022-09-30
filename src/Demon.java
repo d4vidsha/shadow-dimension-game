@@ -8,6 +8,7 @@ public class Demon extends Entity implements Attacker, Targetable {
     public static final int DEFAULT_MAX_HEALTH = 40;            // default max health of a demon
     public static final int DEFAULT_DAMAGE_POINTS = 10;
     public static final Image DEFAULT_DEMON_FIRE = new Image("res/demon/demonFire.png");
+    public static final String DEFAULT_DEMON_NAME = "Demon";
 
     private int attackRadius;
     private int maxHealth;
@@ -30,14 +31,14 @@ public class Demon extends Entity implements Attacker, Targetable {
      * @param damagePoints Damage points of the demon.
      */
     public Demon(Point position, double speed, Vector2 direction) {
-        super(IMAGES, position, speed, DEFAULT_MAX_HEALTH, DEFAULT_DAMAGE_POINTS);
+        super(IMAGES, position, speed, DEFAULT_MAX_HEALTH, DEFAULT_DAMAGE_POINTS, DEFAULT_DEMON_NAME);
         this.direction = direction;
         this.attackRadius = DEFAULT_ATTACK_RADIUS;
         this.fireImage = DEFAULT_DEMON_FIRE;
     }
 
-    public Demon(Image fireImage, Image[] images, int attackRadius, int maxHealth, int damagePoints, Point position, double speed, Vector2 direction) {
-        super(images, position, speed, maxHealth, damagePoints);
+    public Demon(Image fireImage, Image[] images, int attackRadius, int maxHealth, int damagePoints, Point position, double speed, Vector2 direction, String name) {
+        super(images, position, speed, maxHealth, damagePoints, name);
         this.direction = direction;
         this.attackRadius = attackRadius;
         this.fireImage = fireImage;
@@ -91,6 +92,7 @@ public class Demon extends Entity implements Attacker, Targetable {
     @Override
     public void inflictDamageTo(Targetable target) {
         target.takeDamage(getDamagePoints());
+        printDamage(this, target);
     }
 
     /**
@@ -171,7 +173,7 @@ public class Demon extends Entity implements Attacker, Targetable {
         } else {
             return null;
         }
-        return new Fire(fireImage, position, options, getDamagePoints());
+        return new Fire(this, fireImage, position, options, getDamagePoints());
     }
 
     @Override

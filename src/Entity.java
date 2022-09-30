@@ -22,6 +22,7 @@ public abstract class Entity extends MovingObject {
     private int health;
     private int maxHealth;
     private int damagePoints;
+    private String name;
     protected int state;
     protected Timer timer;
     protected boolean isTimerSet;
@@ -30,18 +31,35 @@ public abstract class Entity extends MovingObject {
     /**
      * Constructor for Entity class.
      */
-    public Entity(Image[] images, Point position, double speed, int health, int damagePoints) {
+    public Entity(Image[] images, Point position, double speed, int health, int damagePoints, String name) {
         super(images[IMG_LEFT], images[IMG_RIGHT], position, speed);
         this.images = images;
         this.health = health;
         this.maxHealth = health;
         this.damagePoints = damagePoints;
+        this.name = name;
         this.state = IDLE;
         this.isTimerSet = false;
     }
 
     public abstract void setState(int state);
     public abstract void checkStates();
+
+    /**
+     * Get the player's name.
+     * @return Player's name.
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Set the player's name.
+     * @param name Player's name.
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
     /**
      * Get the entity's health.
@@ -111,5 +129,37 @@ public abstract class Entity extends MovingObject {
      */
     public boolean isInvincible() {
         return invincibleTimer != null && !invincibleTimer.isFinished(ShadowDimension.frames);
+    }
+
+    /**
+     * Print inflicted damage to the console. Attacker and Targetable are upcasted to Entity.
+     */
+    public static void printDamage(Attacker A, Targetable B) {
+        Entity attacker = (Entity) A;
+        Entity target = (Entity) B;
+        System.out.println(String.format(
+            "%s inflicts %d damage points on %s. %s's current health: %d/%d",
+            attacker.getName(),
+            attacker.getDamagePoints(),
+            target.getName(),
+            target.getName(),
+            target.getHealth(),
+            target.getMaxHealth())
+        );
+    }
+
+    /**
+     * Print inflicted damage to the console.
+     */
+    public static void printDamage(Sinkhole A, Player B) {
+        System.out.println(String.format(
+            "%s inflicts %d damage points on %s. %s's current health: %d/%d",
+            A.getClass().getSimpleName(),
+            A.getDamagePoints(),
+            B.getName(),
+            B.getName(),
+            B.getHealth(),
+            B.getMaxHealth())
+        );
     }
 }
