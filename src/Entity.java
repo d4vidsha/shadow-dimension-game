@@ -133,6 +133,8 @@ public abstract class Entity extends MovingObject {
 
     /**
      * Print inflicted damage to the console. Attacker and Targetable are upcasted to Entity.
+     * @param attacker Attacker.
+     * @param target Target.
      */
     public static void printDamage(Attacker attacker, Targetable target) {
         Entity A = (Entity) attacker;
@@ -149,7 +151,9 @@ public abstract class Entity extends MovingObject {
     }
 
     /**
-     * Print inflicted damage to the console.
+     * Print inflicted damage to the console for sinkhole and player interaction.
+     * @param A Sinkhole that inflicts damage.
+     * @param B Player that takes damage.
      */
     public static void printDamage(Sinkhole A, Player B) {
         System.out.println(String.format(
