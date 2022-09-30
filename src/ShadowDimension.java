@@ -465,6 +465,7 @@ public class ShadowDimension extends AbstractGame {
     public void increaseTimescale() {
         if (timescale < MAX_TIMESCALE) {
             timescale++;
+            System.out.println("Sped up, Speed: " + timescale);
             updateTimescale();
         }
     }
@@ -475,6 +476,7 @@ public class ShadowDimension extends AbstractGame {
     public void decreaseTimescale() {
         if (timescale > MIN_TIMESCALE) {
             timescale--;
+            System.out.println("Slowed down, Speed: " + timescale);
             updateTimescale();
         }
     }
