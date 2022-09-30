@@ -369,6 +369,39 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
+     * Given a player and the array of game objects, check if the player has overlapped with any barrier objects and
+     * if so, move the player back to the previous unoverlapped position. This overlap usually happens when the player 
+     * is next to a barrier and changes to attack state. Since this is determined by the image, a different attack
+     * image will affect the reliability of this function.
+     * 
+     * This function assumes that the attack image is larger in width than the idle image. Note that it DOES NOT
+     * assume that the attack image is larger in height than the idle image as this is not the case for the current
+     * player images.
+     * 
+     * Without this function, the player would be stuck on the barrier until the player returns to the idle state.
+     * @param player Player object.
+     * @param gameObjects Array of game objects.
+     */
+    private void makeAttackPositionValid(Player player, GameObject[] gameObjects) {
+        if (player.isAttacking()) {
+
+            // ensure player doesn't get stuck on a wall when attacking on the left side of the wall
+            if (player.collides(gameObjects, Wall.class)) {
+                Wall wall = (Wall) player.getCollidedObject(gameObjects, Wall.class);
+                Point newPos = new Point(wall.getPosition().x - player.getImage().getWidth(), player.getPosition().y);
+                player.setPosition(newPos);
+            }
+
+            // ensure player doesn't get stuck on a tree when attacking on the left side of the tree
+            if (player.collides(gameObjects, Tree.class)) {
+                Tree tree = (Tree) player.getCollidedObject(gameObjects, Tree.class);
+                Point newPos = new Point(tree.getPosition().x - player.getImage().getWidth(), player.getPosition().y);
+                player.setPosition(newPos);
+            }
+        }
+    }
+
+    /**
      * The first level of the game.
      * @param input Input from the user which controls the player.
      * @param player Player object that is moved.
@@ -444,6 +477,8 @@ public class ShadowDimension extends AbstractGame {
         if (input.wasPressed(Keys.A)) {
             player.attack();
         }
+
+        makeAttackPositionValid(player, gameObjects);
     }
 
     /**
@@ -607,6 +642,8 @@ public class ShadowDimension extends AbstractGame {
                 }
             }
         }
+        
+        makeAttackPositionValid(player, gameObjects);
     }
 
     /**
