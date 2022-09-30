@@ -602,7 +602,7 @@ public class ShadowDimension extends AbstractGame {
                 demon.attack();
                 Fire fire = demon.shootFireAt(player);
                 fire.draw();
-                if (player.collides(fire)) {
+                if (player.collides(fire) && !player.isInvincible()) {
                     fire.inflictDamageTo(player);
                 }
             }

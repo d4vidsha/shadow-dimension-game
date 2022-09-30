@@ -134,17 +134,17 @@ public abstract class Entity extends MovingObject {
     /**
      * Print inflicted damage to the console. Attacker and Targetable are upcasted to Entity.
      */
-    public static void printDamage(Attacker A, Targetable B) {
-        Entity attacker = (Entity) A;
-        Entity target = (Entity) B;
+    public static void printDamage(Attacker attacker, Targetable target) {
+        Entity A = (Entity) attacker;
+        Entity B = (Entity) target;
         System.out.println(String.format(
             "%s inflicts %d damage points on %s. %s's current health: %d/%d",
-            attacker.getName(),
-            attacker.getDamagePoints(),
-            target.getName(),
-            target.getName(),
-            target.getHealth(),
-            target.getMaxHealth())
+            A.getName(),
+            A.getDamagePoints(),
+            B.getName(),
+            B.getName(),
+            B.getHealth(),
+            B.getMaxHealth())
         );
     }
 

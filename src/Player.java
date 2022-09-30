@@ -53,14 +53,6 @@ public class Player extends Entity implements Attacker, Targetable {
         return pos.x >= GATE_X && pos.y >= GATE_Y;
     }
 
-    /** 
-     * Get maximum health of the player.
-     * @return Maximum health of the player.
-     */
-    public int getMaxHealth() {
-        return MAX_PLAYER_HEALTH;
-    }
-
     /**
      * Inflict damage to the target.
      * @param target Target to inflict damage to.

@@ -11,7 +11,6 @@ public class Demon extends Entity implements Attacker, Targetable {
     public static final String DEFAULT_DEMON_NAME = "Demon";
 
     private int attackRadius;
-    private int maxHealth;
     private Image fireImage;
 
     private static final Image[] IMAGES = {
@@ -70,20 +69,6 @@ public class Demon extends Entity implements Attacker, Targetable {
      */
     public void setAttackRadius(int attackRadius) {
         this.attackRadius = attackRadius;
-    }
-
-    /**
-     * Get the maximum health of the demon.
-     */
-    public int getMaxHealth() {
-        return maxHealth;
-    }
-
-    /**
-     * Set the maximum health of the demon.
-     */
-    public void setMaxHealth(int maxHealth) {
-        this.maxHealth = maxHealth;
     }
 
     /**
