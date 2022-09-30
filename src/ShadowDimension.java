@@ -366,6 +366,7 @@ public class ShadowDimension extends AbstractGame {
         boundary = readBoundary(LEVEL1_CSV);
         objects = readObjects(LEVEL1_CSV, LEVEL1_MAX_OBJECTS);
         gameObjects = getGameObjects();
+        updateTimescale();
     }
 
     /**
@@ -500,45 +501,6 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
-     * The first level of the game.
-     * @param input Input from the user which controls the player.
-     * @param player Player object that is moved.
-     */
-    private void level0(Input input) {
-
-        if (startScreen) {
-            displayLevel0StartScreen(input);
-            return;
-        }
-
-        if (endScreen) {
-            displayLevel0EndScreen();
-            return;
-        }
-
-        Player player = getPlayer(objects);
-
-        // move the player
-        player.update(input, boundary);
-        player.checkStates();
-
-        // draw everything
-        drawBackground(LEVEL0_BACKGROUND);
-        HealthBar.drawHealthBar(player);
-        player.draw(boundary);
-        drawObjects(gameObjects);
-
-        // check everything
-        checkPlayerDeath(player);
-        checkCollisions(player);
-        checkLevel0Completion(player);
-
-        playerAttack(input, player);
-
-        makeAttackPositionValid(player, gameObjects);
-    }
-
-    /**
      * Update timescale speeds for all the moving game objects.
      */
     public void updateTimescale() {
@@ -655,28 +617,74 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
-     * Attack if player presses A.
+     * Attack if player presses A. If in attack state, inflict damage to demons.
      * @param input
      */
     private void playerAttack(Input input, Player player) {
+
+        // trigger attack state
         if (input.wasPressed(Keys.A)) {
             player.attack();
-            if (player.isAttacking()) {
-                if (player.collides(gameObjects, Demon.class)) {
-                    Demon demon = (Demon) player.getCollidedObject(gameObjects, Demon.class);
-                    if (!demon.isInvincible()) {
-                        player.inflictDamageTo(demon);
-                    }
-                }
+        }
 
-                if (player.collides(gameObjects, Navec.class)) {
-                    Navec navec = (Navec) player.getCollidedObject(gameObjects, Navec.class);
-                    if (!navec.isInvincible()) {
-                        player.inflictDamageTo(navec);
-                    }
+        // if player is in attack state, inflict damage to demons
+        if (player.isAttacking()) {
+            ArrayList<GameObject> demons = new ArrayList<GameObject>();
+
+            if (player.collides(gameObjects, Demon.class)) {
+                demons.addAll(player.getCollidedObjects(gameObjects, Demon.class));
+            }
+
+            if (player.collides(gameObjects, Navec.class)) {
+                demons.addAll(player.getCollidedObjects(gameObjects, Navec.class));
+            }
+            
+            for (GameObject gameObject : demons) {
+                Demon demon = (Demon) gameObject;
+                if (!demon.isInvincible()) {
+                    player.inflictDamageTo(demon);
                 }
             }
         }
+
+        // ensure player does not get stuck on a barrier
+        makeAttackPositionValid(player, gameObjects);
+    }
+
+    /**
+     * The first level of the game.
+     * @param input Input from the user which controls the player.
+     * @param player Player object that is moved.
+     */
+    private void level0(Input input) {
+
+        if (startScreen) {
+            displayLevel0StartScreen(input);
+            return;
+        }
+
+        if (endScreen) {
+            displayLevel0EndScreen();
+            return;
+        }
+
+        Player player = getPlayer(objects);
+
+        // move and update the player
+        player.update(input, boundary);
+        playerAttack(input, player);
+
+        // draw everything
+        drawBackground(LEVEL0_BACKGROUND);
+        HealthBar.drawHealthBar(player);
+        drawObjects(gameObjects);
+        player.draw(boundary);
+
+        // check everything
+        player.checkStates();
+        checkCollisions(player);
+        checkPlayerDeath(player);
+        checkLevel0Completion(player);
     }
 
     /**
@@ -696,24 +704,21 @@ public class ShadowDimension extends AbstractGame {
 
         // move the player and demons (including Navec)
         player.update(input, boundary);
-        player.checkStates();
+        playerAttack(input, player);
         moveDemons();
 
         // draw everything
         drawBackground(LEVEL1_BACKGROUND);
         HealthBar.drawHealthBar(player);
-        player.draw(boundary);
         drawObjects(gameObjects);
+        player.draw(boundary);
 
         // check everything
-        checkPlayerDeath(player);
+        player.checkStates();
         checkCollisions(player);
-        
-        playerAttack(input, player);
-
+        checkPlayerDeath(player);
         checkDemons();
         checkDemonsAttack(player);
-        makeAttackPositionValid(player, gameObjects);
     }
 
     /**

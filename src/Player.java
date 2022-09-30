@@ -68,7 +68,9 @@ public class Player extends Entity implements Attacker, Targetable {
      */
     @Override
     public void attack() {
-        setState(ATTACK);
+        if (!isAttacking() && !onCooldown) {
+            setState(ATTACK);
+        }
     }
 
     /**
