@@ -254,6 +254,16 @@ public class ShadowDimension extends AbstractGame {
     public GameObject[] getGameObjects() {
         return Arrays.copyOfRange(objects, 1, objects.length);
     }
+    
+    /**
+     * Get player object from the array of objects. We assume the first object
+     * in the array is the player.
+     * @param objects
+     * @return
+     */
+    private Player getPlayer(GameObject[] objects) {
+        return (Player) objects[0];
+    }
 
     /**
      * Draw the objects in the game given an array of objects.
@@ -274,13 +284,14 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
-     * Get player object from the array of objects. We assume the first object
-     * in the array is the player.
-     * @param objects
-     * @return
+     * Add an object to the array of game objects.
+     * @param objects Array of game objects.
+     * @param gameObject Object to add.
      */
-    private Player getPlayer(GameObject[] objects) {
-        return (Player) objects[0];
+    public GameObject[] addGameObject(GameObject[] objects, GameObject gameObject) {
+        ArrayList<GameObject> objectsList = new ArrayList<>(Arrays.asList(objects));
+        objectsList.add(gameObject);
+        return objectsList.toArray(new GameObject[objectsList.size()]);
     }
 
     /**
@@ -296,77 +307,12 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
-     * Add an object to the array of game objects.
-     * @param objects Array of game objects.
-     * @param gameObject Object to add.
-     */
-    public GameObject[] addGameObject(GameObject[] objects, GameObject gameObject) {
-        ArrayList<GameObject> objectsList = new ArrayList<>(Arrays.asList(objects));
-        objectsList.add(gameObject);
-        return objectsList.toArray(new GameObject[objectsList.size()]);
-    }
-
-    /**
      * Game message screen for the game.
      * @param message Message to display.
      */
     private void gameEndMessage(String message) {
         Message msg = new Message(FONT75, message);
         msg.draw();
-    }
-
-    /**
-     * Start screen for level 0. This also prepares the level.
-     */
-    private void startlevel0() {
-        Point gameTitlePos = new Point(GAME_TITLE_X, GAME_TITLE_Y);
-        Point gameInstructionPos = new Point(GAME_TITLE_X + 90, GAME_TITLE_Y + 190);
-        String gameInstructionMsg = "PRESS SPACE TO START\nUSE ARROW KEYS TO FIND GATE";
-        Message gameTitle = new Message(FONT75, GAME_TITLE, gameTitlePos);
-        Message gameInstruction = new Message(FONT40, gameInstructionMsg, gameInstructionPos);
-        gameTitle.draw();
-        gameInstruction.draw();
-
-        // prepare the level if necessary
-        if (prepareLevel) {
-            prepareLevel0();
-            prepareLevel = false;
-        }
-    }
-
-    /**
-     * Start screen for level 1. This also prepares the level.
-     */
-    private void startlevel1() {
-        Point gameInstructionPos = new Point(350, 350);
-        String gameInstructionMsg = "PRESS SPACE TO START\nPRESS A TO ATTACK\nDEFEAT NAVEC TO WIN";
-        Message gameInstruction = new Message(FONT40, gameInstructionMsg, gameInstructionPos);
-        gameInstruction.draw();
-
-        // prepare the level if necessary
-        if (prepareLevel) {
-            prepareLevel1();
-            prepareLevel = false;
-        }
-    }
-
-    /**
-     * Prepare the game for level 0.
-     */
-    private void prepareLevel0() {
-        boundary = readBoundary(LEVEL0_CSV);
-        objects = readObjects(LEVEL0_CSV, LEVEL0_MAX_OBJECTS);
-        gameObjects = getGameObjects();
-    }
-
-    /**
-     * Prepare the game for level 1.
-     */
-    private void prepareLevel1() {
-        boundary = readBoundary(LEVEL1_CSV);
-        objects = readObjects(LEVEL1_CSV, LEVEL1_MAX_OBJECTS);
-        gameObjects = getGameObjects();
-        updateTimescale();
     }
 
     /**
@@ -476,7 +422,7 @@ public class ShadowDimension extends AbstractGame {
     private void displayLevel0EndScreen() {
         gameEndMessage("LEVEL COMPLETE!");
 
-        // wait 3 seconds
+        // wait
         if (level0EndScreen.isFinished(frames)) {
             // begin next stage
             stage = LEVEL1_STAGE;
@@ -595,11 +541,11 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
-     * Check if demons should attack if the player is within it's attack radius. If player touches a demon's fire,
-     * inflict damage to the player.
+     * Check if demons should attack if the player is within it's attack radius. Renders fire to the screen. 
+     * If player touches a demon's fire, inflict damage to the player.
      * @param player Player object.
      */
-    public void checkDemonsAttack(Player player) {
+    public void demonsAttack(Player player) {
         for (GameObject gameObject : gameObjects) {
             if (!(gameObject instanceof Demon)) {
                 continue;
@@ -649,6 +595,60 @@ public class ShadowDimension extends AbstractGame {
 
         // ensure player does not get stuck on a barrier
         makeAttackPositionValid(player, gameObjects);
+    }
+    
+    /**
+     * Start screen for level 0. This also prepares the level.
+     */
+    private void startlevel0() {
+        Point gameTitlePos = new Point(GAME_TITLE_X, GAME_TITLE_Y);
+        Point gameInstructionPos = new Point(GAME_TITLE_X + 90, GAME_TITLE_Y + 190);
+        String gameInstructionMsg = "PRESS SPACE TO START\nUSE ARROW KEYS TO FIND GATE";
+        Message gameTitle = new Message(FONT75, GAME_TITLE, gameTitlePos);
+        Message gameInstruction = new Message(FONT40, gameInstructionMsg, gameInstructionPos);
+        gameTitle.draw();
+        gameInstruction.draw();
+
+        // prepare the level if necessary
+        if (prepareLevel) {
+            prepareLevel0();
+            prepareLevel = false;
+        }
+    }
+
+    /**
+     * Start screen for level 1. This also prepares the level.
+     */
+    private void startlevel1() {
+        Point gameInstructionPos = new Point(350, 350);
+        String gameInstructionMsg = "PRESS SPACE TO START\nPRESS A TO ATTACK\nDEFEAT NAVEC TO WIN";
+        Message gameInstruction = new Message(FONT40, gameInstructionMsg, gameInstructionPos);
+        gameInstruction.draw();
+
+        // prepare the level if necessary
+        if (prepareLevel) {
+            prepareLevel1();
+            prepareLevel = false;
+        }
+    }
+
+    /**
+     * Prepare the game for level 0.
+     */
+    private void prepareLevel0() {
+        boundary = readBoundary(LEVEL0_CSV);
+        objects = readObjects(LEVEL0_CSV, LEVEL0_MAX_OBJECTS);
+        gameObjects = getGameObjects();
+    }
+
+    /**
+     * Prepare the game for level 1.
+     */
+    private void prepareLevel1() {
+        boundary = readBoundary(LEVEL1_CSV);
+        objects = readObjects(LEVEL1_CSV, LEVEL1_MAX_OBJECTS);
+        gameObjects = getGameObjects();
+        updateTimescale();
     }
 
     /**
@@ -711,6 +711,7 @@ public class ShadowDimension extends AbstractGame {
         drawBackground(LEVEL1_BACKGROUND);
         HealthBar.drawHealthBar(player);
         drawObjects(gameObjects);
+        demonsAttack(player);
         player.draw(boundary);
 
         // check everything
@@ -718,7 +719,6 @@ public class ShadowDimension extends AbstractGame {
         checkCollisions(player);
         checkPlayerDeath(player);
         checkDemons();
-        checkDemonsAttack(player);
     }
 
     /**
