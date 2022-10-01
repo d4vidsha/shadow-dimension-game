@@ -85,7 +85,6 @@ public abstract class GameObject {
      */
     public void setImage(Image image) {
         this.image = image;
-        this.rectangle = deriveRectangle(getPosition(), this.image);
     }
 
     /**
