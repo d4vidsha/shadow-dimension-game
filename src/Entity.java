@@ -16,33 +16,25 @@ public abstract class Entity extends MovingObject {
     protected static final int IMG_ABILITY_LEFT = 2;
     protected static final int IMG_ABILITY_RIGHT = 3;
 
-    protected boolean onCooldown = false;
-
-    protected Image[] images;
     private int health;
     private int maxHealth;
     private int damagePoints;
     private String name;
-    protected int state;
-    protected Timer timer;
-    protected boolean isTimerSet;
-    protected Timer invincibleTimer;
+    private int state;
+    private Timer invincibleTimer;
 
     /**
      * Constructor for Entity class.
      */
     public Entity(Image[] images, Point position, double speed, int health, int damagePoints, String name) {
         super(images[IMG_LEFT], images[IMG_RIGHT], position, speed);
-        this.images = images;
         this.health = health;
         this.maxHealth = health;
         this.damagePoints = damagePoints;
         this.name = name;
         this.state = IDLE;
-        this.isTimerSet = false;
     }
 
-    public abstract void setState(int state);
     public abstract void checkStates();
 
     /**
@@ -92,7 +84,15 @@ public abstract class Entity extends MovingObject {
     public int getState() {
         return state;
     }
-
+    
+    /**
+     * Set the entity's state.
+     * @return Entity's state as an integer.
+     */
+    public void setState(int state) {
+        this.state = state;
+    }
+    
     /**
      * Set the entity's health.
      * @param health Entity's health.
@@ -121,6 +121,22 @@ public abstract class Entity extends MovingObject {
      */
     public boolean isDead() {
         return health <= 0;
+    }
+
+    /**
+     * Get the entity's invincibility timer.
+     * @return Entity's invincibility timer.
+     */
+    public Timer getInvincibleTimer() {
+        return invincibleTimer;
+    }
+
+    /**
+     * Set the entity's invincibility timer.
+     * @param invincibleTimer Entity's invincibility timer.
+     */
+    public void setInvincibleTimer(Timer invincibleTimer) {
+        this.invincibleTimer = invincibleTimer;
     }
 
     /**

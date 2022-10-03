@@ -10,13 +10,16 @@ public class Player extends Entity implements Attacker, Targetable {
         new Image("res/fae/faeAttackRight.png")
     };
 
-    // constants
     private static final int MAX_PLAYER_HEALTH = 100;
     private static final int DAMAGE_POINTS = 20;
     private static final int SPEED = 2;
     private static final double GATE_X = 950;
     private static final double GATE_Y = 670;
     private static final String PLAYER_NAME = "Fae";
+
+    private boolean onCooldown = false;
+    private Timer timer;
+    private boolean isTimerSet;
 
     /**
      * Constructor for Player class.
@@ -26,6 +29,7 @@ public class Player extends Entity implements Attacker, Targetable {
      */
     public Player(Point position) {
         super(IMAGES, position, SPEED, MAX_PLAYER_HEALTH, DAMAGE_POINTS, PLAYER_NAME);
+        this.isTimerSet = false;
     }
 
     /**
@@ -82,7 +86,7 @@ public class Player extends Entity implements Attacker, Targetable {
         // if the player is invincible, do not take damage, otherwise take damage and become invincible
         if (!isInvincible()) {
             this.setHealth(this.getHealth() - damage);
-            this.invincibleTimer = new Timer(ShadowDimension.frames, INVINCIBLE_MS / MS_TO_SEC);
+            setInvincibleTimer(new Timer(ShadowDimension.frames, INVINCIBLE_MS / MS_TO_SEC));
         }
     }
 
@@ -91,10 +95,10 @@ public class Player extends Entity implements Attacker, Targetable {
      */
     @Override
     public void checkStates() {
-        if (state == IDLE) {
+        if (getState() == IDLE) {
         }
 
-        if ((state == ATTACK) && !onCooldown) {
+        if ((getState() == ATTACK) && !onCooldown) {
             if (timer.isFinished(ShadowDimension.frames)) {
                 isTimerSet = false;
                 setState(IDLE);
@@ -103,7 +107,7 @@ public class Player extends Entity implements Attacker, Targetable {
         }
 
         if (onCooldown) {
-            if (state != IDLE) {
+            if (getState() != IDLE) {
                 setState(IDLE);
             }
             if (timer.isFinished(ShadowDimension.frames)) {
@@ -121,15 +125,15 @@ public class Player extends Entity implements Attacker, Targetable {
      */
     @Override
     public void setState(int state) {
-        this.state = state;
+        super.setState(state);
 
         if (!isTimerSet) {
             if (state == ATTACK) {
                 timer = new Timer(ShadowDimension.frames, ABILITY_ACTIVE_MS / MS_TO_SEC);
-                setImages(images[IMG_ABILITY_LEFT], images[IMG_ABILITY_RIGHT]);
+                setImages(IMAGES[IMG_ABILITY_LEFT], IMAGES[IMG_ABILITY_RIGHT]);
             } else if (state == IDLE) {
                 timer = new Timer(ShadowDimension.frames, ABILITY_COOLDOWN_MS / MS_TO_SEC);
-                setImages(images[IMG_LEFT], images[IMG_RIGHT]);
+                setImages(IMAGES[IMG_LEFT], IMAGES[IMG_RIGHT]);
             } else {
                 throw new IllegalArgumentException("Invalid state");
             }
@@ -142,7 +146,7 @@ public class Player extends Entity implements Attacker, Targetable {
      * @return True if the player is attacking, false otherwise.
      */
     public boolean isAttacking() {
-        if (state == ATTACK) {
+        if (getState() == ATTACK) {
             return true;
         }
         return false;

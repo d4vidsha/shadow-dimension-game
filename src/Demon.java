@@ -13,7 +13,7 @@ public class Demon extends Entity implements Attacker, Targetable {
     private int attackRadius;
     private Image fireImage;
 
-    private static final Image[] IMAGES = {
+    private static final Image[] DEFAULT_DEMON_IMAGES = {
         new Image("res/demon/demonLeft.png"),
         new Image("res/demon/demonRight.png"),
         new Image("res/demon/demonInvincibleLeft.png"),
@@ -21,6 +21,7 @@ public class Demon extends Entity implements Attacker, Targetable {
     };
     
     private Vector2 direction;
+    private Image[] images;
 
     /**
      * Constructor for Demon class.
@@ -30,10 +31,11 @@ public class Demon extends Entity implements Attacker, Targetable {
      * @param damagePoints Damage points of the demon.
      */
     public Demon(Point position, double speed, Vector2 direction) {
-        super(IMAGES, position, speed, DEFAULT_MAX_HEALTH, DEFAULT_DAMAGE_POINTS, DEFAULT_DEMON_NAME);
+        super(DEFAULT_DEMON_IMAGES, position, speed, DEFAULT_MAX_HEALTH, DEFAULT_DAMAGE_POINTS, DEFAULT_DEMON_NAME);
         this.direction = direction;
         this.attackRadius = DEFAULT_ATTACK_RADIUS;
         this.fireImage = DEFAULT_DEMON_FIRE;
+        this.images =  DEFAULT_DEMON_IMAGES;
     }
 
     public Demon(Image fireImage, Image[] images, int attackRadius, int maxHealth, int damagePoints, 
@@ -42,6 +44,7 @@ public class Demon extends Entity implements Attacker, Targetable {
         this.direction = direction;
         this.attackRadius = attackRadius;
         this.fireImage = fireImage;
+        this.images = images;
     }
 
     /**
@@ -97,14 +100,9 @@ public class Demon extends Entity implements Attacker, Targetable {
         // if the demon is invincible, do not take damage, otherwise take damage and become invincible
         if (!isInvincible()) {
             this.setHealth(this.getHealth() - damage);
-            this.invincibleTimer = new Timer(ShadowDimension.frames, INVINCIBLE_MS / MS_TO_SEC);
+            setInvincibleTimer(new Timer(ShadowDimension.frames, INVINCIBLE_MS / MS_TO_SEC));
             setImages(images[IMG_ABILITY_LEFT], images[IMG_ABILITY_RIGHT]);
         }
-    }
-
-    @Override
-    public void setState(int state) {
-        this.state = state;
     }
 
     @Override
