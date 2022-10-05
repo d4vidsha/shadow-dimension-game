@@ -19,6 +19,9 @@ public abstract class Entity extends MovingObject {
     protected static final int IMG_ABILITY_LEFT = 2;
     protected static final int IMG_ABILITY_RIGHT = 3;
 
+    // damage string format
+    private static final String DAMAGE_FORMAT = "%s inflicts %d damage points on %s. %s's current health: %d/%d";
+
     private int health;
     private int maxHealth;
     private int damagePoints;
@@ -165,7 +168,7 @@ public abstract class Entity extends MovingObject {
         Entity A = (Entity) attacker;
         Entity B = (Entity) target;
         System.out.println(String.format(
-            "%s inflicts %d damage points on %s. %s's current health: %d/%d",
+            DAMAGE_FORMAT,
             A.getName(),
             A.getDamagePoints(),
             B.getName(),
@@ -182,7 +185,7 @@ public abstract class Entity extends MovingObject {
      */
     public static void printDamage(Sinkhole sinkhole, Player player) {
         System.out.println(String.format(
-            "%s inflicts %d damage points on %s. %s's current health: %d/%d",
+            DAMAGE_FORMAT,
             sinkhole.getClass().getSimpleName(),
             sinkhole.getDamagePoints(),
             player.getName(),

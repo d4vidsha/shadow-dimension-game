@@ -4,6 +4,7 @@ import bagel.util.*;
 public class Sinkhole extends GameObject implements Attacker {
 
     private static final Image IMAGE = new Image("res/sinkhole.png");
+    private static final String ATTACK_MESSAGE = "Sinkhole is dealing damage";
 
     // default sinkhole damage points
     public static final int DAMAGE_POINTS = 30;
@@ -51,14 +52,6 @@ public class Sinkhole extends GameObject implements Attacker {
      */
     @Override
     public void attack() {
-        System.out.println("Sinkhole is dealing damage");
-    }
-
-    /**
-     * To string method for sinkhole.
-     */
-    @Override
-    public String toString() {
-        return "Sinkhole at " + getPosition() + " with " + damagePoints + " damage points";
+        System.out.println(ATTACK_MESSAGE);
     }
 }

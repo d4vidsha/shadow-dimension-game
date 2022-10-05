@@ -18,6 +18,8 @@ public class ShadowDimension extends AbstractGame {
     public static final int MAX_TIMESCALE = 3;
     public static final int MIN_TIMESCALE = -3;
     public static int timescale = DEFAULT_TIMESCALE;
+    private static final String SPED_UP = "Sped up, Speed: %d";
+    private static final String SLOWED_DOWN = "Slowed down, Speed: %d";
 
     // fonts
     private static final String FONT_PATH = "res/frostbite.ttf";
@@ -41,6 +43,11 @@ public class ShadowDimension extends AbstractGame {
         Vector2.up,
         Vector2.down
     };
+    private static final String LEVEL_COMPLETION_MESSAGE = "LEVEL COMPLETE!";
+    private static final String LEVEL0_INSTRUCTIONS = "PRESS SPACE TO START\nUSE ARROW KEYS TO FIND GATE";
+    private static final String LEVEL1_INSTRUCTIONS = "PRESS SPACE TO START\nPRESS A TO ATTACK\nDEFEAT NAVEC TO WIN";
+    private static final String GAME_OVER_MESSAGE = "GAME OVER!";
+    private static final String GAME_WON_MESSAGE = "CONGRATULATIONS!";
 
     // game title
     private static final double GAME_TITLE_X = 260;
@@ -61,6 +68,15 @@ public class ShadowDimension extends AbstractGame {
     private static final String DEMON = "Demon";
     private static final String NAVEC = "Navec";
     private static final String[] OBJECT_NAMES = {PLAYER, WALL, SINKHOLE, TREE, DEMON, NAVEC};
+
+    // boundary
+    private static final String TOPLEFT = "TopLeft";
+    private static final String BOTTOMRIGHT = "BottomRight";
+
+    // error messages
+    private static final String INVALID_FACE = "Invalid face value.";
+    private static final String NO_BOUNDARY_SPECIFIED = "No boundary specified.";
+    private static final String RUN_TOO_LONG = "Frames exceeded maximum value. Game has been running for too long.";
 
     // game variables
     private int stage;
@@ -159,7 +175,7 @@ public class ShadowDimension extends AbstractGame {
                             } else if (face == 1) {
                                 demon.faceRight();
                             } else {
-                                throw new RuntimeException("Invalid face value");
+                                throw new RuntimeException(INVALID_FACE);
                             }
                             objects[i] = demon;
                             break;
@@ -212,10 +228,10 @@ public class ShadowDimension extends AbstractGame {
                 double x = Double.parseDouble(values[1]);
                 double y = Double.parseDouble(values[2]);
                 switch (values[0]) {
-                    case "TopLeft":
+                    case TOPLEFT:
                         topLeft = new Point(x, y);
                         break;
-                    case "BottomRight":
+                    case BOTTOMRIGHT:
                         bottomRight = new Point(x, y);
                         break;
                 }
@@ -226,7 +242,7 @@ public class ShadowDimension extends AbstractGame {
             if (topLeft != null && bottomRight != null) {
                 boundary = new Boundary(topLeft, bottomRight);
             } else {
-                throw new RuntimeException("No boundary specified");
+                throw new RuntimeException(NO_BOUNDARY_SPECIFIED);
             }
             
             fr.close();
@@ -392,7 +408,7 @@ public class ShadowDimension extends AbstractGame {
      * Display end screen for level 0 until time is up.
      */
     private void displayLevel0EndScreen() {
-        gameEndMessage("LEVEL COMPLETE!");
+        gameEndMessage(LEVEL_COMPLETION_MESSAGE);
 
         // wait
         if (level0EndScreenTimer.isFinished(frames)) {
@@ -437,7 +453,7 @@ public class ShadowDimension extends AbstractGame {
     public void increaseTimescale() {
         if (timescale < MAX_TIMESCALE) {
             timescale++;
-            System.out.println("Sped up, Speed: " + timescale);
+            System.out.println(String.format(SPED_UP, timescale));
             updateTimescale();
         }
     }
@@ -448,13 +464,13 @@ public class ShadowDimension extends AbstractGame {
     public void decreaseTimescale() {
         if (timescale > MIN_TIMESCALE) {
             timescale--;
-            System.out.println("Slowed down, Speed: " + timescale);
+            System.out.println(String.format(SLOWED_DOWN, timescale));
             updateTimescale();
         }
     }
 
     /**
-     * Given the input, if the "L" key is pressed, increase timescale. If the "K" key is pressed, decrease timescale.
+     * Given the input, if the `L` key is pressed, increase timescale. If the `K` key is pressed, decrease timescale.
      * @param input Input from the user.
      */
     private void timescaleControls(Input input) {
@@ -573,9 +589,8 @@ public class ShadowDimension extends AbstractGame {
     private void startlevel0() {
         Point gameTitlePos = new Point(GAME_TITLE_X, GAME_TITLE_Y);
         Point gameInstructionPos = new Point(GAME_TITLE_X + 90, GAME_TITLE_Y + 190);
-        String gameInstructionMsg = "PRESS SPACE TO START\nUSE ARROW KEYS TO FIND GATE";
         Message gameTitle = new Message(FONT75, GAME_TITLE, gameTitlePos);
-        Message gameInstruction = new Message(FONT40, gameInstructionMsg, gameInstructionPos);
+        Message gameInstruction = new Message(FONT40, LEVEL0_INSTRUCTIONS, gameInstructionPos);
         gameTitle.draw();
         gameInstruction.draw();
 
@@ -591,8 +606,7 @@ public class ShadowDimension extends AbstractGame {
      */
     private void startlevel1() {
         Point gameInstructionPos = new Point(350, 350);
-        String gameInstructionMsg = "PRESS SPACE TO START\nPRESS A TO ATTACK\nDEFEAT NAVEC TO WIN";
-        Message gameInstruction = new Message(FONT40, gameInstructionMsg, gameInstructionPos);
+        Message gameInstruction = new Message(FONT40, LEVEL1_INSTRUCTIONS, gameInstructionPos);
         gameInstruction.draw();
 
         // prepare the level if necessary
@@ -703,7 +717,7 @@ public class ShadowDimension extends AbstractGame {
         // increment frames
         frames++;
         if (frames >= Integer.MAX_VALUE) {
-            throw new RuntimeException("Frames exceeded maximum value. Game has been running for too long.");
+            throw new RuntimeException(RUN_TOO_LONG);
         }
 
         // fastforward to level 1 when W key is pressed
@@ -724,9 +738,9 @@ public class ShadowDimension extends AbstractGame {
         } else if (stage == LEVEL1_STAGE) {
             level1(input);
         } else if (stage == GAME_OVER_STAGE) {
-            gameEndMessage("GAME OVER!");
+            gameEndMessage(GAME_OVER_MESSAGE);
         } else if (stage == GAME_WON_STAGE) {
-            gameEndMessage("CONGRATULATIONS!");
+            gameEndMessage(GAME_WON_MESSAGE);
         }
     }
 }

@@ -5,6 +5,7 @@ public class HealthBar extends Message {
 
     // health percentage error message
     private static final String HEALTH_PERCENTAGE_ERROR = "Health percentage out of range";
+    private static final String PERCENT = "%";
 
     /**
      * Constructor for HealthBar class.
@@ -22,7 +23,7 @@ public class HealthBar extends Message {
      */
     public static void drawHealthBar(Player player) {
         int health = player.getHealthPercentage();
-        Message healthBar = new Message(FONT30, player.getHealthPercentage() + "%", new Point(20, 25));
+        Message healthBar = new Message(FONT30, player.getHealthPercentage() + PERCENT, new Point(20, 25));
         DrawOptions drawOptions = new DrawOptions();
 
         if (65 <= health && health <= 100) {
@@ -44,7 +45,7 @@ public class HealthBar extends Message {
     public static void drawHealthBar(Entity entity) {
         int health = entity.getHealthPercentage();
         Message healthBar = new Message(FONT15, 
-                                        entity.getHealthPercentage() + "%", 
+                                        entity.getHealthPercentage() + PERCENT, 
                                         new Point(entity.getPosition().x, entity.getPosition().y - 6));
         DrawOptions drawOptions = new DrawOptions();
 

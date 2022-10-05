@@ -3,6 +3,13 @@ import bagel.util.*;
 
 public class Player extends Entity implements Attacker, Targetable {
 
+    // player specific constants
+    private static final int MAX_PLAYER_HEALTH = 100;
+    private static final int DAMAGE_POINTS = 20;
+    private static final int SPEED = 2;
+    private static final double GATE_X = 950;
+    private static final double GATE_Y = 670;
+    private static final String PLAYER_NAME = "Fae";
     private static final Image[] IMAGES = {
         new Image("res/fae/faeLeft.png"),
         new Image("res/fae/faeRight.png"),
@@ -10,12 +17,8 @@ public class Player extends Entity implements Attacker, Targetable {
         new Image("res/fae/faeAttackRight.png")
     };
 
-    private static final int MAX_PLAYER_HEALTH = 100;
-    private static final int DAMAGE_POINTS = 20;
-    private static final int SPEED = 2;
-    private static final double GATE_X = 950;
-    private static final double GATE_Y = 670;
-    private static final String PLAYER_NAME = "Fae";
+    // other constants
+    private static final String INVALID_STATE = "Invalid state";
 
     private boolean onCooldown;
     private Timer timer;
@@ -136,7 +139,7 @@ public class Player extends Entity implements Attacker, Targetable {
                 timer = new Timer(ShadowDimension.frames, ABILITY_COOLDOWN_MS / MS_TO_SEC);
                 setImages(IMAGES[IMG_LEFT], IMAGES[IMG_RIGHT]);
             } else {
-                throw new IllegalArgumentException("Invalid state");
+                throw new IllegalArgumentException(INVALID_STATE);
             }
             isTimerSet = true;
         }

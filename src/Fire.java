@@ -7,6 +7,8 @@ public class Fire extends GameObject implements Attacker {
     private int damagePoints;
     private final Demon fromDemon;
 
+    private static final String ATTACK_MESSAGE = "Fire dealt damage";
+
     /**
      * Constructor for Fire class.
      * @param demon Demon that fired the fire.
@@ -43,7 +45,7 @@ public class Fire extends GameObject implements Attacker {
      */
     @Override
     public void attack() {
-        System.out.println("Fire dealt damage");
+        System.out.println(ATTACK_MESSAGE);
     }
 
     /**
