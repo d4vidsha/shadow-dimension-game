@@ -82,11 +82,12 @@ public abstract class GameObject {
     }
 
     /**
-     * Set the image of the game object.
+     * Set the image of the game object, while also updating the rectangle.
      * @param image Image of the game object.
      */
     public void setImage(Image image) {
         this.image = image;
+        this.rectangle = deriveRectangle(getPosition(), this.image);
     }
 
     /**
