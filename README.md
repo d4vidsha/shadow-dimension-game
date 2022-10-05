@@ -1,7 +1,7 @@
 # Project 2: Shadow Dimension Game
 
 ## Overview
-This project implements level 0 and level 1 of Shadow Dimension, the game. This project utilises the Bagel library to draw the game window and handle user input. See the specifications for more details.
+This project implements level 0 and level 1 of Shadow Dimension, the game. This project utilises the Bagel library to draw the game window and handle user input. See the specifications for more details. The first commit of this project is imported from [project 1 repository](https://github.com/d4vidsha/swen20003-project-1/blob/master/README.md).
 
 ## Sources
 - This project is part of the University of Melbourne subject [SWEN20003: Object Oriented Software Development 2022](https://handbook.unimelb.edu.au/2022/subjects/swen20003).
