@@ -19,6 +19,7 @@ public class ShadowDimension extends AbstractGame {
     public static final int MIN_TIMESCALE = -3;
     public static int timescale = DEFAULT_TIMESCALE;
 
+    // fonts
     private static final String FONT_PATH = "res/frostbite.ttf";
     public final Font FONT75 = new Font(FONT_PATH, 75);
     public final Font FONT40 = new Font(FONT_PATH, 40);
@@ -61,18 +62,22 @@ public class ShadowDimension extends AbstractGame {
     private static final String NAVEC = "Navec";
     private static final String[] OBJECT_NAMES = {PLAYER, WALL, SINKHOLE, TREE, DEMON, NAVEC};
 
-    // initialising the game
-    private int stage = LEVEL0_STAGE;
-    private boolean prepareLevel = true;
-    private boolean startScreen = true;
-    private boolean endScreen = false;
+    // game variables
+    private int stage;
+    private boolean prepareLevel;
+    private boolean startScreen;
+    private boolean endScreen;
     private Boundary boundary;
     private GameObject[] objects;
     private GameObject[] gameObjects;
-    private Timer level0EndScreen;
+    private Timer level0EndScreenTimer;
 
     public ShadowDimension() {
         super(WINDOW_WIDTH, WINDOW_HEIGHT, GAME_TITLE);
+        this.stage = LEVEL0_STAGE;
+        this.prepareLevel = true;
+        this.startScreen = true;
+        this.endScreen = false;
     }
 
     /**
@@ -215,16 +220,15 @@ public class ShadowDimension extends AbstractGame {
                         break;
                 }
             }
-            
+            br.close();
+
             // create the boundary
             if (topLeft != null && bottomRight != null) {
                 boundary = new Boundary(topLeft, bottomRight);
             } else {
-                System.out.println("No boundary specified");
-                System.exit(1);
+                throw new RuntimeException("No boundary specified");
             }
-
-            br.close();
+            
             fr.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -258,7 +262,7 @@ public class ShadowDimension extends AbstractGame {
     /**
      * Get player object from the array of objects. We assume the first object
      * in the array is the player.
-     * @param objects
+     * @param objects Array of game objects.
      * @return
      */
     private Player getPlayer(GameObject[] objects) {
@@ -277,6 +281,7 @@ public class ShadowDimension extends AbstractGame {
 
     /**
      * Draw the background for the game.
+     * @param background Background image as a string.
      */
     private void drawBackground(String background) {
         Image bgImage = new Image(background);
@@ -367,7 +372,7 @@ public class ShadowDimension extends AbstractGame {
         // if necessary, display winning message and move to next stage after 3 seconds
         if (player.isAtGate()) {
             endScreen = true;
-            level0EndScreen = new Timer(frames, LEVEL0_END_SCREEN_WAIT_SECONDS);
+            level0EndScreenTimer = new Timer(frames, LEVEL0_END_SCREEN_WAIT_SECONDS);
         }
     }
 
@@ -390,7 +395,7 @@ public class ShadowDimension extends AbstractGame {
         gameEndMessage("LEVEL COMPLETE!");
 
         // wait
-        if (level0EndScreen.isFinished(frames)) {
+        if (level0EndScreenTimer.isFinished(frames)) {
             // begin next stage
             stage = LEVEL1_STAGE;
             prepareLevel = true;
@@ -531,7 +536,8 @@ public class ShadowDimension extends AbstractGame {
 
     /**
      * Attack if player presses A. If in attack state, inflict damage to demons.
-     * @param input
+     * @param input Input object.
+     * @param player Player object.
      */
     private void playerAttack(Input input, Player player) {
 

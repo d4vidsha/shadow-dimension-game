@@ -3,14 +3,17 @@ import bagel.util.*;
 
 public abstract class Entity extends MovingObject {
 
+    // duration of player attack/cooldown ability
     protected static final int ABILITY_ACTIVE_MS = 1000;
     protected static final int ABILITY_COOLDOWN_MS = 2000;
-    protected static final int INVINCIBLE_MS = 3000;
-    protected static final int MS_TO_SEC = 1000;
 
+    // duration of invincibility after taking damage for both demons and player
+    protected static final int INVINCIBLE_MS = 3000;
+    
+    // other constants
+    protected static final int MS_TO_SEC = 1000;
     protected static final int IDLE = 0;
     protected static final int ATTACK = 1;
-
     protected static final int IMG_LEFT = 0;
     protected static final int IMG_RIGHT = 1;
     protected static final int IMG_ABILITY_LEFT = 2;
@@ -25,6 +28,12 @@ public abstract class Entity extends MovingObject {
 
     /**
      * Constructor for Entity class.
+     * @param images Images of the entity.
+     * @param position Position of the entity.
+     * @param speed Speed of the entity.
+     * @param health Health of the entity.
+     * @param damagePoints Damage points of the entity.
+     * @param name Name of the entity.
      */
     public Entity(Image[] images, Point position, double speed, int health, int damagePoints, String name) {
         super(images[IMG_LEFT], images[IMG_RIGHT], position, speed);
@@ -168,18 +177,18 @@ public abstract class Entity extends MovingObject {
 
     /**
      * Print inflicted damage to the console for sinkhole and player interaction.
-     * @param A Sinkhole that inflicts damage.
-     * @param B Player that takes damage.
+     * @param sinkhole Sinkhole that inflicts damage.
+     * @param player Player that takes damage.
      */
-    public static void printDamage(Sinkhole A, Player B) {
+    public static void printDamage(Sinkhole sinkhole, Player player) {
         System.out.println(String.format(
             "%s inflicts %d damage points on %s. %s's current health: %d/%d",
-            A.getClass().getSimpleName(),
-            A.getDamagePoints(),
-            B.getName(),
-            B.getName(),
-            B.getHealth(),
-            B.getMaxHealth())
+            sinkhole.getClass().getSimpleName(),
+            sinkhole.getDamagePoints(),
+            player.getName(),
+            player.getName(),
+            player.getHealth(),
+            player.getMaxHealth())
         );
     }
 }

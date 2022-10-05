@@ -3,6 +3,7 @@ import bagel.util.*;
 
 public class Message {
 
+    // fonts
     private static final String FONT_PATH = "res/frostbite.ttf";
     public static final Font FONT75 = new Font(FONT_PATH, 75);
     public static final Font FONT40 = new Font(FONT_PATH, 40);

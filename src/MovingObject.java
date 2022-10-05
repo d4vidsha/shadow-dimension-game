@@ -157,7 +157,7 @@ public abstract class MovingObject extends GameObject implements Movable {
     /**
      * Given a timescale, update the object's speed to the original speed multiplied by the timescale. Scales
      * by a factor of 50%.
-     * @param timescale
+     * @param timescale Timescale to scale the speed by.
      */
     public void timescaleSpeed(int timescale) {
         if (timescale >= 0) {

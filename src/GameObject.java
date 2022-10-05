@@ -4,7 +4,9 @@ import java.util.*;
 
 public abstract class GameObject {
 
-    // common attributes for all game objects
+    // error message for point outside of boundary
+    private static final String OUT_OF_BOUNDARY = "Position is outside of boundary";
+
     private Image image;
     private Rectangle rectangle;
 
@@ -36,7 +38,7 @@ public abstract class GameObject {
         if (boundary.contains(position)) {
             draw();
         } else {
-            throw new RuntimeException("Position is outside of boundary");
+            throw new RuntimeException(OUT_OF_BOUNDARY);
         }
     }
 
@@ -51,7 +53,7 @@ public abstract class GameObject {
         if (boundary.contains(position)) {
             image.drawFromTopLeft(position.x, position.y, options);
         } else {
-            throw new RuntimeException("Position is outside of boundary");
+            throw new RuntimeException(OUT_OF_BOUNDARY);
         }
     }
 

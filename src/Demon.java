@@ -3,16 +3,15 @@ import bagel.util.*;
 
 public class Demon extends Entity implements Attacker, Targetable {
     
+    // speed of passive demon
     public static final double PASSIVE_SPEED = 0;
-    public static final int DEFAULT_ATTACK_RADIUS = 150;        // in pixels
-    public static final int DEFAULT_MAX_HEALTH = 40;            // default max health of a demon
+    
+    // qualities of default demon
+    public static final int DEFAULT_ATTACK_RADIUS = 150;
+    public static final int DEFAULT_MAX_HEALTH = 40;
     public static final int DEFAULT_DAMAGE_POINTS = 10;
-    public static final Image DEFAULT_DEMON_FIRE = new Image("res/demon/demonFire.png");
-    public static final String DEFAULT_DEMON_NAME = "Demon";
-
-    private int attackRadius;
-    private Image fireImage;
-
+    public static final Image DEFAULT_FIRE = new Image("res/demon/demonFire.png");
+    public static final String DEFAULT_NAME = "Demon";
     private static final Image[] DEFAULT_DEMON_IMAGES = {
         new Image("res/demon/demonLeft.png"),
         new Image("res/demon/demonRight.png"),
@@ -20,6 +19,9 @@ public class Demon extends Entity implements Attacker, Targetable {
         new Image("res/demon/demonInvincibleRight.png")
     };
     
+    // variables for demon
+    private int attackRadius;
+    private Image fireImage;
     private Vector2 direction;
     private Image[] images;
 
@@ -27,17 +29,28 @@ public class Demon extends Entity implements Attacker, Targetable {
      * Constructor for Demon class.
      * @param position Position of the demon.
      * @param speed Speed of the demon.
-     * @param health Health of the demon.
-     * @param damagePoints Damage points of the demon.
+     * @param direction Direction the demon moves in.
      */
     public Demon(Point position, double speed, Vector2 direction) {
-        super(DEFAULT_DEMON_IMAGES, position, speed, DEFAULT_MAX_HEALTH, DEFAULT_DAMAGE_POINTS, DEFAULT_DEMON_NAME);
+        super(DEFAULT_DEMON_IMAGES, position, speed, DEFAULT_MAX_HEALTH, DEFAULT_DAMAGE_POINTS, DEFAULT_NAME);
         this.direction = direction;
         this.attackRadius = DEFAULT_ATTACK_RADIUS;
-        this.fireImage = DEFAULT_DEMON_FIRE;
+        this.fireImage = DEFAULT_FIRE;
         this.images =  DEFAULT_DEMON_IMAGES;
     }
 
+    /**
+     * Constructor for Demon class.
+     * @param fireImage Image of the fire shot by demon.
+     * @param images Images of the demon.
+     * @param attackRadius Attack radius of the demon.
+     * @param maxHealth Maximum health of the demon.
+     * @param damagePoints Damage points of the demon.
+     * @param position Position of the demon.
+     * @param speed Speed of the demon.
+     * @param direction Direction the demon moves in.
+     * @param name Name of the demon.
+     */
     public Demon(Image fireImage, Image[] images, int attackRadius, int maxHealth, int damagePoints, 
                     Point position, double speed, Vector2 direction, String name) {
         super(images, position, speed, maxHealth, damagePoints, name);
@@ -56,6 +69,7 @@ public class Demon extends Entity implements Attacker, Targetable {
 
     /**
      * Set the direction of the demon.
+     * @param direction Direction to move in for the demon.
      */
     public void setDirection(Vector2 direction) {
         this.direction = direction;
@@ -70,6 +84,7 @@ public class Demon extends Entity implements Attacker, Targetable {
 
     /**
      * Set the attack radius of the demon.
+     * @param attackRadius Attack radius of the demon.
      */
     public void setAttackRadius(int attackRadius) {
         this.attackRadius = attackRadius;
@@ -77,6 +92,7 @@ public class Demon extends Entity implements Attacker, Targetable {
 
     /**
      * Inflict damage to the target.
+     * @param target Target to inflict damage to.
      */
     @Override
     public void inflictDamageTo(Targetable target) {
@@ -85,7 +101,7 @@ public class Demon extends Entity implements Attacker, Targetable {
     }
 
     /**
-     * Attack the target by showing an attack animation.
+     * Attack the target by shooting fire.
      */
     @Override
     public void attack() {
@@ -94,6 +110,7 @@ public class Demon extends Entity implements Attacker, Targetable {
 
     /**
      * Take damage from the attacker.
+     * @param damage Damage points to take.
      */
     @Override
     public void takeDamage(int damage) {
@@ -105,6 +122,9 @@ public class Demon extends Entity implements Attacker, Targetable {
         }
     }
 
+    /**
+     * Check the state of the demon. Check if the demon is invincible still or not.
+     */
     @Override
     public void checkStates() {
         if (!isInvincible()) {
@@ -113,7 +133,7 @@ public class Demon extends Entity implements Attacker, Targetable {
     }
 
     /**
-     * Check if the target is in attack range of the demon.
+     * Check if the target is in attack range of the demon. All measurements are taken from the centre of the demon.
      * @param position Position of the target.
      * @return True if the target is in attack range of the demon, false otherwise.
      */
@@ -122,7 +142,8 @@ public class Demon extends Entity implements Attacker, Targetable {
     }
 
     /**
-     * Check if the target is in attack range of the demon.
+     * Check if the target is in attack range of the demon. All measurements are taken from the centre of the demon
+     * and the target.
      * @param target Target to check.
      * @return True if the target is in attack range of the demon, false otherwise.
      */
@@ -131,7 +152,9 @@ public class Demon extends Entity implements Attacker, Targetable {
     }
 
     /**
-     * Shoot fire at the target.
+     * Shoot fire at the target. Returns the Fire object created.
+     * @param target Target to shoot fire at.
+     * @return Fire object created.
      */
     public Fire shootFireAt(GameObject target) {
         // if the demon is not in attack range of the target, do not shoot fire
@@ -164,6 +187,9 @@ public class Demon extends Entity implements Attacker, Targetable {
         return new Fire(this, fireImage, new Point(x, y), options, getDamagePoints());
     }
 
+    /**
+     * Draw the demon with it's health bar.
+     */
     @Override
     public void draw() {
         HealthBar.drawHealthBar(this);

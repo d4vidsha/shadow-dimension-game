@@ -3,11 +3,14 @@ import bagel.util.*;
 
 public class HealthBar extends Message {
 
+    // health percentage error message
+    private static final String HEALTH_PERCENTAGE_ERROR = "Health percentage out of range";
+
     /**
      * Constructor for HealthBar class.
      * @param font Font of the health bar.
-     * @param position Position of the health bar.
      * @param text Message of the health bar.
+     * @param position Position of the health bar.
      */
     public HealthBar(Font font, String text, Point position) {
         super(font, text, position);
@@ -29,8 +32,7 @@ public class HealthBar extends Message {
         } else if (0 <= health && health < 35) {
             drawOptions.setBlendColour(RED);
         } else {
-            System.out.println("Health percentage out of range");
-            System.exit(1);
+            throw new RuntimeException(HEALTH_PERCENTAGE_ERROR);
         }
         healthBar.draw(drawOptions);
     }
@@ -53,8 +55,7 @@ public class HealthBar extends Message {
         } else if (0 <= health && health < 35) {
             drawOptions.setBlendColour(RED);
         } else {
-            System.out.println("Health percentage out of range");
-            System.exit(1);
+            throw new RuntimeException(HEALTH_PERCENTAGE_ERROR);
         }
         healthBar.draw(drawOptions);
     }

@@ -17,7 +17,7 @@ public class Player extends Entity implements Attacker, Targetable {
     private static final double GATE_Y = 670;
     private static final String PLAYER_NAME = "Fae";
 
-    private boolean onCooldown = false;
+    private boolean onCooldown;
     private Timer timer;
     private boolean isTimerSet;
 
@@ -29,6 +29,7 @@ public class Player extends Entity implements Attacker, Targetable {
      */
     public Player(Point position) {
         super(IMAGES, position, SPEED, MAX_PLAYER_HEALTH, DAMAGE_POINTS, PLAYER_NAME);
+        this.onCooldown = false;
         this.isTimerSet = false;
     }
 

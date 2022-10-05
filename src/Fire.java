@@ -9,8 +9,11 @@ public class Fire extends GameObject implements Attacker {
 
     /**
      * Constructor for Fire class.
+     * @param demon Demon that fired the fire.
      * @param image Image of the fire.
      * @param position Position of the fire.
+     * @param options Draw options of the fire, which determines the rotation of the fire.
+     * @param damagePoints Damage points of the fire.
      */
     public Fire(Demon demon, Image image, Point position, DrawOptions options, int damagePoints) {
         super(image, position);
@@ -36,15 +39,16 @@ public class Fire extends GameObject implements Attacker {
     }
 
     /**
-     * Attack.
+     * Attack the target by printing to the console.
      */
     @Override
     public void attack() {
-        System.out.println("Fire is dealing damage");
+        System.out.println("Fire dealt damage");
     }
 
     /**
-     * Inflict damage to target.
+     * Inflict damage to target and print to console.
+     * @param target Target to inflict damage to.
      */
     @Override
     public void inflictDamageTo(Targetable target) {
