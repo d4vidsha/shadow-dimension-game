@@ -1,7 +1,7 @@
 import bagel.*;
 import bagel.util.*;
 
-public class Demon extends Entity implements Attacker, Targetable {
+public class Demon extends Entity implements Attacker {
     
     // speed of passive demon
     public static final double PASSIVE_SPEED = 0;
@@ -95,7 +95,7 @@ public class Demon extends Entity implements Attacker, Targetable {
      * @param target Target to inflict damage to.
      */
     @Override
-    public void inflictDamageTo(Targetable target) {
+    public void inflictDamageTo(Entity target) {
         target.takeDamage(getDamagePoints());
         printDamage(this, target);
     }

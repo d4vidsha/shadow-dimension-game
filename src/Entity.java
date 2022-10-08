@@ -48,6 +48,7 @@ public abstract class Entity extends MovingObject {
     }
 
     public abstract void checkStates();
+    public abstract void takeDamage(int damage);
 
     /**
      * Get the player's name.
@@ -164,7 +165,7 @@ public abstract class Entity extends MovingObject {
      * @param attacker Attacker.
      * @param target Target.
      */
-    public static void printDamage(Attacker attacker, Targetable target) {
+    public static void printDamage(Attacker attacker, Entity target) {
         Entity A = (Entity) attacker;
         Entity B = (Entity) target;
         System.out.println(String.format(

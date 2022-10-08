@@ -1,7 +1,7 @@
 import bagel.*;
 import bagel.util.*;
 
-public class Player extends Entity implements Attacker, Targetable {
+public class Player extends Entity implements Attacker {
 
     // player specific constants
     private static final int MAX_PLAYER_HEALTH = 100;
@@ -66,7 +66,7 @@ public class Player extends Entity implements Attacker, Targetable {
      * @param target Target to inflict damage to.
      */
     @Override
-    public void inflictDamageTo(Targetable target) {
+    public void inflictDamageTo(Entity target) {
         target.takeDamage(DAMAGE_POINTS);
         printDamage(this, target);
     }

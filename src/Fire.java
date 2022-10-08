@@ -53,7 +53,7 @@ public class Fire extends GameObject implements Attacker {
      * @param target Target to inflict damage to.
      */
     @Override
-    public void inflictDamageTo(Targetable target) {
+    public void inflictDamageTo(Entity target) {
         target.takeDamage(damagePoints);
         Entity.printDamage(fromDemon, target);
     }
