@@ -1,7 +1,7 @@
 import bagel.*;
 import bagel.util.*;
 
-public abstract class MovingObject extends GameObject implements Movable {
+public abstract class MovingObject extends GameObject {
     
     private final double originalSpeed;
     private double speed;
@@ -91,7 +91,6 @@ public abstract class MovingObject extends GameObject implements Movable {
      * Move the player to a given direction.
      * @param direction Direction to move the player to.
      */
-    @Override
     public void move(Vector2 direction) {
         move(getPosition().asVector().add(direction.mul(speed)).asPoint());
     }
