@@ -73,14 +73,14 @@ public class ShadowDimension extends AbstractGame {
     private static final String TOPLEFT = "TopLeft";
     private static final String BOTTOMRIGHT = "BottomRight";
 
+    // stationary images
+    private final Image WALL_IMAGE = new Image("res/wall.png");
+    private final Image TREE_IMAGE = new Image("res/tree.png");
+
     // error messages
     private static final String INVALID_FACE = "Invalid face value.";
     private static final String NO_BOUNDARY_SPECIFIED = "No boundary specified.";
     private static final String RUN_TOO_LONG = "Frames exceeded maximum value. Game has been running for too long.";
-
-    // stationary images
-    private static final Image WALL_IMAGE = new Image("res/wall.png");
-    private static final Image TREE_IMAGE = new Image("res/tree.png");
 
     // game variables
     private int stage;
