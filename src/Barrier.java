@@ -1,12 +1,17 @@
+import bagel.*;
 import bagel.util.*;
 
-public interface Barrier {
+public class Barrier extends GameObject {
+
+    public Barrier(Image image, Point position) {
+        super(image, position);
+    }
 
     /**
      * Bounce the entity back to the previous position.
      * @param entity Entity to bounce back.
      */
-    default void block(MovingObject entity) {
+    public void block(MovingObject entity) {
         Point prevPos = entity.getPrevPos();
         entity.setPosition(prevPos);
     }

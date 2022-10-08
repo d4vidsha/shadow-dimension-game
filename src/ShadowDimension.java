@@ -78,6 +78,10 @@ public class ShadowDimension extends AbstractGame {
     private static final String NO_BOUNDARY_SPECIFIED = "No boundary specified.";
     private static final String RUN_TOO_LONG = "Frames exceeded maximum value. Game has been running for too long.";
 
+    // stationary images
+    private static final Image WALL_IMAGE = new Image("res/wall.png");
+    private static final Image TREE_IMAGE = new Image("res/tree.png");
+
     // game variables
     private int stage;
     private boolean prepareLevel;
@@ -140,7 +144,7 @@ public class ShadowDimension extends AbstractGame {
                             objects[i] = player;
                             break;
                         case WALL:
-                            Wall wall = new Wall(pos);
+                            Barrier wall = new Barrier(WALL_IMAGE, pos);
                             objects[i] = wall;
                             break;
                         case SINKHOLE:
@@ -148,7 +152,7 @@ public class ShadowDimension extends AbstractGame {
                             objects[i] = sinkhole;
                             break;
                         case TREE:
-                            Tree tree = new Tree(pos);
+                            Barrier tree = new Barrier(TREE_IMAGE, pos);
                             objects[i] = tree;
                             break;
                         case DEMON:
@@ -353,20 +357,12 @@ public class ShadowDimension extends AbstractGame {
             gameObjects = removeGameObject(gameObjects, sinkhole);
         }
 
-        // check if player hit a wall
-        if (player.collides(gameObjects, Wall.class)) {
+        // check if player hit a barrier
+        if (player.collides(gameObjects, Barrier.class)) {
 
             // block player from moving
-            Wall wall = (Wall) player.getCollidedObject(gameObjects, Wall.class);
+            Barrier wall = (Barrier) player.getCollidedObject(gameObjects, Barrier.class);
             wall.block(player);
-        }
-
-        // check if player hit a tree
-        if (player.collides(gameObjects, Tree.class)) {
-
-            // block player from moving
-            Tree tree = (Tree) player.getCollidedObject(gameObjects, Tree.class);
-            tree.block(player);
         }
     }
 
@@ -494,8 +490,7 @@ public class ShadowDimension extends AbstractGame {
             demon.move(demon.getDirection());
 
             // if the demon hits a barrier, sinkhole or boundary, reverse the direction
-            if (demon.collides(gameObjects, Tree.class) 
-                || demon.collides(gameObjects, Wall.class)
+            if (demon.collides(gameObjects, Barrier.class)
                 || demon.collides(gameObjects, Sinkhole.class)
                 || !boundary.contains(demon.getPosition())) {
 
