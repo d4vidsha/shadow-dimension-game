@@ -3,8 +3,22 @@ import bagel.util.*;
 
 public class Barrier extends GameObject {
 
+    /**
+     * Constructor for Barrier class.
+     * @param image Image of the barrier.
+     * @param position Position of the barrier.
+     */
     public Barrier(Image image, Point position) {
         super(image, position);
+    }
+
+    /**
+     * Constructor for Barrier class.
+     * @param image Image of the barrier as a string.
+     * @param position Position of the barrier.
+     */
+    public Barrier(String image, Point position) {
+        super(new Image(image), position);
     }
 
     /**
