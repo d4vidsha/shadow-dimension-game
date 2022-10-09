@@ -1,5 +1,8 @@
 import bagel.util.*;
 
+/**
+ * Boundary class that contains game objects which block the player from moving outside of the boundary.
+ */
 public class Boundary {
     
     private Point topLeft;

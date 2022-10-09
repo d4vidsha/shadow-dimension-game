@@ -1,12 +1,14 @@
 import bagel.*;
 
+/**
+ * Timescale class scales the moving objects speed in the game. However, it does not affect the speed of the player.
+ */
 public class Timescale {
 
-    // timescale
-    public static final int DEFAULT_TIMESCALE = 0;
-    public static final int MAX_TIMESCALE = 3;
-    public static final int MIN_TIMESCALE = -3;
-    public static int timescale = DEFAULT_TIMESCALE;
+    private static final int DEFAULT_TIMESCALE = 0;
+    private static final int MAX_TIMESCALE = 3;
+    private static final int MIN_TIMESCALE = -3;
+    private static int timescale = DEFAULT_TIMESCALE;
     private static final String SPED_UP = "Sped up, Speed: %d";
     private static final String SLOWED_DOWN = "Slowed down, Speed: %d";
 

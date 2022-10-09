@@ -1,6 +1,9 @@
 import bagel.*;
 import bagel.util.*;
 
+/**
+ * Level 0 of the game.
+ */
 public class Level0 extends Level{
     private static final String LEVEL0_INSTRUCTIONS = "PRESS SPACE TO START\nUSE ARROW KEYS TO FIND GATE";
     private static final int LEVEL0_END_SCREEN_WAIT_SECONDS = 3;
@@ -92,7 +95,7 @@ public class Level0 extends Level{
      * @param input Input from the user which controls the player.
      * @param player Player object that is moved.
      */
-    public void level(Input input) {
+    public void run(Input input) {
 
         if (getStartScreen()) {
             displayStartScreen(input);

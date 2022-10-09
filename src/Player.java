@@ -1,6 +1,9 @@
 import bagel.*;
 import bagel.util.*;
 
+/**
+ * Player class that the user controls. The player can move around the map and attack enemies.
+ */
 public class Player extends Entity implements Attacker {
 
     // player specific constants

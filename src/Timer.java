@@ -1,3 +1,6 @@
+/**
+ * Timer class based on the frames passed in the game.
+ */
 public class Timer {
     private static final int REFRESH_RATE = 60;
     private final int beginFrame;

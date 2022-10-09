@@ -1,6 +1,9 @@
 import bagel.*;
 import bagel.util.*;
 
+/**
+ * Level 1 of the game.
+ */
 public class Level1 extends Level {
     
     private static final String LEVEL1_INSTRUCTIONS = "PRESS SPACE TO START\nPRESS A TO ATTACK\nDEFEAT NAVEC TO WIN";
@@ -62,7 +65,7 @@ public class Level1 extends Level {
      * @param input Input from the user which controls the player.
      * @param player Player object that is moved.
      */
-    public void level(Input input) {
+    public void run(Input input) {
 
         if (getStartScreen()) {
             displayStartScreen(input);

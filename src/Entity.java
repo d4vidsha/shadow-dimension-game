@@ -1,6 +1,9 @@
 import bagel.*;
 import bagel.util.*;
 
+/**
+ * Entity class which have features that are common to all entities in the game such as health points and damage points.
+ */
 public abstract class Entity extends MovingObject {
 
     // duration of player attack/cooldown ability
@@ -47,7 +50,15 @@ public abstract class Entity extends MovingObject {
         this.state = IDLE;
     }
 
+    /**
+     * Check the state of the entity.
+     */
     public abstract void checkStates();
+    
+    /**
+     * Take damage to the entity.
+     * @param damage Damage points to take.
+     */
     public abstract void takeDamage(int damage);
 
     /**

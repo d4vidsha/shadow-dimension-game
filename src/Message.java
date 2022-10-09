@@ -1,18 +1,47 @@
 import bagel.*;
 import bagel.util.*;
 
+/**
+ * Message class displays messages on the screen.
+ */
 public class Message {
 
     // fonts
     private static final String FONT_PATH = "res/frostbite.ttf";
+
+    /**
+     * Font size 75.
+     */
     public static final Font FONT75 = new Font(FONT_PATH, 75);
+    
+    /**
+     * Font size 40.
+     */
     public static final Font FONT40 = new Font(FONT_PATH, 40);
+    
+    /**
+     * Font size 30.
+     */
     public static final Font FONT30 = new Font(FONT_PATH, 30);
+    
+    /**
+     * Font size 15.
+     */
     public static final Font FONT15 = new Font(FONT_PATH, 15);
 
-    // colours
+    /**
+     * Colour green.
+     */
     public static final Colour GREEN = new Colour(0, 0.8, 0.2);
+    
+    /**
+     * Colour orange.
+     */
     public static final Colour ORANGE = new Colour(0.9, 0.6, 0);
+    
+    /**
+     * Colour red.
+     */
     public static final Colour RED = new Colour(1, 0, 0);
 
     private final Point position;

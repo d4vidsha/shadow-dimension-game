@@ -4,16 +4,20 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Skeleton Code for SWEN20003 Project 2, Semester 2, 2022
+ * ShadowDimension is the main class of the game.
  * @author David Sha
  */
 
 public class ShadowDimension extends AbstractGame {
 
-    // the total number of frames rendered since the game started
+    /**
+     * The total number of frames rendered since the game started.
+     */
     public static int frames = 0;
 
-    // the stages of the game
+    /**
+     * The stage of the game.
+     */
     public static int stage = Level.LEVEL0_STAGE;
 
     // constants
@@ -29,7 +33,9 @@ public class ShadowDimension extends AbstractGame {
     private static final String GAME_OVER_MESSAGE = "GAME OVER!";
     private static final String GAME_WON_MESSAGE = "CONGRATULATIONS!";
 
-    // game title
+    /**
+     * Game title.
+     */
     public static final String GAME_TITLE = "Shadow Dimension";
 
     // game objects
@@ -313,9 +319,9 @@ public class ShadowDimension extends AbstractGame {
 
         // the stages of the game
         if (stage == Level.LEVEL0_STAGE) {
-            level0.level(input);
+            level0.run(input);
         } else if (stage == Level.LEVEL1_STAGE) {
-            level1.level(input);
+            level1.run(input);
         } else if (stage == Level.GAME_OVER_STAGE) {
             Level.gameEndMessage(GAME_OVER_MESSAGE);
         } else if (stage == Level.GAME_WON_STAGE) {

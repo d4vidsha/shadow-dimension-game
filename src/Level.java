@@ -1,20 +1,45 @@
 import bagel.*;
 import java.util.*;
 
+/**
+ * The levels of the game are represented by Level objects.
+ */
 public abstract class Level {
 
     // error messages
     private static final String NO_OBJECTS = "No objects specified.";
 
-    // stages of the game
+    /**
+     * Level 0 stage.
+     */
     public static final int LEVEL0_STAGE = 0;
+    
+    /**
+     * Level 1 stage.
+     */
     public static final int LEVEL1_STAGE = 1;
+    
+    /**
+     * Game over stage.
+     */
     public static final int GAME_OVER_STAGE = -2;
+    
+    /**
+     * Game won stage.
+     */
     public static final int GAME_WON_STAGE = -1;
 
     // fonts
     private static final String FONT_PATH = "res/frostbite.ttf";
+
+    /**
+     * Font size 75.
+     */
     public static final Font FONT75 = new Font(FONT_PATH, 75);
+
+    /**
+     * Font size 40.
+     */
     public static final Font FONT40 = new Font(FONT_PATH, 40);
 
     // variables
@@ -37,9 +62,26 @@ public abstract class Level {
         this.gameObjects = null;
     }
 
-    public abstract void level(Input input);
+    /**
+     * Run the level.
+     * @param input Input object.
+     */
+    public abstract void run(Input input);
+
+    /**
+     * Start screen for the level.
+     */
     protected abstract void startScreen();
+
+    /**
+     * Prepare the level for the game.
+     */
     protected abstract void prepare();
+    
+    /**
+     * Display the start screen for the level.
+     * @param input Input object.
+     */
     protected abstract void displayStartScreen(Input input);
 
     /**

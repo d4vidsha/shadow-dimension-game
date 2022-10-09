@@ -1,6 +1,9 @@
 import bagel.*;
 import bagel.util.*;
 
+/**
+ * Fire which is created by demons. Fire can damage the player.
+ */
 public class Fire extends GameObject implements Attacker {
 
     private DrawOptions options;

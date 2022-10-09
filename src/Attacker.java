@@ -1,3 +1,6 @@
+/**
+ * Attacker interface for game objects that can inflict damage to entities.
+ */
 public interface Attacker {
     
     /**

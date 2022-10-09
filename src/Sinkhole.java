@@ -1,13 +1,19 @@
 import bagel.*;
 import bagel.util.*;
 
+/**
+ * Sinkholes can deal damage to the player and are stationary objects that become cleared once the player steps on them.
+ */
 public class Sinkhole extends GameObject implements Attacker {
 
     private static final Image IMAGE = new Image("res/sinkhole.png");
     private static final String ATTACK_MESSAGE = "Sinkhole is dealing damage";
 
-    // default sinkhole damage points
+    /**
+     * Default sinkhole damage points.
+     */
     public static final int DAMAGE_POINTS = 30;
+    
     private final int damagePoints;
     
     /**

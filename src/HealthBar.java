@@ -1,6 +1,9 @@
 import bagel.*;
 import bagel.util.*;
 
+/**
+ * HealthBar class displays the health of the player or entity.
+ */
 public class HealthBar extends Message {
 
     // health percentage error message

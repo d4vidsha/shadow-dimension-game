@@ -1,17 +1,41 @@
 import bagel.*;
 import bagel.util.*;
 
+/**
+ * Demons which can attack the player.
+ */
 public class Demon extends Entity implements Attacker {
     
-    // speed of passive demon
+    /**
+     * Speed of passive demons.
+     */
     public static final double PASSIVE_SPEED = 0;
     
-    // qualities of default demon
+    /**
+     * Default demon attack radius in pixels.
+     */
     public static final int DEFAULT_ATTACK_RADIUS = 150;
+
+    /**
+     * Default demon max health.
+     */
     public static final int DEFAULT_MAX_HEALTH = 40;
+
+    /**
+     * Default demon damage points.
+     */
     public static final int DEFAULT_DAMAGE_POINTS = 10;
+
+    /**
+     * Default demon fire image.
+     */
     public static final Image DEFAULT_FIRE = new Image("res/demon/demonFire.png");
+
+    /**
+     * Default demon name.
+     */
     public static final String DEFAULT_NAME = "Demon";
+
     private static final Image[] DEFAULT_DEMON_IMAGES = {
         new Image("res/demon/demonLeft.png"),
         new Image("res/demon/demonRight.png"),

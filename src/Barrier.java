@@ -1,6 +1,9 @@
 import bagel.*;
 import bagel.util.*;
 
+/**
+ * Barrier class that contains game objects which block the player from moving through them.
+ */
 public class Barrier extends GameObject {
 
     /**

@@ -2,6 +2,9 @@ import bagel.*;
 import bagel.util.*;
 import java.util.*;
 
+/**
+ * All objects drawn to the screen in the game are GameObjects.
+ */
 public abstract class GameObject {
 
     // error message for point outside of boundary

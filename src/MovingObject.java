@@ -1,6 +1,9 @@
 import bagel.*;
 import bagel.util.*;
 
+/**
+ * All objects that move in the game are MovingObjects.
+ */
 public abstract class MovingObject extends GameObject {
     
     private final double originalSpeed;
