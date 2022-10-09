@@ -161,6 +161,13 @@ public abstract class Entity extends MovingObject {
     }
 
     /**
+     * Make the entity invincible.
+     */
+    public void makeInvincible() {
+        setInvincibleTimer(new Timer(ShadowDimension.frames, INVINCIBLE_MS / MS_TO_SEC));
+    }
+
+    /**
      * Print inflicted damage to the console. Attacker and Targetable are upcasted to Entity.
      * @param attacker Attacker.
      * @param target Target.

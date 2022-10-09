@@ -38,7 +38,7 @@ public class Sinkhole extends GameObject implements Attacker {
     }
 
     /**
-     * Inflict damage to the player.
+     * Inflict damage to entity.
      * @param target Target to inflict damage to.
      */
     public void inflictDamageTo(Entity target) {

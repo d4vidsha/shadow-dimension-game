@@ -55,6 +55,9 @@ public class Fire extends GameObject implements Attacker {
     @Override
     public void inflictDamageTo(Entity target) {
         target.takeDamage(damagePoints);
+        if (!target.isInvincible()) {
+            target.makeInvincible();
+        }
         Entity.printDamage(fromDemon, target);
     }
 }

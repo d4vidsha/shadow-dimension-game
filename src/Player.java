@@ -90,7 +90,6 @@ public class Player extends Entity implements Attacker {
         // if the player is invincible, do not take damage, otherwise take damage and become invincible
         if (!isInvincible()) {
             this.setHealth(this.getHealth() - damage);
-            setInvincibleTimer(new Timer(ShadowDimension.frames, INVINCIBLE_MS / MS_TO_SEC));
         }
     }
 
