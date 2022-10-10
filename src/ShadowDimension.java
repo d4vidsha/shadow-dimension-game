@@ -74,6 +74,14 @@ public class ShadowDimension extends AbstractGame {
     }
 
     /**
+     * The entry point for the program.
+     */
+    public static void main(String[] args) {
+        ShadowDimension game = new ShadowDimension();
+        game.run();
+    }
+
+    /**
      * Get the stage of the game.
      * @return stage of the game.
      */
@@ -87,14 +95,6 @@ public class ShadowDimension extends AbstractGame {
      */
     public static void setStage(int stage) {
         ShadowDimension.stage = stage;
-    }
-
-    /**
-     * The entry point for the program.
-     */
-    public static void main(String[] args) {
-        ShadowDimension game = new ShadowDimension();
-        game.run();
     }
 
     /**
