@@ -105,7 +105,7 @@ public class Player extends Entity implements Attacker {
         }
 
         if ((getState() == ATTACK) && !onCooldown) {
-            if (timer.isFinished(ShadowDimension.frames)) {
+            if (timer.isFinished(ShadowDimension.getFrames())) {
                 isTimerSet = false;
                 setState(IDLE);
                 onCooldown = true;
@@ -116,7 +116,7 @@ public class Player extends Entity implements Attacker {
             if (getState() != IDLE) {
                 setState(IDLE);
             }
-            if (timer.isFinished(ShadowDimension.frames)) {
+            if (timer.isFinished(ShadowDimension.getFrames())) {
                 isTimerSet = false;
                 onCooldown = false;
             }
@@ -135,10 +135,10 @@ public class Player extends Entity implements Attacker {
 
         if (!isTimerSet) {
             if (state == ATTACK) {
-                timer = new Timer(ShadowDimension.frames, ABILITY_ACTIVE_MS / MS_TO_SEC);
+                timer = new Timer(ShadowDimension.getFrames(), ABILITY_ACTIVE_MS / MS_TO_SEC);
                 setImages(IMAGES[IMG_ABILITY_LEFT], IMAGES[IMG_ABILITY_RIGHT]);
             } else if (state == IDLE) {
-                timer = new Timer(ShadowDimension.frames, ABILITY_COOLDOWN_MS / MS_TO_SEC);
+                timer = new Timer(ShadowDimension.getFrames(), ABILITY_COOLDOWN_MS / MS_TO_SEC);
                 setImages(IMAGES[IMG_LEFT], IMAGES[IMG_RIGHT]);
             } else {
                 throw new IllegalArgumentException(INVALID_STATE);

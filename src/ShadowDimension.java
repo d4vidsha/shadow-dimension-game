@@ -10,15 +10,9 @@ import java.util.*;
 
 public class ShadowDimension extends AbstractGame {
 
-    /**
-     * The total number of frames rendered since the game started.
-     */
-    public static int frames = 0;
-
-    /**
-     * The stage of the game.
-     */
-    public static int stage = Level.LEVEL0_STAGE;
+    // class specific variables
+    private static int frames = 0;
+    private static int stage = Level.LEVEL0_STAGE;
 
     // constants
     private static final int WINDOW_WIDTH = 1024;
@@ -79,6 +73,14 @@ public class ShadowDimension extends AbstractGame {
     public static void main(String[] args) {
         ShadowDimension game = new ShadowDimension();
         game.run();
+    }
+
+    /**
+     * Get the total number of frames rendered since the game started.
+     * @return frames.
+     */
+    public static int getFrames() {
+        return frames;
     }
 
     /**

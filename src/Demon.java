@@ -141,7 +141,7 @@ public class Demon extends Entity implements Attacker {
         // if the demon is invincible, do not take damage, otherwise take damage and become invincible
         if (!isInvincible()) {
             this.setHealth(this.getHealth() - damage);
-            setInvincibleTimer(new Timer(ShadowDimension.frames, INVINCIBLE_MS / MS_TO_SEC));
+            setInvincibleTimer(new Timer(ShadowDimension.getFrames(), INVINCIBLE_MS / MS_TO_SEC));
             setImages(images[IMG_ABILITY_LEFT], images[IMG_ABILITY_RIGHT]);
         }
     }

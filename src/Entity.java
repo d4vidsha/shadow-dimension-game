@@ -168,14 +168,14 @@ public abstract class Entity extends MovingObject {
      * @return True if the entity is invincible, false otherwise.
      */
     public boolean isInvincible() {
-        return invincibleTimer != null && !invincibleTimer.isFinished(ShadowDimension.frames);
+        return invincibleTimer != null && !invincibleTimer.isFinished(ShadowDimension.getFrames());
     }
 
     /**
      * Make the entity invincible.
      */
     public void makeInvincible() {
-        setInvincibleTimer(new Timer(ShadowDimension.frames, INVINCIBLE_MS / MS_TO_SEC));
+        setInvincibleTimer(new Timer(ShadowDimension.getFrames(), INVINCIBLE_MS / MS_TO_SEC));
     }
 
     /**

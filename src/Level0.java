@@ -32,7 +32,7 @@ public class Level0 extends Level{
         // if necessary, display winning message and move to next stage after 3 seconds
         if (player.isAtGate()) {
             setEndScreen(true);
-            level0EndScreenTimer = new Timer(ShadowDimension.frames, LEVEL0_END_SCREEN_WAIT_SECONDS);
+            level0EndScreenTimer = new Timer(ShadowDimension.getFrames(), LEVEL0_END_SCREEN_WAIT_SECONDS);
         }
     }
 
@@ -55,7 +55,7 @@ public class Level0 extends Level{
         Level.gameEndMessage(LEVEL_COMPLETION_MESSAGE);
 
         // wait
-        if (level0EndScreenTimer.isFinished(ShadowDimension.frames)) {
+        if (level0EndScreenTimer.isFinished(ShadowDimension.getFrames())) {
             // begin next stage
             ShadowDimension.setStage(LEVEL1_STAGE);
         }
