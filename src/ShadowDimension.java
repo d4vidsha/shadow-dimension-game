@@ -258,39 +258,6 @@ public class ShadowDimension extends AbstractGame {
         }
         return false;
     }
-    
-    /**
-     * Get player object from the array of objects. We assume the first object
-     * in the array is the player.
-     * @param objects Array of game objects.
-     * @return
-     */
-    public static Player getPlayer(GameObject[] objects) {
-        return (Player) objects[0];
-    }
-
-    /**
-     * Add an object to the array of game objects.
-     * @param objects Array of game objects.
-     * @param gameObject Object to add.
-     */
-    public static GameObject[] addGameObject(GameObject[] objects, GameObject gameObject) {
-        ArrayList<GameObject> objectsList = new ArrayList<>(Arrays.asList(objects));
-        objectsList.add(gameObject);
-        return objectsList.toArray(new GameObject[objectsList.size()]);
-    }
-
-    /**
-     * Remove the object from the array of game objects.
-     * @param objects Array of game objects.
-     * @param gameObject Object to remove.
-     * @return Array of game objects with the object removed.
-     */
-    public static GameObject[] removeGameObject(GameObject[] objects, GameObject gameObject) {
-        ArrayList<GameObject> objectsList = new ArrayList<>(Arrays.asList(objects));
-        objectsList.remove(gameObject);
-        return objectsList.toArray(new GameObject[objectsList.size()]);
-    }
 
     /**
      * Performs a state update.

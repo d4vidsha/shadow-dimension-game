@@ -209,7 +209,7 @@ public abstract class Level {
             sinkhole.inflictDamageTo(player);
 
             // remove sinkhole from game
-            gameObjects = ShadowDimension.removeGameObject(gameObjects, sinkhole);
+            gameObjects = GameObject.removeGameObject(gameObjects, sinkhole);
         }
 
         // check if player hit a barrier
@@ -271,7 +271,7 @@ public abstract class Level {
                 if (demon instanceof Navec) {
                     ShadowDimension.setStage(GAME_WON_STAGE);
                 }
-                gameObjects = ShadowDimension.removeGameObject(gameObjects, demon);
+                gameObjects = GameObject.removeGameObject(gameObjects, demon);
             }
             demon.checkStates();
         }

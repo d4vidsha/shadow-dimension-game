@@ -72,7 +72,7 @@ public class Level1 extends Level {
             return;
         }
 
-        Player player = ShadowDimension.getPlayer(getObjects());
+        Player player = GameObject.getPlayer(getObjects());
         timescale.controls(input);
 
         // move the player and demons (including Navec)

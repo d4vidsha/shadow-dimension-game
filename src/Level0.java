@@ -107,7 +107,7 @@ public class Level0 extends Level{
             return;
         }
 
-        Player player = ShadowDimension.getPlayer(getObjects());
+        Player player = GameObject.getPlayer(getObjects());
 
         // move and update the player
         player.update(input, getBoundary());
