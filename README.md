@@ -25,6 +25,6 @@ Head to `src/ShadowDimension.java` and run the main method to launch the game.
 
 ## Features of the game
 ### Timescale controls
-The timescale determines the speed objects move in the game. It does not however affect the speed of the player. There are maximum and minimum values for the timescale, which can be found in the `ShadowDimension.java` file.
+The timescale determines the speed objects move in the game. It does not however affect the speed of the player. There are maximum and minimum values for the timescale, which can be found in the `src/ShadowDimension.java` file.
 ### W key
 In development of the game, `W` is used to move the player to the next level without having to complete the current level. This is useful for testing the game.
